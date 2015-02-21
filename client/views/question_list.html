@@ -1,0 +1,6 @@
+<h1>Questions</h1>
+<label>Search</label> <input type="text" ng-model="search"/>
+<div ng-repeat="question in questions | filter:{question: search}">
+        <span>{{question.question}}</span><a href="#/question/{{question.id}}/edit" class="btn">Edit</a>
+</div>
+<a href="#/question/add" class="btn">Add</a>

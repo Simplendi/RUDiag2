@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 ngtemplates: {
             app: {
-                src: "views/*.html",
+                src: ["views/*.html", "views/directives/*.html"],
                 dest: "build/templates.js",
                 options: {
                     module: "app",
@@ -24,10 +24,11 @@ ngtemplates: {
 
             app: {
                 options: {
-                    compress: {
-                        drop_console: false,
-                    },
-                    mangle: true,
+                    beautify: true,
+                    //compress: {
+                    //    drop_console: false,
+                    //},
+                    mangle: false,
                     sourceMap: true,
                 },
                 files: {
@@ -38,6 +39,7 @@ ngtemplates: {
                         'bower_components/angular-route/angular-route.js',
                         'app.js',
                         'controllers/*.js',
+                        'directives/*.js',
                         'services/*.js',
                         'filters/*.js',
                         'build/templates.js',

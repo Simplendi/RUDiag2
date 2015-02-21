@@ -1,0 +1,11 @@
+<label>Question</label><br>
+<textarea ng-model="data.question" ng-disabled="disabled"></textarea><br>
+
+<span ng-repeat="option in data.options track by $index">
+<input type="radio" disabled="disabled" /><input type="text" ng-model="data.options[$index]" ng-disabled="disabled" /><br>
+</span>
+
+<button ng-click="addOption()" ng-show="!disabled">Add option</button><br>
+
+<textarea ng-model="data.question_after" ng-disabled="disabled"></textarea><br>
+

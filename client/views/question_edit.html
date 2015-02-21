@@ -1,0 +1,8 @@
+<h1>Edit question</h1>
+<button ng-click="saveQuestion()" ng-disabled="saving || deleting">Save</button>
+<button ng-click="deleteQuestion()" ng-disabled="deleting || saving">Delete</button>
+Blaat: {{data}}
+<div ng-show="loading">Loading</div>
+<div ng-hide="loading">
+    <question-editor data="data"></question-editor>
+</div>
