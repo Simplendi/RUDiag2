@@ -1,0 +1,6 @@
+<h1>Metadata</h1>
+<label>Search</label> <input type="text" ng-model="search"/>
+<div ng-repeat="metadata in metadatas | filter:{id: search}">
+    <span>{{metadata.id}}</span><a href="#/metadata/{{metadata.id}}/edit" class="btn">Edit</a>
+</div>
+<a href="#/metadata/add" class="btn">Add</a>

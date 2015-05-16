@@ -1,0 +1,7 @@
+<h1>Edit Metadata</h1>
+<button ng-click="saveMetadata()" ng-disabled="saving || deleting">Save</button>
+<button ng-click="deleteMetadata()" ng-disabled="deleting || saving">Delete</button>
+<div ng-show="loading">Loading</div>
+<div ng-hide="loading">
+    <metadata-editor data="data"></metadata-editor>
+</div>

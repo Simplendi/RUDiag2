@@ -1,5 +1,7 @@
 import json
+import datetime
 from framework.httpexceptions import HttpNotFoundException
+from framework.httpexceptions import HttpBadRequestException
 
 from controllers.basecontroller import BaseController
 
@@ -14,7 +16,10 @@ class TestController(BaseController):
     def getTest(self, state, id):
         (request, response, session) = state.unfold()
 
-        id = int(id)
+        try:
+            id = int(id)
+        except ValueError:
+            raise HttpBadRequestException()
 
         database_session = self._database_session_maker()
 
@@ -25,6 +30,7 @@ class TestController(BaseController):
                 raise HttpNotFoundException()
 
             test_data = json.loads(test.data)
+            self._setJsonFromFields(test, test_data)
 
             for question_element in [element for element in test_data["content"] if element["type"] == 'question']:
                 if question_element.get("data", {}).get("id"):
@@ -37,7 +43,6 @@ class TestController(BaseController):
                     else:
                         # If the question cannot be found make the question local by deleting the id
                         del question_element["data"]["id"]
-            test_data["id"] = test.id
 
             response.setJsonBody(json.dumps(test_data))
         finally:
@@ -53,12 +58,14 @@ class TestController(BaseController):
         try:
             test_data = request.body
             test = Test()
+            self._setFieldsFromJson(test_data, test)
+            self._deleteFieldsFromJson(test_data)
             test.data = json.dumps(test_data)
 
             database_session.add(test)
             database_session.commit()
 
-            test_data["id"] = test.id
+            self._setJsonFromFields(test, test_data)
 
             response.setJsonBody(json.dumps(test_data))
 
@@ -70,7 +77,10 @@ class TestController(BaseController):
     def saveTest(self, state, id):
         (request, response, session) = state.unfold()
 
-        id = int(id)
+        try:
+            id = int(id)
+        except ValueError:
+            raise HttpBadRequestException()
 
         database_session = self._database_session_maker()
 
@@ -81,9 +91,10 @@ class TestController(BaseController):
                 raise HttpNotFoundException()
 
             test_data = request.body
-            del test_data["id"]
+            self._setFieldsFromJson(test_data, test)
+            self._deleteFieldsFromJson(test_data)
             test.data = json.dumps(test_data)
-            test_data["id"] = test.id
+            self._setJsonFromFields(test, test_data)
             database_session.add(test)
             database_session.commit()
 
@@ -93,7 +104,26 @@ class TestController(BaseController):
 
         return state
 
-    def deleteTest(self, state):
+    def deleteTest(self, state, id):
+        (request, response, session) = state.unfold()
+
+        try:
+            id = int(id)
+        except ValueError:
+            raise HttpBadRequestException()
+
+        database_session = self._database_session_maker()
+
+        try:
+            test = database_session.query(Test).filter(Test.id==id).first()
+
+            if not test:
+                raise HttpNotFoundException()
+            database_session.delete(test)
+            database_session.commit()
+        finally:
+            database_session.close()
+
         return state
 
     def listTest(self, state):
@@ -107,7 +137,7 @@ class TestController(BaseController):
             tests_data = []
             for test in tests:
                 test_data = json.loads(test.data)
-                test_data["id"] = test.id
+                self._setJsonFromFields(test, test_data)
 
                 tests_data.append(test_data)
 
@@ -117,3 +147,41 @@ class TestController(BaseController):
             database_session.close()
 
         return state
+
+    def _setFieldsFromJson(self, json, test):
+        # Never set id
+        #if json.get("id"):
+        #    test.id = json.get("id")
+
+        if json.get("planning", {}).get("start_date"):
+            test.start_date = datetime.datetime.strptime(json.get("planning", {}).get("start_date"), "%Y-%m-%dT%H:%M:%S.000Z")
+
+        if json.get("planning", {}).get("end_date"):
+            test.end_date = datetime.datetime.strptime(json.get("planning", {}).get("end_date"), "%Y-%m-%dT%H:%M:%S.000Z")
+
+        test.status = json.get("planning", {}).get("status", Test.STATUS_PLANNED)
+
+    def _deleteFieldsFromJson(self, json):
+        if json.get("id"):
+            del json["id"]
+
+        if json.get("planning", {}).get("start_date"):
+            del json["planning"]["start_date"]
+
+        if json.get("planning", {}).get("end_date"):
+            del json["planning"]["end_date"]
+
+        if json.get("planning", {}).get("status"):
+            del json["planning"]["status"]
+
+
+    def _setJsonFromFields(self, test, json):
+        json["id"] = test.id
+        if not json.get("planning"):
+            json["planning"] = {}
+        if test.start_date:
+            json["planning"]["start_date"] = test.start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+
+        if test.end_date:
+            json["planning"]["end_date"] = test.end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        json["planning"]["status"] = test.status

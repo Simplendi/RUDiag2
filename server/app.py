@@ -12,6 +12,8 @@ from controllers.logincontroller import LoginController
 from controllers.questioncontroller import QuestionController
 from controllers.testcontroller import TestController
 from controllers.usercontroller import UserController
+from controllers.runtestcontroller import RunTestController
+from controllers.metadatacontroller import MetadataController
 
 class App(Application):
     def __init__(self):
@@ -40,17 +42,26 @@ class App(Application):
         self.router.addMapping(r"^/test/([^/]+)$", test_controller.deleteTest, ['DELETE'])
         self.router.addMapping(r"^/test/$", test_controller.addTest, ['PUT'])
         self.router.addMapping(r"^/test/$", test_controller.listTest, ['GET'])
-        
-        
+
         user_controller = UserController()
         self.router.addMapping(r"^/user/([^/]+)$", user_controller.getUser, ['GET'])
         self.router.addMapping(r"^/user/([^/]+)$", user_controller.saveUser, ['POST'])
         self.router.addMapping(r"^/user/([^/]+)$", user_controller.deleteUser, ['DELETE'])
         self.router.addMapping(r"^/user/$", user_controller.addUser, ['PUT'])
         self.router.addMapping(r"^/user/$", user_controller.listUser, ['GET'])
+        
+        metadata_controller = MetadataController()
+        self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.getMetadata, ['GET'])
+        self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.saveMetadata, ['POST'])
+        self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.deleteMetadata, ['DELETE'])
+        self.router.addMapping(r"^/metadata/$", metadata_controller.addMetadata, ['PUT'])
+        self.router.addMapping(r"^/metadata/$", metadata_controller.listMetadata, ['GET'])
 
-        self.router.addStaticMapping(r"^/static/", "../client/dist")
-        self.router.addStaticMapping(r"^/", "../client/dist")
+        run_test_controller = RunTestController()
+        self.router.addMapping(r"^/t/([0-9]+)/$", run_test_controller.provideBestRouteToTest)
+
+        self.router.addStaticMapping(r"^/admin/static/", "../adminClient/dist")
+        self.router.addStaticMapping(r"^/admin/", "../adminClient/dist")
 
 
 app = App()

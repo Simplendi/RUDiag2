@@ -1,0 +1,32 @@
+<tabset>
+    <tab heading="Content">
+        <label>Type</label><br>
+        <select ng-model="data.type" ng-disabled="disabled">
+            <option value="choice">Choice</option>
+            <option value="multiplechoice">Multiple choice</option>
+            <option value="open">Open</option>
+        </select>
+        <br>
+        <choice-question-editor ng-if="data.type=='choice'" ng-disabled="disabled" data="data"></choice-question-editor>
+        <multiplechoice-question-editor ng-if="data.type=='multiplechoice'" ng-disabled="disabled" data="data"></multiplechoice-question-editor>
+        <open-question-editor ng-if="data.type=='open'" ng-disabled="disabled" data="data"></open-question-editor>
+    </tab>
+    <tab ng-if="!inline" heading="Answers">
+
+    </tab>
+    <tab ng-if="!inline" heading="Feedback">
+        <label>Wrong</label><br>
+        <textarea ng-model="data.feedback.wrong"></textarea>
+        <br>
+
+        <label>Right</label><br>
+        <textarea ng-model="data.feedback.right"></textarea>
+    </tab>
+    <tab heading="Metadata">
+    TODO
+    </tab>
+    <tab ng-if="!inline" heading="Permissions">
+    TODO
+    </tab>
+
+</tabset>
