@@ -3,7 +3,6 @@
         <label>Title</label><input type="text" ng-model="data.title"/>
 
         <div ng-repeat="element in data.content track by $index">
-            <span>{{data.content[$index]}}</span>
             <button ng-click="deleteElement($index)">Delete</button>
             <button ng-if="!$first" ng-click="moveElementUp($index)">Up</button>
             <button ng-if="!$last" ng-click="moveElementDown($index)">Down</button>
