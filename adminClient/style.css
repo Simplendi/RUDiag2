@@ -1,0 +1,41 @@
+.editor-question-option-content {
+    display: inline-block;
+    width: 90%;
+}
+.editor-question-option {
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.editor-question-option input {
+    vertical-align: top;
+}
+.question-option-content {
+    display: inline-block;
+    width: 90%;
+}
+.question-option {
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.question-option input {
+    vertical-align: top;
+}
+.question-list-question {
+    border: solid 1px gray;
+    padding: 5px;
+    width: 100%;
+}
+
+.editable {
+    border: dotted 2px gray;
+}
+.content-editor {
+    position: absolute;
+    display: block;
+    background-color: white;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}

@@ -1,0 +1,136 @@
+user=
+{
+id: integer
+fullname: string
+email: string
+is_admin: boolean
+password_hash(optional): string
+}
+
+metadata=
+{
+identifier: string
+type: string {OPEN, LINK, CHOICE, TREE}
+description: string
+data: 	if type==OPEN: none
+		if type==LINK: none
+		if type==CHOICE: [string]
+		if type==TREE:
+			node=
+				{
+				value: string
+				description: string
+				children: [node]
+				}
+multivalue: boolean
+}
+
+question=
+{
+id: integer
+type: string
+owners: [integer]
+metadata:
+	{
+	identifier: [value]
+	...
+	}
+description: text
+feedback:
+	{
+	right: string
+	wrong: string
+	}
+}
+
+test=
+{
+id: integer
+title: string
+owners: [id]
+shuffle_content: bool
+content:
+	if basic_test:
+	[
+		{
+		type: string
+		data: if type==QUESTION: question
+			  if type==RICHTEXT: string
+		}
+	]
+planning:
+	{
+	is_template: bool
+	open_at: date
+	opened_at: date
+	close_at: date
+	closed_at: date
+	invite_method: {REQUEST, EMAIL, CODE, LOGIN, SECURE_CODE}
+	invite_url: string
+	check_method: (AUTOMATIC, MANUALLY)
+	check_annonymous: bool
+	ask_for_data:
+		[
+		{value: string, description: string}
+		]
+	}
+feedback:
+ 	{
+ 		default_feedback:
+ 		{
+ 			wrong: string
+ 			right: string
+ 		}
+ 		question_feedback:
+ 		[
+ 			{
+			source: {QUESTION, TEST, CUSTOM}
+			max_score: integer
+			value: int
+			feedback: string
+ 			}
+ 		]
+ 		group_by: string
+ 		total_feedback:
+ 		[
+ 			{
+ 			from: integer
+ 			to: integer
+ 			text: integer
+ 			}
+ 		]
+ 	}
+answers:
+	[
+		data
+	]
+}
+
+test_result=
+{
+id: integer
+test_id: integer
+email: string
+name: string
+invite_code: string
+invited_at: date
+opened_at: date
+last_saved_at: date
+submit_code: string
+submitted_at: date
+reviewed_by: integer
+reviewed_at: date
+feedbacked_at: date
+questions:
+	[
+		{
+		type: string
+		data: question
+		answer: data
+		score: integer
+		feedback: string
+		}
+	]
+total_feedback: string
+}
+

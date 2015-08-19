@@ -1,11 +1,12 @@
 <label>Question</label><br>
-<textarea ng-model="data.question" ng-disabled="disabled"></textarea><br>
+<div class="editable" contenteditable ng-model="data.content.question_before" ng-disabled="disabled"></div><br>
 
-<span ng-repeat="option in data.options track by $index">
-<input type="radio" disabled="disabled" /><input type="text" ng-model="data.options[$index]" ng-disabled="disabled" /><br>
+<span class="editor-question-option" ng-repeat="choice in data.content.choices track by $index">
+<input type="radio" disabled="disabled" />
+<div class="editor-question-option-content editable" contenteditable ng-model="data.content.choices[$index]" ng-disabled="disabled"></div>
+<a href="" ng-click="deleteChoice($index)"><img src="/admin/static/img/cross.png" /></a>
 </span>
+<a href="" ng-click="addChoice()"><img src="/admin/static/img/add.png" /></a>
 
-<button ng-click="addOption()" ng-show="!disabled">Add option</button><br>
-
-<textarea ng-model="data.question_after" ng-disabled="disabled"></textarea><br>
+<div class="editable" contenteditable ng-model="data.content.question_after" ng-disabled="disabled"></div><br>
 

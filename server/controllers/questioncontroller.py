@@ -1,9 +1,13 @@
 import json
+import datetime
+from contextlib import closing
 from framework.httpexceptions import HttpNotFoundException
+from framework.httpexceptions import HttpBadRequestException
 
 from controllers.basecontroller import BaseController
 
-from models.question import Question
+from models.service.question import Question
+from models.db.question import DbQuestion
 
 class QuestionController(BaseController):
 
@@ -13,106 +17,100 @@ class QuestionController(BaseController):
     def getQuestion(self, state, id):
         (request, response, session) = state.unfold()
 
-        id = int(id)
-
-        database_session = self._database_session_maker()
-
         try:
-            question = database_session.query(Question).filter(Question.id==id).first()
+            id = int(id)
+        except ValueError:
+            raise HttpBadRequestException()
 
-            if not question:
+        with closing(self._database_session_maker()) as database_session:
+            db_question = database_session.query(DbQuestion).filter(DbQuestion.id==id).first()
+
+            if not db_question:
                 raise HttpNotFoundException()
 
-            question_data = json.loads(question.data)
-            question_data["id"] = question.id
+            question = Question.from_db(db_question)
+            question_dict = question.to_dict()
 
-            response.setJsonBody(json.dumps(question_data))
-        finally:
-            database_session.close()
+            response.setJsonBody(json.dumps(question_dict))
 
         return state
 
     def addQuestion(self, state):
         (request, response, session) = state.unfold()
 
-        database_session = self._database_session_maker()
+        with closing(self._database_session_maker()) as database_session:
+            question_dict = request.body
+            question = Question.from_dict(question_dict)
+            db_question = question.to_db()
 
-        try:
-            question_data = request.body
-            question = Question()
-            question.data = json.dumps(question_data)
-
-            database_session.add(question)
+            database_session.add(db_question)
             database_session.commit()
 
-            question_data["id"] = question.id
+            question = Question.from_db(db_question, question)
+            question_dict = question.to_dict(question_dict)
 
-            response.setJsonBody(json.dumps(question_data))
+            response.setJsonBody(json.dumps(question_dict))
 
-        finally:
-            database_session.close()
 
         return state
 
     def saveQuestion(self, state, id):
         (request, response, session) = state.unfold()
 
-        id = int(id)
-
-        database_session = self._database_session_maker()
-
         try:
-            question = database_session.query(Question).filter(Question.id==id).first()
+            id = int(id)
+        except ValueError:
+            raise HttpBadRequestException()
 
-            if not question:
+        with closing(self._database_session_maker()) as database_session:
+            db_question = database_session.query(DbQuestion).filter(DbQuestion.id==id).first()
+
+            if not db_question:
                 raise HttpNotFoundException()
 
-            question_data = request.body
-            del question_data["id"]
-            question.data = json.dumps(question_data)
-            question_data["id"] = question.id
-            database_session.add(question)
+            question_dict = request.body
+            question = Question.from_dict(question_dict)
+            db_question = question.to_db(db_question)
+
+            database_session.add(db_question)
             database_session.commit()
 
-            response.setJsonBody(json.dumps(question_data))
-        finally:
-            database_session.close()
+            question = Question.from_db(db_question, question)
+            question_dict = question.to_dict(question_dict)
+
+            response.setJsonBody(json.dumps(question_dict))
 
         return state
 
     def deleteQuestion(self, state, id):
         (request, response, session) = state.unfold()
 
-        id = int(id)
-
-        database_session = self._database_session_maker()
-
         try:
-            database_session.query(Question).filter(Question.id==id).delete()
+            id = int(id)
+        except ValueError:
+            raise HttpBadRequestException()
+
+        with closing(self._database_session_maker()) as database_session:
+            db_question = database_session.query(DbQuestion).filter(DbQuestion.id==id).first()
+
+            if not db_question:
+                raise HttpNotFoundException()
+            database_session.delete(db_question)
             database_session.commit()
-        finally:
-            database_session.close()
 
         return state
 
     def listQuestion(self, state):
         (request, response, session) = state.unfold()
 
-        database_session = self._database_session_maker()
-
-        try:
-            questions = database_session.query(Question).order_by(Question.id).all()
+        with closing(self._database_session_maker()) as database_session:
+            db_questions = database_session.query(DbQuestion).order_by(DbQuestion.id).all()
 
             questions_data = []
-            for question in questions:
-                question_data = json.loads(question.data)
-                question_data["id"] = question.id
-
+            for db_question in db_questions:
+                question_data = Question.from_db(db_question).to_dict()
                 questions_data.append(question_data)
 
             response.setJsonBody(json.dumps(questions_data))
-
-        finally:
-            database_session.close()
 
         return state

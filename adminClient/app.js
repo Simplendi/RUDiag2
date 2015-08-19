@@ -2,11 +2,11 @@ var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap']);
 
 var auth_is_user = function(user) {
     return user;
-}
+};
 
 var auth_is_admin = function(user) {
     return user.is_admin;
-}
+};
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider

@@ -16,11 +16,11 @@
     </tab>
     <tab ng-if="!inline" heading="Feedback">
         <label>Wrong</label><br>
-        <textarea ng-model="data.feedback.wrong"></textarea>
+        <div class="editable" contenteditable ng-model="data.default_feedback.wrong"></div>
         <br>
 
         <label>Right</label><br>
-        <textarea ng-model="data.feedback.right"></textarea>
+        <div class="editable" contenteditable ng-model="data.default_feedback.right"></div>
     </tab>
     <tab heading="Metadata">
     TODO

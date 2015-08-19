@@ -6,7 +6,7 @@ from sqlalchemy import MetaData
 import app
 app = app
 
-from models import Base
+from models.db import Base
 
 from framework import Config
 

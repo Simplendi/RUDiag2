@@ -21,7 +21,11 @@
         </div>
     </tab>
     <tab heading="Feedback">
-        TODO
+        <h2>Question feedback</h2>
+            <div ng-if="data.content[$index].type=='question'" ng-repeat="element in data.content track by $index">
+                {{data.content[$index].data}}
+            </div>
+        <h2>Score feedback</h2>
     </tab>
     <tab heading="Planning">
         <label>Status</label>

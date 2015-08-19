@@ -1,6 +1,7 @@
 <h1>Questions</h1>
-<label>Search</label> <input type="text" ng-model="search"/>
-<div ng-repeat="question in questions | filter:{question: search}">
-        <span>{{question.question}}</span><a href="#/question/{{question.id}}/edit" class="btn">Edit</a>
+<div class="question-list-question" ng-repeat="question in questions">
+        <choice-question data="question"></choice-question>
+        <a href="#/question/{{question.id}}/edit" class="btn"><img src="/admin/static/img/pencil.png"/></a>
+        <a href="#/question/{{question.id}}/delete" class="btn"><img src="/admin/static/img/cross.png"/></a>
 </div>
 <a href="#/question/add" class="btn">Add</a>

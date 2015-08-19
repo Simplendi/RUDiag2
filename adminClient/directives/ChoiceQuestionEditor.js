@@ -9,12 +9,18 @@ app.directive('choiceQuestionEditor', function() {
         },
         templateUrl: 'views/directives/choice_question_editor.html',
         controller: ['$scope', function($scope) {
-            if(angular.isUndefined($scope.data.options)) {
-                $scope.data.options = []
+            if(angular.isUndefined($scope.data.content)) {
+                $scope.data.content = {}
             }
-            $scope.addOption = function() {
-                $scope.data.options.push("");
+            $scope.addChoice = function() {
+                if(angular.isUndefined($scope.data.content.choices)) {
+                    $scope.data.content.choices = []
+                }
+                $scope.data.content.choices.push("");
             };
+            $scope.deleteChoice = function($index) {
+                $scope.data.content.choices.splice($index, 1);
+            }
         }]
     }
 });
