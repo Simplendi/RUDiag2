@@ -9,7 +9,7 @@ from mako.lookup import TemplateLookup
 config_parser = ConfigParser()
 
 # Set config path
-config_path = "conf/app.ini"
+config_path = sys.argv[1] or "conf/app.ini"
 try:
     config_file = open(config_path, "r")
     config_file.close()
