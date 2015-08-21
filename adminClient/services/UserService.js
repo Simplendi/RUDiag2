@@ -18,7 +18,7 @@ app.factory('userService', ['$http', function($http) {
             return $http({
                 url: '/user/',
                 method: "GET",
-                params: {filter: filter}
+                params: {search: filter}
             });
         }
 

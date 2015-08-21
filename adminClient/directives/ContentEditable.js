@@ -33,13 +33,16 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
 
             function readValue(value) {
                 return function () {
-                    ngModel.$setViewValue(value);
+                    if(element.html().indexOf('class="MathJax') < 0) {
+                        ngModel.$setViewValue(value);
+                    }
+
                 }
             }
 
             // Listen to disable
             scope.$watch('disabled', function (newVal) {
-                element.attr("contenteditable", newVal);
+                element.attr("contenteditable", !newVal);
             })
         }
     };

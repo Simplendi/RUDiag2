@@ -8,7 +8,7 @@ class Question:
     owners = []
     metadata = {}
     content = {}
-    default_feedback = {"0":"", "1":""}
+    default_feedback = {"wrong":"", "right":""}
 
     @staticmethod
     def from_db(db_question, question = None):

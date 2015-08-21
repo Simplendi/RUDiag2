@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         cssmin: {
             app: {
                 files: {
-                    'dist/app.min.css': [
+                    'dist/css/app.min.css': [
                         'style.css',
                         'bower_components/bootstrap-css/css/bootstrap.css',
                     ]
@@ -82,17 +82,28 @@ module.exports = function (grunt) {
             }
         },
         copy: {
-            app: {
+            mathjax: {
                 files: [{
                     expand: true,
                     cwd: 'bower_components/',
                     src: 'MathJax/**',
                     dest: 'dist/'
-                },
+                }]
+            },
+            static: {
+                files: [
                     {
                         src: 'img/**',
                         dest: 'dist/'
-                    }]
+                    },
+                    {
+                        expand: true,
+                        cwd: 'bower_components/bootstrap-css/',
+                        src: 'fonts/*',
+                        dest: 'dist/'
+                    }
+
+                ]
             }
         },
         watch: {

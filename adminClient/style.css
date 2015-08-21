@@ -23,8 +23,10 @@
     vertical-align: top;
 }
 .question-list-question {
-    border: solid 1px gray;
+    border: solid 1px #CACACA;
+    background-color: white;
     padding: 5px;
+    margin-top: 5px;
     width: 100%;
 }
 

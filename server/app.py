@@ -2,6 +2,17 @@
 import config
 config = config
 
+
+
+
+from models.db.question import DbQuestion
+from models.db.test import DbTest
+from models.db.user import DbUser
+from models.service.question import Question
+from models.service.test import Test
+from models.service.user import User
+
+
 from framework.application import Application
 from framework.router import Router
 from framework.config import Config
@@ -9,10 +20,8 @@ from framework.config import Config
 from helpers.sessionrepository import SessionRepository
 
 from controllers.logincontroller import LoginController
-from controllers.questioncontroller import QuestionController
-from controllers.testcontroller import TestController
-#from controllers.usercontroller import UserController
-#from controllers.metadatacontroller import MetadataController
+from controllers.genericcontroller import GenericController
+from controllers.usercontroller import UserController
 
 class App(Application):
     def __init__(self):
@@ -28,26 +37,14 @@ class App(Application):
         self.router.addMapping(r"^/logout", login_controller.doLogout, ["POST"])
         self.router.addMapping(r"^/login$", login_controller.getLogin, ["GET"])
 
-        question_controller = QuestionController()
-        self.router.addMapping(r"^/question/([^/]+)$", question_controller.getQuestion, ['GET'])
-        self.router.addMapping(r"^/question/([^/]+)$", question_controller.saveQuestion, ['POST'])
-        self.router.addMapping(r"^/question/([^/]+)$", question_controller.deleteQuestion, ['DELETE'])
-        self.router.addMapping(r"^/question/$", question_controller.addQuestion, ['PUT'])
-        self.router.addMapping(r"^/question/$", question_controller.listQuestion, ['GET'])
+        question_controller = GenericController(Question, DbQuestion)
+        question_controller.bindRoutes(self.router, "question")
 
-        test_controller = TestController()
-        self.router.addMapping(r"^/test/([^/]+)$", test_controller.getTest, ['GET'])
-        self.router.addMapping(r"^/test/([^/]+)$", test_controller.saveTest, ['POST'])
-        self.router.addMapping(r"^/test/([^/]+)$", test_controller.deleteTest, ['DELETE'])
-        self.router.addMapping(r"^/test/$", test_controller.addTest, ['PUT'])
-        self.router.addMapping(r"^/test/$", test_controller.listTest, ['GET'])
-        #
-        # user_controller = UserController()
-        # self.router.addMapping(r"^/user/([^/]+)$", user_controller.getUser, ['GET'])
-        # self.router.addMapping(r"^/user/([^/]+)$", user_controller.saveUser, ['POST'])
-        # self.router.addMapping(r"^/user/([^/]+)$", user_controller.deleteUser, ['DELETE'])
-        # self.router.addMapping(r"^/user/$", user_controller.addUser, ['PUT'])
-        # self.router.addMapping(r"^/user/$", user_controller.listUser, ['GET'])
+        test_controller = GenericController(Test, DbTest)
+        test_controller.bindRoutes(self.router, "test")
+
+        user_controller = UserController()
+        user_controller.bindRoutes(self.router, "user")
         #
         # metadata_controller = MetadataController()
         # self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.getMetadata, ['GET'])

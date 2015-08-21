@@ -10,14 +10,28 @@ app.controller('EditQuestionController', ['$scope', '$routeParams', '$location',
 
     if (angular.isDefined($routeParams.id)) {
         $scope.loading = true;
-        questionService.getQuestion($routeParams.id)
-            .success(function (data) {
-                $scope.data = data;
-                $scope.loading = false;
-            })
-            .error(function (data) {
-                $scope.loading = false;
-            });
+
+        // If copy if present we delete the id and make a new question
+        if(angular.isDefined($routeParams.copy)) {
+            questionService.getQuestion($routeParams.id)
+                .success(function (data) {
+                    delete data["id"];
+                    $scope.data = data;
+                    $scope.loading = false;
+                })
+                .error(function (data) {
+                    $scope.loading = false;
+                });
+        } else {
+            questionService.getQuestion($routeParams.id)
+                .success(function (data) {
+                    $scope.data = data;
+                    $scope.loading = false;
+                })
+                .error(function (data) {
+                    $scope.loading = false;
+                });
+        }
     }
 
     $scope.saveQuestion = function () {
@@ -27,6 +41,7 @@ app.controller('EditQuestionController', ['$scope', '$routeParams', '$location',
             promise = questionService.addQuestion($scope.data);
             promise = promise.success(function(data) {
                 $location.path("/question/" + data.id + "/edit").replace();
+                $location.search("");
             })
         } else {
             promise = questionService.saveQuestion($scope.data)

@@ -1,6 +1,11 @@
+from contextlib import closing
 import json
 
 from .basecontroller import BaseController
+from framework.httpexceptions import HttpNotFoundException
+from models.db.user import DbUser
+from models.service.user import User
+
 
 class LoginController(BaseController):
 
@@ -10,8 +15,18 @@ class LoginController(BaseController):
     def doLogin(self, state):
         (request, response, session) = state.unfold()
 
-        response.setJsonBody(json.dumps({'username':'admin', 'id':0, 'is_admin':True}))
-        session["user"] = json.dumps({'username':'admin', 'id':0, 'is_admin': True})
+        username = request.body.get("username", "")
+        with closing(self._database_session_maker()) as database_session:
+            db_user = database_session.query(DbUser).filter(DbUser.username==username).first()
+            if not db_user:
+                raise HttpNotFoundException()
+
+            user = User.from_db(db_user)
+            if user.is_password(request.body.get("password", "")):
+                response.setJsonBody(json.dumps(user.to_dict()))
+                session["user"] = json.dumps(user.to_dict())
+            else:
+                raise HttpNotFoundException()
 
         return state
 

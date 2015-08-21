@@ -3,14 +3,23 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Action</th>
+        <th class="col-md-3">Name</th>
+        <th class="col-md-1">Role</th>
+        <th class="col-md-3">Username</th>
+        <th class="col-md-3">Email</th>
+        <th class="col-md-2">Action</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="user in users | filter:{$: search}">
         <td>{{user.fullname}}</td>
-        <td><a href="#/user/{{user.id}}/edit" class="btn">Edit</a></td>
+        <td>{{user.is_admin ? "Admin" : "User"}}
+        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
+        <td>
+            <a href="#/user/{{user.id}}/edit" class="btn">Edit</a>
+            <a href="#/user/{{user.id}}/delete" class="btn">Delete</a>
+        </td>
     </tr>
     </tbody>
 

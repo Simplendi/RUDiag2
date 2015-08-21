@@ -1,0 +1,45 @@
+<h1>Edit user</h1>
+<div ng-show="loading">Loading</div>
+<div ng-hide="loading">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="username" placeholder="Username" ng-model="data.username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fullname" class="col-sm-2 control-label">Full name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="fullname" placeholder="Full name" ng-model="data.fullname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" placeholder="Email" ng-model="data.email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="is_admin" class="col-sm-2 control-label">Is admin</label>
+            <div class="col-sm-10">
+                <div class="checkbox">
+                <label><input type="checkbox" class="" id="is_admin" ng-model="data.is_admin" />&NonBreakingSpace;</labeL>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" ng-model="data.password">
+                <span id="" class="help-block">The password is not changed when this field is empty.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="" class="btn btn-default" ng-disabled="saving || deleting" ng-click="save()">Save</button>
+                <button type="" class="btn btn-default" ng-disabled="saving || deleting" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

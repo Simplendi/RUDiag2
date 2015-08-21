@@ -20,7 +20,7 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'views/login.html'
         })
         .when('/logout', {
-            controller: 'LogOutController',
+            controller: 'LogoutController',
             templateUrl: 'views/logout.html',
             auth: auth_is_user
         })
@@ -67,6 +67,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when('/user/:id/edit', {
             controller: 'EditUserController',
             templateUrl: 'views/user_edit.html',
+            auth: auth_is_admin
+        })
+        .when('/user/:id/delete', {
+            controller: 'DeleteUserController',
+            templateUrl: 'views/user_delete.html',
             auth: auth_is_admin
         })
         .when('/metadata/', {
