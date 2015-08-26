@@ -9,6 +9,11 @@ app.directive('metadataEditor', function() {
         },
         templateUrl: 'views/directives/metadata_editor.html',
         controller: ['$scope', function($scope) {
+            $scope.$watch('data.type', function(newValue, oldValue) {
+                if(newValue=="url" || newValue == "text") {
+                    $scope.data.value = "";
+                }
+            });
         }]
     }
 });

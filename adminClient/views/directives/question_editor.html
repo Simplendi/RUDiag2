@@ -26,7 +26,27 @@
     TODO
     </tab>
     <tab ng-if="!inline" heading="Permissions">
-    TODO
+        <div ng-if="loadingUsers">
+            Loading the user list
+        </div>
+        <div ng-if="!loadingUsers">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Owners</label>
+                    <div class="col-sm-10">
+                        <div class="row" ng-repeat="owner_id in data.owners track by $index" >
+                        <div class="form-control-static col-sm-5">{{getUserById(owner_id).fullname}} ({{getUserById(owner_id).username}})</div><a href="" class="btn btn-default" ng-if="canRemoveOwner(owner_id)" ng-click="deleteOwner($index)">Delete</a>
+                        </div>
+                        <div class="row">
+                        <ui-select class="col-sm-5" ng-model="newOwner.id" theme="bootstrap">
+                            <ui-select-match allow-clear="true" placeholder="Enter user to add">{{$select.selected.fullname}} ({{$select.selected.username}})</ui-select-match>
+                            <ui-select-choices repeat="user.id as user in users | filter: filterOwners">{{user.fullname}} ({{user.username}})</ui-select-choices>
+                        </ui-select><a href="" ng-click="addOwner()" class="btn btn-default">Add</a>
+                        </div>
+                    </div>
+                </div>
+                </form>
+        </div>
     </tab>
 
 </tabset>

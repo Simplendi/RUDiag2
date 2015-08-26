@@ -8,13 +8,16 @@ from sqlalchemy.orm import sessionmaker
 from mako.lookup import TemplateLookup
 config_parser = ConfigParser()
 
-# Set config path
-config_path = sys.argv[1] or "conf/app.ini"
+
+config_path = "conf/app.ini"
+
 try:
     config_file = open(config_path, "r")
     config_file.close()
 except:
-    exit("Could not read config file: " + config_path)
+    config_path = sys.argv[1]
+
+    #exit("Could not read config file: " + config_path)
 
 config_parser.read(config_path)
 

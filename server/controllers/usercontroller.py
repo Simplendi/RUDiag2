@@ -10,8 +10,10 @@ class UserController(GenericController):
 
     def runBeforeAdd(self, state, user):
         if state.request.body.get("password"):
-            return user.set_password(state.request.body.get("password"))
+            user.set_password(state.request.body.get("password"))
+        return user
 
     def runBeforeSave(self, state, user):
         if state.request.body.get("password"):
-            return user.set_password(state.request.body.get("password"))
+            user.set_password(state.request.body.get("password"))
+        return user

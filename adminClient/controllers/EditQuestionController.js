@@ -1,38 +1,14 @@
 var app = angular.module('app');
 
-app.controller('EditQuestionController', ['$scope', '$routeParams', '$location', 'questionService', function ($scope, $routeParams, $location, questionService) {
+app.controller('EditQuestionController', ['$scope', '$rootScope', '$routeParams', '$location', 'questionService', function ($scope, $rootScope, $routeParams, $location, questionService) {
     // Set initial values
     $scope.loading = false;
+    $scope.loadingUsers = false;
     $scope.saving = false;
     $scope.deleting = false;
     $scope.data = {};
     $scope.data.type = "choice";
-
-    if (angular.isDefined($routeParams.id)) {
-        $scope.loading = true;
-
-        // If copy if present we delete the id and make a new question
-        if(angular.isDefined($routeParams.copy)) {
-            questionService.getQuestion($routeParams.id)
-                .success(function (data) {
-                    delete data["id"];
-                    $scope.data = data;
-                    $scope.loading = false;
-                })
-                .error(function (data) {
-                    $scope.loading = false;
-                });
-        } else {
-            questionService.getQuestion($routeParams.id)
-                .success(function (data) {
-                    $scope.data = data;
-                    $scope.loading = false;
-                })
-                .error(function (data) {
-                    $scope.loading = false;
-                });
-        }
-    }
+    $scope.users = [];
 
     $scope.saveQuestion = function () {
         $scope.saving = true;
@@ -66,5 +42,43 @@ app.controller('EditQuestionController', ['$scope', '$routeParams', '$location',
                 $scope.deleting = false;
             })
     };
+
+    $scope.init = function() {
+        if (angular.isDefined($routeParams.id)) {
+            $scope.loading = true;
+
+            // If copy if present we delete the id and make a new question
+            if(angular.isDefined($routeParams.copy)) {
+                questionService.getQuestion($routeParams.id)
+                    .success(function (data) {
+                        delete data["id"];
+                        $scope.data = data;
+                        $scope.loading = false;
+                    })
+                    .error(function (data) {
+                        $scope.loading = false;
+                    });
+            } else {
+                questionService.getQuestion($routeParams.id)
+                    .success(function (data) {
+                        $scope.data = data;
+                        $scope.loading = false;
+                    })
+                    .error(function (data) {
+                        $scope.loading = false;
+                    });
+            }
+        } else {
+            var stopWatch = $rootScope.$watch('user', function(user) {
+                if(angular.isDefined(user)) {
+                    $scope.data.owners = [$rootScope.user.id];
+                    stopWatch();
+                }
+
+            });
+        }
+    };
+
+    $scope.init();
 
 }]);

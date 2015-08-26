@@ -8,10 +8,11 @@ config = config
 from models.db.question import DbQuestion
 from models.db.test import DbTest
 from models.db.user import DbUser
+from models.db.metadata import DbMetadata
 from models.service.question import Question
 from models.service.test import Test
 from models.service.user import User
-
+from models.service.metadata import Metadata
 
 from framework.application import Application
 from framework.router import Router
@@ -45,14 +46,9 @@ class App(Application):
 
         user_controller = UserController()
         user_controller.bindRoutes(self.router, "user")
-        #
-        # metadata_controller = MetadataController()
-        # self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.getMetadata, ['GET'])
-        # self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.saveMetadata, ['POST'])
-        # self.router.addMapping(r"^/metadata/([^/]+)$", metadata_controller.deleteMetadata, ['DELETE'])
-        # self.router.addMapping(r"^/metadata/$", metadata_controller.addMetadata, ['PUT'])
-        # self.router.addMapping(r"^/metadata/$", metadata_controller.listMetadata, ['GET'])
 
+        metadata_controller = GenericController(Metadata, DbMetadata)
+        metadata_controller.bindRoutes (self.router, "metadata")
 
         self.router.addStaticMapping(r"^/admin/static/", "../adminClient/dist")
         self.router.addStaticMapping(r"^/admin/", "../adminClient/dist")

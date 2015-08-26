@@ -38,6 +38,7 @@ module.exports = function (grunt) {
                         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
                         'bower_components/angular-sanitize/angular-sanitize.js',
                         'bower_components/angular-route/angular-route.js',
+                        'bower_components/angular-ui-select/dist/select.js',
                         'app.js',
                         'controllers/*.js',
                         'directives/*.js',
@@ -76,6 +77,7 @@ module.exports = function (grunt) {
                     'dist/css/app.min.css': [
                         'style.css',
                         'bower_components/bootstrap-css/css/bootstrap.css',
+                        'bower_components/angular-ui-select/dist/select.css'
                     ]
 
                 }

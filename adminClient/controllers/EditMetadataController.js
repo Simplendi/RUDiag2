@@ -20,7 +20,7 @@ app.controller('EditMetadataController', ['$scope', '$modal', '$location', '$rou
             });
     }
 
-    $scope.saveMetadata = function () {
+    $scope.save = function () {
         $scope.saving = true;
         var promise;
         if (angular.isUndefined($routeParams.id)) {
@@ -39,6 +39,10 @@ app.controller('EditMetadataController', ['$scope', '$modal', '$location', '$rou
             .error(function (data) {
                 $scope.saving = false;
             });
+    };
+
+    $scope.cancel = function() {
+        $location.path('/metadata/')
     };
 
     $scope.deleteMetadata = function() {

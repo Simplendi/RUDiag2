@@ -1,6 +1,23 @@
 <h1>Metadata</h1>
 <label>Search</label> <input type="text" ng-model="search"/>
-<div ng-repeat="metadata in metadatas | filter:{id: search}">
-    <span>{{metadata.id}}</span><a href="#/metadata/{{metadata.id}}/edit" class="btn">Edit</a>
-</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="col-md-5">Name</th>
+        <th class="col-md-5">Type</th>
+        <th class="col-md-2">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="metadata in metadatas | filter:{name: search}">
+        <td>{{metadata.name}}</td>
+        <td>{{metadata.type}}</td>
+        <td>
+            <a href="#/metadata/{{metadata.id}}/edit" class="btn">Edit</a>
+            <a href="#/metadata/{{metadata.id}}/delete" class="btn">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
 <a href="#/metadata/add" class="btn">Add</a>
