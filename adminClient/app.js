@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ui.select']);
+var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ui.select', 'angularMoment']);
 
 var auth_is_user = function(user) {
     return user;
@@ -7,6 +7,11 @@ var auth_is_user = function(user) {
 var auth_is_admin = function(user) {
     return user.is_admin;
 };
+
+app.constant('angularMomentConfig', {
+    preprocess: 'utc',
+    timezone: 'Etc/UTC' // optional
+});
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -87,6 +92,11 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when('/metadata/:id/edit',  {
             controller: 'EditMetadataController',
             templateUrl: 'views/metadata_edit.html',
+            auth: auth_is_admin
+        })
+        .when('/metadata/:id/delete', {
+            controller: 'DeleteMetadataController',
+            templateUrl: 'views/metadata_delete.html',
             auth: auth_is_admin
         })
         .otherwise({

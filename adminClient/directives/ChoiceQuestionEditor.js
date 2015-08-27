@@ -20,6 +20,11 @@ app.directive('choiceQuestionEditor', function() {
             };
             $scope.deleteChoice = function($index) {
                 $scope.data.content.choices.splice($index, 1);
+                for(var answer_index = 0; answer_index < $scope.data.answers.length; answer_index++) {
+                    if($scope.data.answers[answer_index] >= $scope.data.content.choices.length) {
+                        $scope.data.answers.splice(answer_index, 1);
+                    }
+                }
             }
         }]
     }

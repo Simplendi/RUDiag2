@@ -1,31 +1,33 @@
 from models.db.test import DbTest
 
 class Test:
-    # Basic fields
-    id = None
-    title = ""
-    owners = []
-    shuffle_content = False
-    content = []
 
-    # Feedback fields
-    default_feedback = {}
-    default_feedback["0"] = ""
-    default_feedback["1"] = ""
-    group_feedback_by = ""
-    total_feedback = []
+    def __init__(self):
+        # Basic fields
+        self.id = None
+        self.title = ""
+        self.owners = []
+        self.shuffle_content = False
+        self.content = []
 
-    # Planning fields
-    is_template = False
-    open_at = None
-    opened_at = None
-    close_at = None
-    closed_at = None
-    invite_method = ""
-    invite_url = ""
-    check_method = "AUTOMATIC"
-    check_anonymous = False
-    ask_for_data = []
+        # Feedback fields
+        self.default_feedback = {}
+        self.default_feedback["wrong"] = ""
+        self.default_feedback["right"] = ""
+        self.group_feedback_by = ""
+        self.total_feedback = []
+
+        # Planning fields
+        self.is_template = False
+        self.open_at = None
+        self.opened_at = None
+        self.close_at = None
+        self.closed_at = None
+        self.invite_method = ""
+        self.invite_url = ""
+        self.check_method = "AUTOMATIC"
+        self.check_anonymous = False
+        self.ask_for_data = []
 
     @staticmethod
     def from_db(db_test, test = None):
@@ -49,7 +51,7 @@ class Test:
         test.content = data_dict.get("content", [])
 
         # Feedback fields
-        test.default_feedback = data_dict.get("default_feedback", {"0":"", "1":""})
+        test.default_feedback = data_dict.get("default_feedback", {"wrong":"", "right":""})
         test.group_feedback_by = data_dict.get("group_feedback_by", "")
         test.total_feedback = data_dict.get("total_feedback", [])
 

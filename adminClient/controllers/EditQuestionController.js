@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('EditQuestionController', ['$scope', '$rootScope', '$routeParams', '$location', 'questionService', function ($scope, $rootScope, $routeParams, $location, questionService) {
+app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$routeParams', '$location', 'questionService', function ($scope, $rootScope, $modal, $routeParams, $location, questionService) {
     // Set initial values
     $scope.loading = false;
     $scope.loadingUsers = false;
@@ -10,7 +10,12 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$routeParams'
     $scope.data.type = "choice";
     $scope.users = [];
 
-    $scope.saveQuestion = function () {
+    $scope.cancel = function() {
+        $location.path('/question/');
+        $location.search("");
+    };
+
+    $scope.save = function () {
         $scope.saving = true;
         var promise;
         if (angular.isUndefined($scope.data.id)) {
@@ -25,22 +30,30 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$routeParams'
         promise
             .success(function (data) {
                 $scope.saving = false;
-                $scope.data.id = data.id;
+                $scope.data  = data;
             })
             .error(function (data) {
                 $scope.saving = false;
             });
     };
 
-    $scope.deleteQuestion = function() {
-        $scope.deleting = true;
-        questionService.deleteQuestion($scope.data)
-            .success(function() {
-                $location.path('/question/')
-            })
-            .error(function() {
-                $scope.deleting = false;
-            })
+    $scope.delete = function() {
+        var deleteQuestionModal = $modal.open({
+            templateUrl: "views/question_edit_delete.html",
+            controller: "QuestionEditorDeleteController"
+        });
+
+        deleteQuestionModal.result.then(function() {
+            $scope.deleting = true;
+            questionService.deleteQuestion($scope.data)
+                .success(function() {
+                    $location.path('/question/')
+                })
+                .error(function() {
+                    $scope.deleting = false;
+                })
+        });
+
     };
 
     $scope.init = function() {
@@ -81,4 +94,13 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$routeParams'
 
     $scope.init();
 
+}]);
+
+app.controller('QuestionEditorDeleteController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+    $scope.ok = function() {
+        $modalInstance.close('ok');
+    }
 }]);

@@ -1,0 +1,20 @@
+<div>
+    Create a row for each right answer.
+<table class="table">
+    <thead>
+    <tr>
+        <th ng-repeat="choice in data.content.choices track by $index">Option {{$index+1}}</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="answer in data.answers track by $index" ng-init="answer_index = $index">
+            <td ng-repeat="choice in data.content.choices track by $index" ng-init="choice_index = $index">
+                <input type="checkbox" ng-checked="answer.indexOf(choice_index) >= 0" ng-click="toggleAnswerOption(answer_index, choice_index)"  />
+            </td>
+            <td><a href="" class="btn btn-default" ng-click="deleteAnswer(answer_index)">Delete</a></td>
+        </tr>
+    </tbody>
+</table>
+<a href="" class="btn btn-default" ng-click="addAnswer()">Add answer</a>
+</div>

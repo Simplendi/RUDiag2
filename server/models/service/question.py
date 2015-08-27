@@ -2,13 +2,20 @@ import json
 from models.db.question import DbQuestion
 
 class Question:
-    # Basic fields
-    id = None
-    type = ""
-    owners = []
-    metadata = {}
-    content = {}
-    default_feedback = {"wrong":"", "right":""}
+
+    def __init__(self):
+        # Basic fields
+        self.id = None
+        self.type = ""
+        self.owners = []
+        self.metadata = {}
+        self.content = {}
+        self.answers = []
+        self.feedback = {"wrong":"", "right":""}
+
+        self.created = None
+        self.last_saved = None
+
 
     @staticmethod
     def from_db(db_question, question = None):
@@ -17,6 +24,8 @@ class Question:
 
         question.id = db_question.id
         question = Question.from_dict(json.loads(db_question.data), question)
+        question.created = db_question.created
+        question.last_saved = db_question.last_saved
 
         return question
 
@@ -30,7 +39,8 @@ class Question:
         question.owners = data_dict.get("owners", question.owners)
         question.metadata = data_dict.get("metadata", question.metadata)
         question.content = data_dict.get("content", question.content)
-        question.default_feedback = data_dict.get("default_feedback", question.default_feedback)
+        question.answers = data_dict.get("answers", question.answers)
+        question.feedback = data_dict.get("feedback", question.feedback)
 
         return question
 
@@ -41,14 +51,14 @@ class Question:
         if self.id is not None:
             db_question.id = self.id
 
-        question_data = self.to_dict()
+        question_data = self.to_dict(for_db=True)
         if question_data.get("id"):
             del question_data["id"]
         db_question.data = json.dumps(question_data)
 
         return db_question
 
-    def to_dict(self, data_dict = None):
+    def to_dict(self, data_dict = None, for_db = False):
         if not data_dict:
             data_dict = dict()
 
@@ -60,7 +70,12 @@ class Question:
         data_dict["owners"] = self.owners
         data_dict["metadata"] = self.metadata
         data_dict["content"] = self.content
-        data_dict["default_feedback"] = self.default_feedback
+        data_dict["answers"] = self.answers
+        data_dict["feedback"] = self.feedback
+
+        if not for_db:
+            data_dict["created"] = self.created.isoformat()
+            data_dict["last_saved"] = self.last_saved.isoformat()
 
         return data_dict
 

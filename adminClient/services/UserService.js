@@ -11,8 +11,8 @@ app.factory('userService', ['$http', function($http) {
         addUser: function(user) {
             return $http.put('/user/', user);
         },
-        deleteUser: function(user) {
-            return $http.delete('/user/' + user.id);
+        deleteUser: function(user_id) {
+            return $http.delete('/user/' + user_id);
         },
         listUser: function(filter) {
             return $http({

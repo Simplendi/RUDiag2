@@ -37,8 +37,9 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
+                <button type="" class="btn btn-default" ng-disabled="saving || deleting" ng-click="cancel()">Exit</button>
                 <button type="" class="btn btn-default" ng-disabled="saving || deleting" ng-click="save()">Save</button>
-                <button type="" class="btn btn-default" ng-disabled="saving || deleting" ng-click="cancel()">Cancel</button>
+                last saved <span am-time-ago="data.last_saved"></span><span ng-if="!data.last_saved">never</span>
             </div>
         </div>
     </form>

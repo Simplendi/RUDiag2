@@ -1,4 +1,5 @@
 import json
+import hashlib
 import datetime
 from contextlib import closing
 from framework.httpexceptions import HttpNotFoundException
@@ -129,8 +130,8 @@ class GenericController(BaseController):
         return state
 
     def bindRoutes(self, router, path):
-        router.addMapping(r"^/" + path + "/([^/]+)$", self.get, ['GET'])
-        router.addMapping(r"^/" + path + "/([^/]+)$", self.save, ['POST'])
-        router.addMapping(r"^/" + path + "/([^/]+)$", self.delete, ['DELETE'])
+        router.addMapping(r"^/" + path + "/([0-9]+)$", self.get, ['GET'])
+        router.addMapping(r"^/" + path + "/([0-9]+)$", self.save, ['POST'])
+        router.addMapping(r"^/" + path + "/([0-9]+)$", self.delete, ['DELETE'])
         router.addMapping(r"^/" + path + "/$", self.add, ['PUT'])
         router.addMapping(r"^/" + path + "/$", self.list, ['GET'])

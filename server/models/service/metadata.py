@@ -1,13 +1,19 @@
 import json
 from models.db.metadata import DbMetadata
+from models.service.metadatatree import MetadataTree
+
 
 class Metadata:
-    # Basic fields
-    id = None
-    name = ""
-    type = ""
-    value = ""
-    multivalue = False
+
+    def __init__(self):
+        # Basic fields
+        self.id = None
+        self.name = ""
+        self.type = ""
+        self.value = ""
+        self.multivalue = False
+        self.created = None
+        self.last_saved = None
 
     @staticmethod
     def from_db(db_metadata, metadata = None):
@@ -19,6 +25,8 @@ class Metadata:
         metadata.type = db_metadata.type
         metadata.value = db_metadata.value
         metadata.multivalue = db_metadata.multivalue
+        metadata.created = db_metadata.created
+        metadata.last_saved = db_metadata.last_saved
 
         return metadata
 
@@ -61,6 +69,12 @@ class Metadata:
         data_dict["type"] = self.type
         data_dict["value"] = self.value
         data_dict["multivalue"] = self.multivalue
+
+        data_dict["created"] = self.created.isoformat()
+        data_dict["last_saved"] = self.last_saved.isoformat()
+
+        if self.type=="tree":
+            data_dict["options"] = MetadataTree().parseXml(self.value).listPossible()
 
         return data_dict
 

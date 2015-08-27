@@ -34,7 +34,7 @@ app.controller('EditMetadataController', ['$scope', '$modal', '$location', '$rou
         promise
             .success(function (data) {
                 $scope.saving = false;
-                $scope.data.id = data.id;
+                $scope.data = data;
             })
             .error(function (data) {
                 $scope.saving = false;

@@ -3,13 +3,17 @@ from passlib.hash import sha256_crypt
 from models.db.user import DbUser
 
 class User:
-    # Basic fields
-    id = None
-    username = ""
-    fullname = ""
-    email = ""
-    is_admin = False
-    password_hash = ""
+
+    def __init__(self):
+        # Basic fields
+        self.id = None
+        self.username = ""
+        self.fullname = ""
+        self.email = ""
+        self.is_admin = False
+        self.password_hash = ""
+        self.created = None
+        self.last_saved = None
 
     @staticmethod
     def from_db(db_user, user = None):
@@ -22,6 +26,8 @@ class User:
         user.email = db_user.email
         user.is_admin = db_user.is_admin
         user.password_hash = db_user.password_hash
+        user.created = db_user.created
+        user.last_saved = db_user.last_saved
 
         return user
 
@@ -51,6 +57,7 @@ class User:
         db_user.is_admin = self.is_admin
         db_user.password_hash = self.password_hash
 
+
         return db_user
 
     def to_dict(self, data_dict = None):
@@ -65,6 +72,8 @@ class User:
         data_dict["fullname"] = self.fullname
         data_dict["email"] = self.email
         data_dict["is_admin"] = self.is_admin
+        data_dict["created"] = self.created.isoformat()
+        data_dict["last_saved"] = self.last_saved.isoformat()
 
         return data_dict
 

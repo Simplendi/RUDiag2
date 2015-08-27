@@ -1,0 +1,15 @@
+<h1>Delete metadata</h1>
+<div ng-show="loading">Loading</div>
+<div ng-hide="loading">
+    <form class="form-horizontal">
+        <div class="">
+        Are you sure you want to delete the metadata with name {{data.name}}?
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="" class="btn btn-default" ng-disabled="deleting" ng-click="delete()">Delete</button>
+                <button type="" class="btn btn-default" ng-disabled="deleting" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

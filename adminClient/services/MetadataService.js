@@ -20,7 +20,7 @@ app.factory('metadataService', ['$http', function($http) {
                 method: "GET",
                 params: {filter: filter}
             });
-        }
+        },
 
     }
 }]);
