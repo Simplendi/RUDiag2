@@ -10,11 +10,11 @@
     <tbody>
         <tr ng-repeat="answer in data.answers track by $index" ng-init="answer_index = $index">
             <td ng-repeat="choice in data.content.choices track by $index" ng-init="choice_index = $index">
-                <input type="checkbox" ng-checked="answer.indexOf(choice_index) >= 0" ng-click="toggleAnswerOption(answer_index, choice_index)"  />
+                <input type="checkbox" ng-checked="answer.indexOf(choice_index) >= 0" ng-click="toggleAnswerOption(answer_index, choice_index)" ng-disabled="disabled" />
             </td>
-            <td><a href="" class="btn btn-default" ng-click="deleteAnswer(answer_index)">Delete</a></td>
+            <td><a href="" class="btn btn-default" ng-click="deleteAnswer(answer_index)" ng-disabled="disabled">Delete</a></td>
         </tr>
     </tbody>
 </table>
-<a href="" class="btn btn-default" ng-click="addAnswer()">Add answer</a>
+<a href="" class="btn btn-default" ng-click="addAnswer()" ng-disabled="disabled">Add answer</a>
 </div>

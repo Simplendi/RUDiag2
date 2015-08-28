@@ -2,6 +2,7 @@
 <div class="question-list-question" ng-repeat="question in questions">
         <choice-question ng-if="question.type=='choice'" data="question"></choice-question>
         <multiplechoice-question ng-if="question.type=='multiplechoice'" data="question"></multiplechoice-question>
+        <open-question ng-if="question.type=='open'" data="question"></open-question>
         <a href="#/question/{{question.id}}/edit" class="btn btn-default">Edit</a>
 </div>
 <a href="#/question/add" class="btn btn-default">Add</a>

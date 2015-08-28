@@ -3,14 +3,14 @@
 <table class="table">
     <thead>
     <tr>
-        <th ng-repeat="choice in data.content.choices track by $index">Option {{$index+1}}</th>
+        <th>Answer</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
         <tr ng-repeat="answer in data.answers track by $index" ng-init="answer_index = $index">
-            <td ng-repeat="choice in data.content.choices track by $index" ng-init="choice_index = $index">
-                <input type="radio" ng-model="data.answers[answer_index]" ng-value="choice_index" ng-disabled="disabled">
+            <td>
+                <input class="form-control" type="text" ng-model="data.answers[answer_index]" ng-disabled="disabled">
             </td>
             <td><a href="" class="btn btn-default" ng-click="deleteAnswer(answer_index)" ng-disabled="disabled">Delete</a></td>
         </tr>

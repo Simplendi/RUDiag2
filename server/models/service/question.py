@@ -51,10 +51,7 @@ class Question:
         if self.id is not None:
             db_question.id = self.id
 
-        question_data = self.to_dict(for_db=True)
-        if question_data.get("id"):
-            del question_data["id"]
-        db_question.data = json.dumps(question_data)
+        db_question.data = json.dumps(self.to_dict(for_db=True))
 
         return db_question
 
@@ -63,7 +60,7 @@ class Question:
             data_dict = dict()
 
         # Basic fields
-        if self.id is not None:
+        if self.id is not None and not for_db:
             data_dict["id"] = self.id
 
         data_dict["type"] = self.type

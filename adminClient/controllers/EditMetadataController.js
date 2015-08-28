@@ -49,7 +49,7 @@ app.controller('EditMetadataController', ['$scope', '$modal', '$location', '$rou
         $scope.deleting = true;
         var deleteMetadataModal = $modal.open({
             templateUrl: "views/metadata_edit_delete_metadata.html",
-            controller: "EditMetadataDeleteMetadataController"
+            controller: "DefaultModalController"
         });
 
         deleteMetadataModal.result.then(function() {
@@ -62,13 +62,4 @@ app.controller('EditMetadataController', ['$scope', '$modal', '$location', '$rou
         });
     };
 
-}]);
-
-app.controller('EditMetadataDeleteMetadataController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.ok = function() {
-        $modalInstance.close('ok');
-    }
 }]);

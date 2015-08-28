@@ -1,3 +1,4 @@
+import json
 from models.db.test import DbTest
 
 class Test:
@@ -11,6 +12,7 @@ class Test:
         self.content = []
 
         # Feedback fields
+        self.question_feedback = []
         self.default_feedback = {}
         self.default_feedback["wrong"] = ""
         self.default_feedback["right"] = ""
@@ -23,11 +25,16 @@ class Test:
         self.opened_at = None
         self.close_at = None
         self.closed_at = None
+        self.feedback_at = None
+        self.feedback_after = None
         self.invite_method = ""
         self.invite_url = ""
         self.check_method = "AUTOMATIC"
         self.check_anonymous = False
         self.ask_for_data = []
+
+        self.created = None
+        self.last_saved = None
 
     @staticmethod
     def from_db(db_test, test = None):
@@ -35,6 +42,9 @@ class Test:
             test = Test()
 
         test.id = db_test.id
+        Test.from_dict(json.loads(db_test.data), test)
+        test.created = db_test.created
+        test.last_saved = db_test.last_saved
 
         return test
 
@@ -44,28 +54,29 @@ class Test:
             test = Test()
 
         # Basic fields
-        test.id = data_dict.get("id", None)
-        test.title = data_dict.get("title", "")
-        test.owners = data_dict.get("owners", [])
-        test.shuffle_content = data_dict.get("shuffle_content", False)
-        test.content = data_dict.get("content", [])
+        test.id = data_dict.get("id", test.id)
+        test.title = data_dict.get("title", test.title)
+        test.owners = data_dict.get("owners", test.owners)
+        test.shuffle_content = data_dict.get("shuffle_content", test.shuffle_content)
+        test.content = data_dict.get("content", test.content)
 
         # Feedback fields
-        test.default_feedback = data_dict.get("default_feedback", {"wrong":"", "right":""})
-        test.group_feedback_by = data_dict.get("group_feedback_by", "")
-        test.total_feedback = data_dict.get("total_feedback", [])
+        test.question_feedback = data_dict.get("question_feedback", test.question_feedback)
+        test.default_feedback = data_dict.get("default_feedback", test.default_feedback)
+        test.group_feedback_by = data_dict.get("group_feedback_by", test.group_feedback_by)
+        test.total_feedback = data_dict.get("total_feedback", test.total_feedback)
 
         # Planning fields
-        test.is_template = data_dict.get("is_template", False)
-        test.open_at = data_dict.get("open_at")
-        test.opened_at = data_dict.get("opened_at")
-        test.close_at = data_dict.get("close_at")
-        test.closed_at = data_dict.get("closed_at")
-        test.invite_method = data_dict.get("invite_method", "")
-        test.invite_url = data_dict.get("invite_url", "")
-        test.check_method = data_dict.get("check_method", "AUTMOATIC")
-        test.check_anonymous = data_dict.get("check_anonymous", False)
-        test.ask_for_data = data_dict.get("ask_for_data", [])
+        test.is_template = data_dict.get("is_template", test.is_template)
+        test.open_at = data_dict.get("open_at", test.open_at)
+        test.opened_at = data_dict.get("opened_at", test.opened_at)
+        test.close_at = data_dict.get("close_at", test.close_at)
+        test.closed_at = data_dict.get("closed_at", test.closed_at)
+        test.invite_method = data_dict.get("invite_method", test.invite_method)
+        test.invite_url = data_dict.get("invite_url", test.invite_url)
+        test.check_method = data_dict.get("check_method", test.check_method)
+        test.check_anonymous = data_dict.get("check_anonymous", test.check_anonymous)
+        test.ask_for_data = data_dict.get("ask_for_data", test.ask_for_data)
 
         return test
 
@@ -76,14 +87,16 @@ class Test:
         if self.id is not None:
             db_test.id = self.id
 
+        db_test.data = json.dumps(self.to_dict(for_db=True))
+
         return db_test
 
-    def to_dict(self, data_dict = None):
+    def to_dict(self, data_dict = None, for_db = False):
         if not data_dict:
             data_dict = dict()
 
         # Basic fields
-        if self.id is not None:
+        if self.id is not None and not for_db:
             data_dict["id"] = self.id
         data_dict["title"] = self.title
         data_dict["owners"] = self.owners
@@ -91,6 +104,7 @@ class Test:
         data_dict["content"] = self.content
 
         # Feedback fields
+        data_dict["question_feedback"] = self.question_feedback
         data_dict["default_feedback"] = self.default_feedback
         data_dict["group_feedback_by"] = self.group_feedback_by
         data_dict["total_feedback"] = self.total_feedback
@@ -106,6 +120,10 @@ class Test:
         data_dict["check_method"] = self.check_method
         data_dict["check_anonymous"] = self.check_anonymous
         data_dict["ask_for_data"] = self.ask_for_data
+
+        if not for_db:
+            data_dict["created"] = self.created.isoformat()
+            data_dict["last_saved"] = self.last_saved.isoformat()
 
         return data_dict
 

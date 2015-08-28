@@ -4,37 +4,55 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
         restrict: 'A', // only activate on element attribute
         require: '?ngModel', // get a hold of NgModelController
         scope: {
-            disabled: '=ngDisabled'
+            disabled: '=ngDisabled',
+            text: '=ngText'
         },
         link: function (scope, element, attrs, ngModel) {
             if (!ngModel) return;
 
+            scope.model = ngModel;
+
             ngModel.$render = function () {
-                element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
+                element.html(ngModel.$viewValue || '');
+                if(!scope.text) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
+                }
             };
 
             element.on('focus', function () {
                 element.html(ngModel.$viewValue);
-                scope.$apply(function () {
-                    element.after($compile("<content-editor></content-editor>")(scope));
-                });
+                if(!scope.text) {
+                    scope.$apply(function () {
+                        element.after($compile("<content-editor></content-editor>")(scope));
+                    });
+                }
             });
 
             element.on('keyup', function () {
-                scope.$evalAsync(readValue(element.html()));
+                scope.$evalAsync(readValue(element));
             });
 
             element.on('blur', function () {
-                scope.$evalAsync(readValue(element.html()));
-                element.next().filter("content-editor").remove();
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
+                scope.$evalAsync(readValue(element));
+                if(!scope.text) {
+                    element.next().filter("content-editor").remove();
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
+                }
             });
 
-            function readValue(value) {
+            scope.readValue = function() {
+                readValue(element);
+            };
+
+            function readValue(element_value) {
                 return function () {
                     if(element.html().indexOf('class="MathJax') < 0) {
-                        ngModel.$setViewValue(value);
+                        if(scope.text) {
+                            ngModel.$setViewValue(element_value.text());
+                            element.html(element_value.text());
+                        } else {
+                            ngModel.$setViewValue(element_value.html());
+                        }
                     }
 
                 }

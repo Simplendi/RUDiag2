@@ -11,6 +11,7 @@ class DbTest(Base):
     __tablename__ = "test"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    data = Column(Text, nullable=False, default="")
 
     created = Column(DateTime, nullable=False, default=datetime.utcnow)
     last_saved = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)

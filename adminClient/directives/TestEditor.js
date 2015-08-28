@@ -1,133 +1,175 @@
 var app = angular.module('app');
 
-app.directive('testEditor', function() {
+app.directive('testEditor', function () {
     return {
         restrict: 'E',
         scope: {
             data: '='
         },
         templateUrl: 'views/directives/test_editor.html',
-        controller: ['$scope', '$modal', function($scope, $modal) {
+        controller: ['$scope', '$modal', function ($scope, $modal) {
 
-            $scope.addTextElement = function() {
-                $scope.data.content.push({type:'text', data: ''})
+            $scope.addTextElement = function () {
+                $scope.data.content.push({type: 'text', data: ''})
             };
 
-            $scope.addNewQuestionElement = function() {
-                $scope.data.content.push({type:'question', data: {}})
+            $scope.addQuestionElement = function(question_data) {
+                $scope.data.content.push({type: 'question', 'data': question_data});
+                $scope.data.question_feedback.push({'wrong':'', 'right':''});
             };
 
-            $scope.addExistingQuestionElement = function() {
+            $scope.addNewQuestionElement = function () {
+                $scope.addQuestionElement({'type': 'choice'});
+            };
+
+            $scope.addExistingQuestionElement = function () {
                 var selectQuestionModal = $modal.open({
                     templateUrl: "views/directives/test_editor_select_question.html",
-                    controller: "TestEditorSelectQuestionController"
+                    controller: "TestEditorSelectQuestionController",
+                    size: "lg"
                 });
 
-                selectQuestionModal.result.then(function(question_data) {
-                    $scope.data.content.push({type:'question', data: question_data})
+                selectQuestionModal.result.then(function (question_data) {
+                    $scope.addQuestionElement(question_data);
                 });
             };
 
-            $scope.makeQuestionLocal = function($index) {
+            $scope.makeQuestionLocal = function ($index) {
                 var makeQuestionLocalModal = $modal.open({
                     templateUrl: "views/directives/test_editor_make_question_local.html",
-                    controller: "TestEditorMakeQuestionLocalController"
+                    controller: "DefaultModalController"
                 });
 
-                makeQuestionLocalModal.result.then(function() {
+                makeQuestionLocalModal.result.then(function () {
                     delete $scope.data.content[$index].data.id;
                 });
             };
 
-            $scope.deleteElement = function($index) {
+            $scope.deleteElement = function ($index) {
                 var deleteQuestionModal = $modal.open({
                     templateUrl: "views/directives/test_editor_delete_question.html",
-                    controller: "TestEditorDeleteQuestionController"
+                    controller: "DefaultModalController"
                 });
 
-                deleteQuestionModal.result.then(function() {
+                deleteQuestionModal.result.then(function () {
+                    if($scope.data.content[$index].type=='question') {
+                        $scope.data.question_feedback.splice($scope.contentToQuestionIndex($index), 1);
+                    }
                     $scope.data.content.splice($index, 1);
                 });
 
             };
 
-            $scope.moveElementUp = function($index) {
+            $scope.moveElementUp = function ($index) {
                 var oldIndex = $index;
-                var newIndex = $index-1;
-                var element = $scope.data.content[$index];
+                var newIndex = $index - 1;
+
+                $scope.moveElement(oldIndex, newIndex);
+            };
+
+            $scope.moveElementDown = function ($index) {
+                var oldIndex = $index;
+                var newIndex = $index + 1;
+
+                $scope.moveElement(oldIndex, newIndex);
+            };
+
+            $scope.moveElement = function (oldIndex, newIndex) {
+                var element = $scope.data.content[oldIndex];
+
+                var oldQuestionIndex = -1;
+                var newQuestionIndex = -1;
+
+                if (element.type == 'question') {
+                    oldQuestionIndex = $scope.contentToQuestionIndex(oldIndex);
+                }
 
                 $scope.data.content.splice(oldIndex, 1);
                 $scope.data.content.splice(newIndex, 0, element);
 
+                if (element.type == 'question') {
+                    newQuestionIndex = $scope.contentToQuestionIndex(newIndex);
+                }
+
+                if (oldQuestionIndex != newQuestionIndex) {
+                    var question_feedback = $scope.data.question_feedback[oldQuestionIndex];
+                    $scope.data.question_feedback.splice(oldQuestionIndex, 1);
+                    $scope.data.question_feedback.splice(newQuestionIndex, 0, question_feedback);
+                }
             };
 
-            $scope.moveElementDown = function($index) {
-                var oldIndex = $index;
-                var newIndex = $index+1;
-                var element = $scope.data.content[$index];
+            $scope.addToQuestionFeedback= function(question_index, feedback_label, value) {
+                if(angular.isUndefined($scope.data.question_feedback[question_index])) {
+                    $scope.data.question_feedback[question_index] = {}
+                }
 
-                $scope.data.content.splice(oldIndex, 1);
-                $scope.data.content.splice(newIndex, 0, element);
+                if(angular.isUndefined($scope.data.question_feedback[question_index][feedback_label])) {
+                    $scope.data.question_feedback[question_index][feedback_label] = value;
+                } else {
+                    $scope.data.question_feedback[question_index][feedback_label] += value;
+                }
             };
 
-            $scope.openTest = function() {
-
+            $scope.insertTestDefaultFeedback = function (question_index, feedback_label) {
+                $scope.addToQuestionFeedback(question_index, feedback_label, $scope.data.default_feedback[feedback_label]);
             };
 
-            $scope.openTestNow = function() {
-
+            $scope.insertQuestionDefaultFeedback = function(question_index, feedback_label) {
+                $scope.addToQuestionFeedback(question_index, feedback_label, $scope.data.content[$scope.questionToContentIndex(question_index)].data.feedback[feedback_label]);
             };
 
-            $scope.closeTestNow = function() {
-
+            $scope.contentToQuestionIndex = function (index) {
+                var question_index = -1;
+                for (var content_index = 0; content_index <= index && content_index < $scope.data.content.length; content_index++) {
+                    if ($scope.data.content[content_index].type == 'question') {
+                        question_index++;
+                    }
+                    if (content_index == index) {
+                        return question_index;
+                    }
+                }
+                return -1;
             };
 
-
+            $scope.questionToContentIndex = function (index) {
+                var question_index = -1;
+                for (var content_index = 0; content_index < $scope.data.content.length; content_index++) {
+                    if ($scope.data.content[content_index].type == 'question') {
+                        question_index++;
+                    }
+                    if (question_index == index) {
+                        return content_index;
+                    }
+                }
+                return -1;
+            };
 
 
         }]
     }
 });
 
-app.controller('TestEditorSelectQuestionController', ['$scope', '$modalInstance', 'questionService', function($scope, $modalInstance, questionService) {
+app.controller('TestEditorSelectQuestionController', ['$scope', '$modalInstance', 'questionService', function ($scope, $modalInstance, questionService) {
     // Set initial values
     $scope.loading = true;
     $scope.questions = [];
 
     // Function to load questions
-    $scope.loadQuestions = function() {
+    $scope.loadQuestions = function () {
         questionService.listQuestion({})
-            .success(function(questions) {
+            .success(function (questions) {
                 $scope.questions = questions;
             });
     };
 
-    $scope.selectQuestion = function(questionData) {
+    $scope.selectQuestion = function (questionData) {
         $modalInstance.close(questionData);
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 
     // Load the questions now
     $scope.loadQuestions();
-}]);
-
-app.controller('TestEditorMakeQuestionLocalController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.ok = function() {
-        $modalInstance.close('ok');
-    }
-}]);
-
-app.controller('TestEditorDeleteQuestionController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.ok = function() {
-        $modalInstance.close('ok');
-    }
 }]);

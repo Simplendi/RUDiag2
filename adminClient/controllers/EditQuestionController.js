@@ -40,7 +40,7 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$ro
     $scope.delete = function() {
         var deleteQuestionModal = $modal.open({
             templateUrl: "views/question_edit_delete.html",
-            controller: "QuestionEditorDeleteController"
+            controller: "DefaultModalController"
         });
 
         deleteQuestionModal.result.then(function() {
@@ -94,13 +94,4 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$ro
 
     $scope.init();
 
-}]);
-
-app.controller('QuestionEditorDeleteController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.ok = function() {
-        $modalInstance.close('ok');
-    }
 }]);

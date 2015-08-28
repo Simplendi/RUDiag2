@@ -21,7 +21,7 @@ app.controller('EditTestController', ['$scope', '$modal', '$location', '$routePa
             });
     }
 
-    $scope.saveTest = function () {
+    $scope.save = function () {
         $scope.saving = true;
         var promise;
         if (angular.isUndefined($scope.data.id)) {
@@ -35,18 +35,23 @@ app.controller('EditTestController', ['$scope', '$modal', '$location', '$routePa
         promise
             .success(function (data) {
                 $scope.saving = false;
-                $scope.data.id = data.id;
+                $scope.data = data;
             })
             .error(function (data) {
                 $scope.saving = false;
             });
     };
 
-    $scope.deleteTest = function() {
+    $scope.cancel = function() {
+        $location.path('/test/');
+        $location.search("");
+    };
+
+    $scope.delete = function() {
         $scope.deleting = true;
         var deleteTestModal = $modal.open({
             templateUrl: "views/test_edit_delete_test.html",
-            controller: "EditTestDeleteTestController"
+            controller: "DefaultModalController"
         });
 
         deleteTestModal.result.then(function() {
@@ -59,13 +64,4 @@ app.controller('EditTestController', ['$scope', '$modal', '$location', '$routePa
         });
     };
 
-}]);
-
-app.controller('EditTestDeleteTestController', ['$scope', '$modalInstance', function($scope, $modalInstance) {
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.ok = function() {
-        $modalInstance.close('ok');
-    }
 }]);

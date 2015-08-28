@@ -1,6 +1,10 @@
 <h1>Edit Test</h1>
-<button ng-click="saveTest()" ng-disabled="loading || saving || deleting">Save</button>
-<button ng-click="deleteTest()" ng-hide="!data.id" ng-disabled="loading || deleting || saving">Delete</button>
+<div class="form-group">
+    <button class="btn btn-default" ng-disabled="saving || deleting" ng-click="cancel()">Exit</button>
+    <button class="btn btn-default" ng-disabled="saving || deleting || !data.id" ng-click="delete()">Delete</button>
+    <button class="btn btn-default" ng-disabled="saving || deleting" ng-click="save()">Save</button>
+    last saved <span am-time-ago="data.last_saved"></span><span ng-if="!data.last_saved">never</span>
+</div>
 <div ng-show="loading">Loading</div>
 <div ng-hide="loading">
     <test-editor data="data"></test-editor>

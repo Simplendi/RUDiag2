@@ -18,7 +18,7 @@ app.directive('multiplechoiceQuestionAnswerEditor', function() {
 
             $scope.toggleAnswerOption= function(answer_index, option_index) {
                 var answer_option_index = $scope.data.answers[answer_index].indexOf(option_index);
-                if(answer_index >= 0) {
+                if(answer_option_index >= 0) {
                     $scope.data.answers[answer_index].splice(answer_option_index, 1);
                 } else {
                     $scope.data.answers[answer_index].push(option_index);

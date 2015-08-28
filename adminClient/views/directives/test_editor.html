@@ -1,6 +1,7 @@
+{{data}}
 <tabset>
     <tab heading="Content">
-        <label>Title</label><input type="text" ng-model="data.title"/>
+        <h1 class="editable" contenteditable ng-model="data.title" ng-text="true"></h1>
 
         <div ng-repeat="element in data.content track by $index">
             <button ng-click="deleteElement($index)">Delete</button>
@@ -8,7 +9,8 @@
             <button ng-if="!$last" ng-click="moveElementDown($index)">Down</button>
             <button ng-if="data.content[$index].data.id!=undefined" ng-click="makeQuestionLocal($index)">Edit</button>
             <br>
-            <question-editor ng-if="data.content[$index].type=='question'" ng-disabled="data.content[$index].data.id!=undefined" inline="true"
+            <question-editor ng-if="data.content[$index].type=='question'"
+                             ng-disabled="data.content[$index].data.id!=undefined" inline="true"
                              data="data.content[$index].data"></question-editor>
             <test-text-editor ng-if="data.content[$index].type=='text'"
                               data="data.content[$index].data"></test-text-editor>
@@ -20,32 +22,42 @@
             <button ng-click="addExistingQuestionElement()">Add exisisting question</button>
         </div>
     </tab>
+    <tab heading="Answers">
+    <div ng-repeat="question in data.content | filter: {'type':'question'}">
+        <h4>Question {{$index+1}}</h4>
+        <choice-question-answer-editor ng-if="question.data.type=='choice'" data="question.data" ng-disabled="question.data.id"></choice-question-answer-editor>
+        <multiplechoice-question-answer-editor ng-if="question.data.type=='multiplechoice'" data="question.data" ng-disabled="question.data.id"></multiplechoice-question-answer-editor>
+        <open-question-answer-editor ng-if="question.data.type=='open'" data="question.data" ng-disabled="question.data.id"></open-question-answer-editor>
+    </div>
+    </tab>
     <tab heading="Feedback">
+        <h2>Default feedback</h2>
+        <label>Wrong</label><br>
+        <div class="editable" contenteditable ng-model="data.default_feedback.wrong"></div>
+        <br>
+        <label>Right</label><br>
+        <div class="editable" contenteditable ng-model="data.default_feedback.right"></div>
         <h2>Question feedback</h2>
-            <div ng-if="data.content[$index].type=='question'" ng-repeat="element in data.content track by $index">
-                {{data.content[$index].data}}
-            </div>
+        <div ng-repeat="question in data.content | filter: {'type':'question'}">
+            <h4>Question {{$index+1}}</h4>
+            <label>Wrong</label>
+             <a href="" ng-click="insertTestDefaultFeedback($index, 'wrong')">Insert test default</a>
+             <a href="" ng-click="insertQuestionDefaultFeedback($index, 'wrong')" ng-if="data.content[questionToContentIndex($index)].data.feedback['wrong']">Insert question default</a><br>
+            <div class="editable" contenteditable ng-model="data.question_feedback[$index].wrong"></div>
+            <label>Right</label>
+             <a href="" ng-click="insertTestDefaultFeedback($index, 'right')">Insert test default</a>
+            <a href="" ng-click="insertQuestionDefaultFeedback($index, 'right')"  ng-if="data.content[questionToContentIndex($index)].data.feedback['right']">Insert question default</a><br>
+            <div class="editable" contenteditable ng-model="data.question_feedback[$index].right"></div>
+        </div>
         <h2>Score feedback</h2>
     </tab>
     <tab heading="Planning">
-        <label>Status</label>
-        {{data.planning.status}} <button ng-click="openTest()">Plan test</button><button ng-click="openTestNow()">Open Test</button> <br>
-        <label>Invite mode</label>
-        <select ng-model="data.planning.invite_mode">
-            <option value="url_request">URL to request invite by e-mail</option>
-            <option value="url_login">URL to login</option>
-            <option value="code">Code</option>
-            <option value="email">Email</option>
-        </select><br>
-        <label>Start</label>
-        <datepicker ng-model="data.planning.start_date"></datepicker>
-        <timepicker ng-model="data.planning.start_date" show-meridian="false"></timepicker>
-        <label>End</label>
-        <datepicker min-date="data.planning.start_date" ng-model="data.planning.end_date"></datepicker>
-        <timepicker min-date="data.planning.start_date" ng-model="data.planning.end_date" show-meridian="false"></timepicker>
+
+    </tab>
+    <tab heading="Results">
+
     </tab>
     <tab heading="Permissions">
-        TODO
     </tab>
 
 </tabset>
