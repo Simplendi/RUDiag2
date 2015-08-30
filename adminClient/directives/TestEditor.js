@@ -15,6 +15,9 @@ app.directive('testEditor', function () {
 
             $scope.addQuestionElement = function(question_data) {
                 $scope.data.content.push({type: 'question', 'data': question_data});
+                if(angular.isUndefined($scope.data.question_feedback)) {
+                    $scope.data.question_feedback = [];
+                }
                 $scope.data.question_feedback.push({'wrong':'', 'right':''});
             };
 
