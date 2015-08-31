@@ -50,8 +50,85 @@
             <div class="editable" contenteditable ng-model="data.question_feedback[$index].right"></div>
         </div>
         <h2>Score feedback</h2>
+        <div ng-repeat="total_feedback in data.total_feedback">
+            <label>From</label>
+            <select ng-model="total_feedback.min" ng-disabled="true">
+                <option ng-repeat="option in getTotalFeedbackRange($index, true)">{{option}}</option>
+            </select>
+            <label>To</label>
+            <select ng-model="total_feedback.max"  ng-change="onTotalFeedbackRangeChange($index, false)" ng-disabled="$index == data.total_feedback.length-1">
+                <option ng-repeat="option in getTotalFeedbackRange($index, false)" ng-value="option">{{option}}</option>
+            </select>
+            <a href="" ng-click="removeTotalFeedback($index)">Remove</a>
+            <div class="editable" contenteditable ng-model="total_feedback.feedback"></div>
+        </div>
+        <a href="" ng-click="addTotalFeedback()" ng-if="data.total_feedback.length <= data.question_feedback.length">Add feedback option</a>
     </tab>
     <tab heading="Planning">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="is_template" class="col-sm-2 control-label">Is template</label>
+                <div class="col-sm-10">
+                    <div class="checkbox">
+                        <label><input type="checkbox" class="" id="is_template" ng-model="data.is_template" />&NonBreakingSpace;</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="open_at" class="col-sm-2 control-label">Open at</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" datetime-picker ng-min="now" ng-model="data.open_at" id="open_at" />
+                    <a href="" ng-click="openTest()" class="btn btn-default">Open now</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="close_at" class="col-sm-2 control-label">Close at</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" datetime-picker ng-min="data.open_at" ng-model="data.close_at" id="close_at" />
+                    <a href="" ng-click="closeTest()" class="btn btn-default">Close now</a>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="feedback_timing" class="col-sm-2 control-label">Feedback timing</label>
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="data.feedback_timing" id="feedback_timing">
+                        <option value="never">Never send feedback</option>
+                        <option value="at">Send feedback at</option>
+                        <option value="after">Send feedback after</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-if="data.feedback_timing=='at'" class="form-group">
+                <label for="feedback_at" class="col-sm-2 control-label">Feedback at</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" datetime-picker ng-min="data.close_at" ng-model="data.feedback_at" id="feedback_at" />
+                </div>
+            </div>
+            <div ng-if="data.feedback_timing=='after'" class="form-group">
+                <label for="feedback_after" class="col-sm-2 control-label">Feedback after</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" ng-model="data.feedback_after" id="feedback_after" /> minutes
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="invite_method" class="col-sm-2 control-label">Invite method</label>
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="data.invite_method" id="invite_method">
+                        <option value="link">Using a link to request an access-code</option>
+                        <option value="email">By sending an e-mail with an access-code</option>
+                        <option value="code">By providing the an access-code manually</option>
+                        <option value="login">By logging in</option>
+                        <option value="secure">By using an secure access-code</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="invite_url" class="col-sm-2 control-label">Invite URL</label>
+                <div class="col-sm-10">
+                    <div id="invite_url" class="form-control-static">{{data.invite_url}}</div>
+                </div>
+            </div>
+        </form>
 
     </tab>
     <tab heading="Results">

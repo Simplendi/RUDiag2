@@ -7,18 +7,21 @@ app.directive('testEditor', function () {
             data: '='
         },
         templateUrl: 'views/directives/test_editor.html',
-        controller: ['$scope', '$modal', function ($scope, $modal) {
+        controller: ['$scope', '$modal', 'moment', function ($scope, $modal, moment) {
+
+            $scope.now = moment.utc();
 
             $scope.addTextElement = function () {
                 $scope.data.content.push({type: 'text', data: ''})
             };
 
-            $scope.addQuestionElement = function(question_data) {
+            $scope.addQuestionElement = function (question_data) {
                 $scope.data.content.push({type: 'question', 'data': question_data});
-                if(angular.isUndefined($scope.data.question_feedback)) {
+                if (angular.isUndefined($scope.data.question_feedback)) {
                     $scope.data.question_feedback = [];
                 }
-                $scope.data.question_feedback.push({'wrong':'', 'right':''});
+                $scope.data.question_feedback.push({'wrong': '', 'right': ''});
+                $scope.ensureValidFeedbackRange();
             };
 
             $scope.addNewQuestionElement = function () {
@@ -55,10 +58,12 @@ app.directive('testEditor', function () {
                 });
 
                 deleteQuestionModal.result.then(function () {
-                    if($scope.data.content[$index].type=='question') {
+                    if ($scope.data.content[$index].type == 'question') {
                         $scope.data.question_feedback.splice($scope.contentToQuestionIndex($index), 1);
+                        $scope.ensureValidFeedbackRange();
                     }
                     $scope.data.content.splice($index, 1);
+
                 });
 
             };
@@ -101,12 +106,12 @@ app.directive('testEditor', function () {
                 }
             };
 
-            $scope.addToQuestionFeedback= function(question_index, feedback_label, value) {
-                if(angular.isUndefined($scope.data.question_feedback[question_index])) {
+            $scope.addToQuestionFeedback = function (question_index, feedback_label, value) {
+                if (angular.isUndefined($scope.data.question_feedback[question_index])) {
                     $scope.data.question_feedback[question_index] = {}
                 }
 
-                if(angular.isUndefined($scope.data.question_feedback[question_index][feedback_label])) {
+                if (angular.isUndefined($scope.data.question_feedback[question_index][feedback_label])) {
                     $scope.data.question_feedback[question_index][feedback_label] = value;
                 } else {
                     $scope.data.question_feedback[question_index][feedback_label] += value;
@@ -117,7 +122,7 @@ app.directive('testEditor', function () {
                 $scope.addToQuestionFeedback(question_index, feedback_label, $scope.data.default_feedback[feedback_label]);
             };
 
-            $scope.insertQuestionDefaultFeedback = function(question_index, feedback_label) {
+            $scope.insertQuestionDefaultFeedback = function (question_index, feedback_label) {
                 $scope.addToQuestionFeedback(question_index, feedback_label, $scope.data.content[$scope.questionToContentIndex(question_index)].data.feedback[feedback_label]);
             };
 
@@ -146,6 +151,76 @@ app.directive('testEditor', function () {
                 }
                 return -1;
             };
+
+            $scope.addTotalFeedback = function () {
+                if (angular.isUndefined($scope.data.total_feedback)) {
+                    $scope.data.total_feedback = [];
+                }
+
+                $scope.data.total_feedback.push({"min": 0, "max": 0, "feedback": ""});
+                $scope.ensureValidFeedbackRange();
+            };
+
+            $scope.removeTotalFeedback = function ($index) {
+                $scope.data.total_feedback.splice($index, 1);
+                $scope.ensureValidFeedbackRange();
+            };
+
+            $scope.onTotalFeedbackRangeChange = function ($index, is_min) {
+                if (is_min) {
+                    $scope.data.total_feedback[$index]["min"] = parseInt($scope.data.total_feedback[$index]["min"]);
+                } else {
+                    $scope.data.total_feedback[$index]["max"] = parseInt($scope.data.total_feedback[$index]["max"]);
+                }
+                $scope.ensureValidFeedbackRange();
+            };
+
+            $scope.ensureValidFeedbackRange = function () {
+                while($scope.data.total_feedback.length > $scope.data.question_feedback.length+1) {
+                    $scope.data.total_feedback.pop();
+                }
+                for (var feedback_index = 0; feedback_index < $scope.data.total_feedback.length; feedback_index++) {
+                    if ($scope.getTotalFeedbackRange(feedback_index, true).indexOf($scope.data.total_feedback[feedback_index]["min"]) < 0) {
+                        $scope.data.total_feedback[feedback_index]["min"] = $scope.getTotalFeedbackRange(feedback_index, true)[0];
+                    } else {
+                        if (feedback_index > 0) {
+                            $scope.data.total_feedback[feedback_index - 1]["max"] = $scope.data.total_feedback[feedback_index]["min"] - 1;
+                        }
+                    }
+                    if ($scope.getTotalFeedbackRange(feedback_index, false).indexOf($scope.data.total_feedback[feedback_index]["max"]) < 0) {
+                        $scope.data.total_feedback[feedback_index]["max"] = $scope.getTotalFeedbackRange(feedback_index, false)[0];
+                    } else {
+                        if (feedback_index < $scope.data.total_feedback.length - 1) {
+                            $scope.data.total_feedback[feedback_index + 1]["min"] = $scope.data.total_feedback[feedback_index]["max"] + 1;
+                        }
+                    }
+                }
+            };
+
+            $scope.getTotalFeedbackRange = function ($index, is_min) {
+                if (is_min) {
+                    if ($index == 0) {
+                        return [0];
+                    } else {
+                        return $scope.integerRange(Math.max($index, $scope.data.total_feedback[$index - 1]["max"] + 1), $index + $scope.data.question_feedback.length + 1 - $scope.data.total_feedback.length);
+                    }
+                }
+                else {
+                    if ($index == $scope.data.total_feedback.length - 1) {
+                        return [$scope.data.question_feedback.length]
+                    }
+                    return $scope.integerRange(Math.max($index, $scope.data.total_feedback[$index]["min"]), $index + $scope.data.question_feedback.length + 1 - $scope.data.total_feedback.length);
+                }
+            };
+
+            $scope.integerRange = function (start, stop) {
+                var range = [];
+                for (var int = start; int <= stop; int++) {
+                    range.push(int);
+                }
+
+                return range;
+            }
 
 
         }]

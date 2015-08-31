@@ -2,6 +2,18 @@ import json
 from models.db.test import DbTest
 
 class Test:
+    CHECK_METHOD_AUTOMATIC = "automatic"
+    CHECK_METHOD_MANUAL = "manual"
+
+    FEEDBACK_TIMING_NEVER = "never"
+    FEEDBACK_TIMING_AT = "at"
+    FEEDBACK_TIMING_AFTER = "after"
+
+    INVITE_METHOD_LINK = "link"
+    INVITE_METHOD_EMAIL = "email"
+    INVITE_METHOD_CODE = "code"
+    INVITE_METHOD_LOGIN = "login"
+    INVITE_METHOD_SECURE = "secure"
 
     def __init__(self):
         # Basic fields
@@ -25,11 +37,12 @@ class Test:
         self.opened_at = None
         self.close_at = None
         self.closed_at = None
+        self.feedback_timing = Test.FEEDBACK_TIMING_NEVER
         self.feedback_at = None
         self.feedback_after = None
         self.invite_method = ""
         self.invite_url = ""
-        self.check_method = "AUTOMATIC"
+        self.check_method = Test.CHECK_METHOD_AUTOMATIC
         self.check_anonymous = False
         self.ask_for_data = []
 
@@ -72,6 +85,9 @@ class Test:
         test.opened_at = data_dict.get("opened_at", test.opened_at)
         test.close_at = data_dict.get("close_at", test.close_at)
         test.closed_at = data_dict.get("closed_at", test.closed_at)
+        test.feedback_timing = data_dict.get("feedback_timing", test.feedback_timing)
+        test.feedback_at = data_dict.get("feedback_at", test.feedback_at)
+        test.feedback_after = data_dict.get("feedback_after", test.feedback_after)
         test.invite_method = data_dict.get("invite_method", test.invite_method)
         test.invite_url = data_dict.get("invite_url", test.invite_url)
         test.check_method = data_dict.get("check_method", test.check_method)
@@ -115,6 +131,9 @@ class Test:
         data_dict["opened_at"] = self.opened_at
         data_dict["close_at"] = self.close_at
         data_dict["closed_at"] = self.closed_at
+        data_dict["feedback_timing"] = self.feedback_timing
+        data_dict["feedback_at"] = self.feedback_at
+        data_dict["feedback_after"] = self.feedback_after
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.invite_url
         data_dict["check_method"] = self.check_method

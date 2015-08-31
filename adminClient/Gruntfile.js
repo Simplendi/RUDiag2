@@ -41,6 +41,7 @@ module.exports = function (grunt) {
                         'bower_components/angular-moment/angular-moment.js',
                         'bower_components/angular-route/angular-route.js',
                         'bower_components/angular-ui-select/dist/select.js',
+                        'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
                         'app.js',
                         'controllers/*.js',
                         'directives/*.js',
@@ -79,7 +80,8 @@ module.exports = function (grunt) {
                     'dist/css/app.min.css': [
                         'style.css',
                         'bower_components/bootstrap-css/css/bootstrap.css',
-                        'bower_components/angular-ui-select/dist/select.css'
+                        'bower_components/angular-ui-select/dist/select.css',
+                        'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
                     ]
 
                 }
