@@ -8,7 +8,6 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$ro
     $scope.deleting = false;
     $scope.data = {};
     $scope.data.type = "choice";
-    $scope.users = [];
 
     $scope.cancel = function() {
         $location.path('/question/');

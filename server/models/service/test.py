@@ -20,6 +20,7 @@ class Test:
         self.id = None
         self.title = ""
         self.owners = []
+        self.reviewers = []
         self.shuffle_content = False
         self.content = []
 
@@ -70,6 +71,7 @@ class Test:
         test.id = data_dict.get("id", test.id)
         test.title = data_dict.get("title", test.title)
         test.owners = data_dict.get("owners", test.owners)
+        test.reviewers = data_dict.get("reviewers", test.reviewers)
         test.shuffle_content = data_dict.get("shuffle_content", test.shuffle_content)
         test.content = data_dict.get("content", test.content)
 
@@ -116,6 +118,7 @@ class Test:
             data_dict["id"] = self.id
         data_dict["title"] = self.title
         data_dict["owners"] = self.owners
+        data_dict["reviewers"] = self.reviewers
         data_dict["shuffle_content"] = self.shuffle_content
         data_dict["content"] = self.content
 

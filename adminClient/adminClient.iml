@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/directives" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/services" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/views" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/bower_components/MathJax" />
+      <excludeFolder url="file://$MODULE_DIR$/dist/MathJax" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

@@ -1,25 +1,12 @@
 var app = angular.module('app');
 
-app.controller('EditTestController', ['$scope', '$modal', '$location', '$routeParams', 'testService', function ($scope, $modal, $location, $routeParams, testService) {
+app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$location', '$routeParams', 'testService', 'moment', function ($scope, $rootScope, $modal, $location, $routeParams, testService, moment) {
     // Set initial values
     $scope.loading = false;
     $scope.saving = false;
     $scope.deleting = false;
     $scope.data = {};
     $scope.data.content = [];
-
-    if (angular.isDefined($routeParams.id)) {
-        $scope.loading = true;
-        testService.getTest($routeParams.id)
-            .success(function (data) {
-                $scope.data = data;
-                $scope.loading = false;
-            })
-            .error(function (data) {
-                $scope.loading = false;
-                $location.path('/test/');
-            });
-    }
 
     $scope.save = function () {
         $scope.saving = true;
@@ -47,6 +34,17 @@ app.controller('EditTestController', ['$scope', '$modal', '$location', '$routePa
         $location.search("");
     };
 
+    $scope.open = function() {
+        $scope.data.opened_at = moment.utc().format("YYYY-MM-DDTHH:mm:ss");
+        $scope.save();
+
+    };
+
+    $scope.close = function() {
+        $scope.data.closed_at = moment.utc().format("YYYY-MM-DDTHH:mm:ss");
+        $scope.save();
+    };
+
     $scope.delete = function() {
         $scope.deleting = true;
         var deleteTestModal = $modal.open({
@@ -63,5 +61,44 @@ app.controller('EditTestController', ['$scope', '$modal', '$location', '$routePa
             $scope.deleting = false;
         });
     };
+
+    $scope.init = function() {
+        if (angular.isDefined($routeParams.id)) {
+            $scope.loading = true;
+
+            // If copy if present we delete the id and make a new question
+            if(angular.isDefined($routeParams.copy)) {
+                testService.getTest($routeParams.id)
+                    .success(function (data) {
+                        delete data["id"];
+                        $scope.data = data;
+                        $scope.loading = false;
+                    })
+                    .error(function (data) {
+                        $scope.loading = false;
+                    });
+            } else {
+                testService.getTest($routeParams.id)
+                    .success(function (data) {
+                        $scope.data = data;
+                        $scope.loading = false;
+                    })
+                    .error(function (data) {
+                        $scope.loading = false;
+                    });
+            }
+        } else {
+            var stopWatch = $rootScope.$watch('user', function(user) {
+                if(angular.isDefined(user)) {
+                    $scope.data.owners = [$rootScope.user.id];
+                    stopWatch();
+                }
+
+            });
+            $scope.data.open_at = moment().utc().add(1, 'month');
+        }
+    };
+
+    $scope.init();
 
 }]);

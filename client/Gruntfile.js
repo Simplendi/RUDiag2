@@ -45,6 +45,28 @@ ngtemplates: {
                         'build/templates.js',
                     ]
                 }
+            },
+            mathjax: {
+                options: {
+                    beautify: false,
+                    //compress: {
+                    //    drop_console: false,
+                    //},
+                    mangle: false,
+                    sourceMap: false,
+                },
+                files: {
+                    'dist/MathJax/config/config.js': [
+                        'bower_components/MathJax/jax/input/TeX/config.js',
+                        'bower_components/MathJax/jax/output/HTML-CSS/config.js',
+                        'bower_components/MathJax/extensions/tex2jax.js',
+                        'bower_components/MathJax/extensions/Tex/mhchem.js',
+                        'bower_components/MathJax/extensions/Tex/AMSmath.js',
+                        'bower_components/MathJax/extensions/Tex/AMSsymbols.js',
+                        'custom/MathJax/config.js',
+                    ]
+                }
+
             }
         },
         cssmin: {
@@ -58,12 +80,31 @@ ngtemplates: {
                 }
             }
         },
-        copy: {
-            app: {
-                files: [
-                ]
-            }
-        }
+      copy: {
+          mathjax: {
+              files: [{
+                  expand: true,
+                  cwd: 'bower_components/',
+                  src: 'MathJax/**',
+                  dest: 'dist/'
+              }]
+          },
+          static: {
+              files: [
+                  {
+                      src: 'img/**',
+                      dest: 'dist/'
+                  },
+                  {
+                      expand: true,
+                      cwd: 'bower_components/bootstrap-css/',
+                      src: 'fonts/*',
+                      dest: 'dist/'
+                  }
+
+              ]
+          }
+      },
 
     });
 
@@ -74,6 +115,6 @@ ngtemplates: {
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Default task
-    grunt.registerTask('default', ['ngtemplates', 'uglify', 'cssmin', 'copy']);
+    grunt.registerTask('default', ['ngtemplates', 'uglify:app', 'cssmin']);
 
 };

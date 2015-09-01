@@ -128,6 +128,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task
-    grunt.registerTask('default', ['ngtemplates', 'uglify:mathjax', 'uglify:app', 'cssmin']);
+    grunt.registerTask('default', ['ngtemplates', 'uglify:app', 'cssmin']);
 
 };
