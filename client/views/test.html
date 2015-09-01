@@ -1,0 +1,20 @@
+<div>
+<div ng-if="loading">
+    Loading
+</div>
+    <div ng-if="!loading">
+        <h1>{{test.title}}</h1>
+        {{test_session}}
+        <div ng-repeat="content in test.content">
+            <div ng-if="content.type=='text'" contentable ng-model="content.data"></div>
+            <div ng-if="content.type=='question'">
+                <h3>Question {{contentToQuestionIndex($index)+1}}</h3>
+                <choice-question ng-if="content.data.type=='choice'" data="content.data" answer="test_session.answers[contentToQuestionIndex($index)]"></choice-question>
+                <multiplechoice-question ng-if="content.data.type=='multiplechoice'" data="content.data" answer="test_session.answers[contentToQuestionIndex($index)]"></multiplechoice-question>
+                <open-question ng-if="content.data.type=='open'" data="content.data" answer="test_session.answers[contentToQuestionIndex($index)]"></open-question>
+
+            </div>
+        </div>
+
+    </div>
+</div>

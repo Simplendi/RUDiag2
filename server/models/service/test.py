@@ -1,5 +1,7 @@
 import json
+import datetime
 from models.db.test import DbTest
+from helpers.parsedatetime import parse_datetime, stringify_datetime
 
 class Test:
     CHECK_METHOD_AUTOMATIC = "automatic"
@@ -83,12 +85,12 @@ class Test:
 
         # Planning fields
         test.is_template = data_dict.get("is_template", test.is_template)
-        test.open_at = data_dict.get("open_at", test.open_at)
-        test.opened_at = data_dict.get("opened_at", test.opened_at)
-        test.close_at = data_dict.get("close_at", test.close_at)
-        test.closed_at = data_dict.get("closed_at", test.closed_at)
+        test.open_at = parse_datetime(data_dict.get("open_at", test.open_at))
+        test.opened_at = parse_datetime(data_dict.get("opened_at", test.opened_at))
+        test.close_at = parse_datetime(data_dict.get("close_at", test.close_at))
+        test.closed_at = parse_datetime(data_dict.get("closed_at", test.closed_at))
         test.feedback_timing = data_dict.get("feedback_timing", test.feedback_timing)
-        test.feedback_at = data_dict.get("feedback_at", test.feedback_at)
+        test.feedback_at = parse_datetime(data_dict.get("feedback_at", test.feedback_at))
         test.feedback_after = data_dict.get("feedback_after", test.feedback_after)
         test.invite_method = data_dict.get("invite_method", test.invite_method)
         test.invite_url = data_dict.get("invite_url", test.invite_url)
@@ -97,6 +99,42 @@ class Test:
         test.ask_for_data = data_dict.get("ask_for_data", test.ask_for_data)
 
         return test
+
+    def _get_question_for_run(self, item_dict):
+        question_dict = item_dict["data"]
+        new_question_dict = dict()
+        new_question_dict["type"] = question_dict["type"]
+        new_question_dict["content"] = question_dict["content"]
+
+        item_dict["data"] = new_question_dict
+
+        return item_dict
+
+    def to_run_dict(self):
+        data_dict = dict()
+        data_dict["title"] = self.title
+        data_dict["shuffle_content"] = self.shuffle_content
+
+        # Strip content of sensitive details
+        content = []
+        for item in self.content:
+            if item["type"] == "question":
+                content.append(self._get_question_for_run(item))
+            else:
+                content.append(item)
+        data_dict["content"] = content
+
+        data_dict["opened_at"] = stringify_datetime(self.opened_at)
+        data_dict["close_at"] = stringify_datetime(self.close_at)
+        data_dict["closed_at"] = stringify_datetime(self.closed_at)
+        data_dict["feedback_timing"] = self.feedback_timing
+        data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
+        data_dict["feedback_after"] = self.feedback_after
+        data_dict["invite_method"] = self.invite_method
+        data_dict["invite_url"] = self.invite_url
+        data_dict["ask_for_data"] = self.ask_for_data
+
+        return data_dict
 
     def to_db(self, db_test = None):
         if not db_test:
@@ -130,12 +168,12 @@ class Test:
 
         # Planning fields
         data_dict["is_template"] = self.is_template
-        data_dict["open_at"] = self.open_at
-        data_dict["opened_at"] = self.opened_at
-        data_dict["close_at"] = self.close_at
-        data_dict["closed_at"] = self.closed_at
+        data_dict["open_at"] = stringify_datetime(self.open_at)
+        data_dict["opened_at"] = stringify_datetime(self.opened_at)
+        data_dict["close_at"] = stringify_datetime(self.close_at)
+        data_dict["closed_at"] = stringify_datetime(self.closed_at)
         data_dict["feedback_timing"] = self.feedback_timing
-        data_dict["feedback_at"] = self.feedback_at
+        data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["feedback_after"] = self.feedback_after
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.invite_url

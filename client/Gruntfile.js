@@ -1,21 +1,21 @@
-module.exports = function(grunt) {
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-ngtemplates: {
+module.exports = function (grunt) {
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        ngtemplates: {
             app: {
                 src: ["views/*.html", "views/directives/*.html"],
                 dest: "build/templates.js",
                 options: {
                     module: "app",
                     htmlmin: {
-                        collapseBooleanAttributes:      true,
-                        collapseWhitespace:             true,
-                        removeAttributeQuotes:          true,
-                        removeComments:                 true, // Only if you don't use comment directives!
-                        removeEmptyAttributes:          true,
-                        removeRedundantAttributes:      true,
-                        removeScriptTypeAttributes:     true,
-                        removeStyleLinkTypeAttributes:  true
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true, // Only if you don't use comment directives!
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true,
+                        removeScriptTypeAttributes: true,
+                        removeStyleLinkTypeAttributes: true
                     }
                 }
             }
@@ -24,11 +24,11 @@ ngtemplates: {
 
             app: {
                 options: {
-                    beautify: true,
+                    beautify: false,
                     //compress: {
                     //    drop_console: false,
                     //},
-                    mangle: false,
+                    mangle: true,
                     sourceMap: true,
                 },
                 files: {
@@ -72,7 +72,7 @@ ngtemplates: {
         cssmin: {
             app: {
                 files: {
-                    'dist/app.min.css': [
+                    'dist/css/app.min.css': [
                         'style.css',
                         'bower_components/bootstrap-css/css/bootstrap.css',
                     ]
@@ -80,31 +80,31 @@ ngtemplates: {
                 }
             }
         },
-      copy: {
-          mathjax: {
-              files: [{
-                  expand: true,
-                  cwd: 'bower_components/',
-                  src: 'MathJax/**',
-                  dest: 'dist/'
-              }]
-          },
-          static: {
-              files: [
-                  {
-                      src: 'img/**',
-                      dest: 'dist/'
-                  },
-                  {
-                      expand: true,
-                      cwd: 'bower_components/bootstrap-css/',
-                      src: 'fonts/*',
-                      dest: 'dist/'
-                  }
+        copy: {
+            mathjax: {
+                files: [{
+                    expand: true,
+                    cwd: 'bower_components/',
+                    src: 'MathJax/**',
+                    dest: 'dist/'
+                }]
+            },
+            static: {
+                files: [
+                    {
+                        src: 'img/**',
+                        dest: 'dist/'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'bower_components/bootstrap-css/',
+                        src: 'fonts/*',
+                        dest: 'dist/'
+                    }
 
-              ]
-          }
-      },
+                ]
+            }
+        },
 
     });
 

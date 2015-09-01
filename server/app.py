@@ -23,6 +23,7 @@ from helpers.sessionrepository import SessionRepository
 from controllers.logincontroller import LoginController
 from controllers.genericcontroller import GenericController
 from controllers.usercontroller import UserController
+from controllers.runtestcontroller import RunTestController
 
 class App(Application):
     def __init__(self):
@@ -52,6 +53,12 @@ class App(Application):
 
         self.router.addStaticMapping(r"^/admin/static/", "../adminClient/dist")
         self.router.addStaticMapping(r"^/admin/", "../adminClient/dist")
+
+        run_test_controller = RunTestController()
+        run_test_controller.bindRoutes(self.router)
+
+        self.router.addStaticMapping(r"^/static/", "../client/dist")
+        self.router.addStaticMapping(r"^/", "../client/dist")
 
 
 app = App()
