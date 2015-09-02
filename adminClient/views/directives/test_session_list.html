@@ -1,0 +1,36 @@
+<div>
+    <a href="" class="btn btn-default" ng-click="add()">Add</a>
+    <a href="" class="btn btn-default" ng-click="loadTestSessions()">Refresh</a>
+    <a href="" class="btn btn-default">Import</a>
+    <a href="" class="btn btn-default">Export</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="col-md-3">Email</th>
+        <th class="col-md-3">Name</th>
+        <th class="col-md-2">Student-ID</th>
+        <th class="col-md-1">Status</th>
+        <th class="col-md-3">Action</th>
+    </tr>
+    </thead>
+    <tbody ng-if="!loading">
+    <tr ng-repeat="test_session in test_sessions | filter:{$: search}">
+        <td>{{test_session.email}}</td>
+        <td>{{test_session.name}}</td>
+        <td>{{test_session.student_id}}</td>
+        <td>{{getTestSessionStatus(test_session)}}</td>
+        <td>
+            <a href="" class="btn btn-default" ng-click="edit($index)">Edit</a>
+            <a href="" class="btn btn-default" ng-click="review($index)">Review</a>
+            <a href="" class="btn btn-default" ng-click="delete($index)">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+    <tbody ng-if="loading">
+    <tr>
+        <td colspan="5">Loading...</td>
+    </tr>
+    </tbody>
+
+</table>
+</div>

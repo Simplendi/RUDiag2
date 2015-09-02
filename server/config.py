@@ -46,7 +46,10 @@ config["session_lifetime"] = config_parser.getint("session", "lifetime")
 if "path" not in config_parser:
     exit("No path section in config found")
 
+config["absolute_url"] = config_parser.get("path", "absolute_url")
+if not config["absolute_url"].endswith("/"):
+    config["absolute_url"] += "/"
+
 config["upload_folder"] = config_parser.get("path", "upload_folder")
-# Add trailing slash if not present
 if not config["upload_folder"].endswith("/"):
     config["upload_folder"] += "/"

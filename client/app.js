@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap']);
+var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'angularMoment']);
 
 
 app.config(['$routeProvider', function ($routeProvider) {
@@ -14,6 +14,10 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when('/answer/:id', {
             controller: 'TestController',
             templateUrl: 'views/test.html'
+        })
+        .when('/feedback/:id', {
+            controller: 'FeedbackController',
+            templateUrl: 'views/feedback.html',
         })
         .otherwise({
             redirectTo: '/'

@@ -12,18 +12,20 @@ from models.db.question import DbQuestion
 
 class GenericController(BaseController):
 
-    def __init__(self, clazz, db_clazz):
+    def __init__(self, clazz, db_clazz, int_id = True):
         super().__init__()
         self.clazz = clazz
         self.db_clazz = db_clazz
+        self.int_id = int_id
 
     def get(self, state, id):
         (request, response, session) = state.unfold()
 
-        try:
-            id = int(id)
-        except ValueError:
-            raise HttpBadRequestException()
+        if self.int_id:
+            try:
+                id = int(id)
+            except ValueError:
+                raise HttpBadRequestException()
 
         with closing(self._database_session_maker()) as database_session:
             db_obj = database_session.query(self.db_clazz).filter(self.db_clazz.id==id).first()
@@ -66,10 +68,11 @@ class GenericController(BaseController):
     def save(self, state, id):
         (request, response, session) = state.unfold()
 
-        try:
-            id = int(id)
-        except ValueError:
-            raise HttpBadRequestException()
+        if self.int_id:
+            try:
+                id = int(id)
+            except ValueError:
+                raise HttpBadRequestException()
 
         with closing(self._database_session_maker()) as database_session:
             db_obj = database_session.query(self.db_clazz).filter(self.db_clazz.id==id).first()
@@ -99,10 +102,11 @@ class GenericController(BaseController):
     def delete(self, state, id):
         (request, response, session) = state.unfold()
 
-        try:
-            id = int(id)
-        except ValueError:
-            raise HttpBadRequestException()
+        if self.int_id:
+            try:
+                id = int(id)
+            except ValueError:
+                raise HttpBadRequestException()
 
         with closing(self._database_session_maker()) as database_session:
             db_obj = database_session.query(self.db_clazz).filter(self.db_clazz.id==id).first()
@@ -130,8 +134,8 @@ class GenericController(BaseController):
         return state
 
     def bindRoutes(self, router, path):
-        router.addMapping(r"^/" + path + "/([0-9]+)$", self.get, ['GET'])
-        router.addMapping(r"^/" + path + "/([0-9]+)$", self.save, ['POST'])
-        router.addMapping(r"^/" + path + "/([0-9]+)$", self.delete, ['DELETE'])
+        router.addMapping(r"^/" + path + "/([^/]+)$", self.get, ['GET'])
+        router.addMapping(r"^/" + path + "/([^/]+)$", self.save, ['POST'])
+        router.addMapping(r"^/" + path + "/([^/]+)$", self.delete, ['DELETE'])
         router.addMapping(r"^/" + path + "/$", self.add, ['PUT'])
         router.addMapping(r"^/" + path + "/$", self.list, ['GET'])

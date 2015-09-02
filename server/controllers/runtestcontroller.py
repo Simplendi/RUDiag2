@@ -32,7 +32,7 @@ class RunTestController(BaseController):
 
         return test
 
-    def getTest(self, state, id):
+    def getTestInfo(self, state, id):
         (request, response, session) = state.unfold()
 
         try:
@@ -42,6 +42,22 @@ class RunTestController(BaseController):
 
         with closing(self._database_session_maker()) as database_session:
             test = self._getOpenTestOrThrowHttp(database_session, id)
+
+            response.setJsonBody(json.dumps(test.to_info_dict()))
+            return state
+
+    def getTestUsingSession(self, state, id):
+        (request, response, session) = state.unfold()
+
+        with closing(self._database_session_maker()) as database_session:
+            db_test_session = database_session.query(DbTestSession).filter(DbTestSession.id == id).first()
+
+            if not db_test_session:
+                raise HttpNotFoundException()
+
+            test_session = TestSession.from_db(db_test_session)
+
+            test = self._getOpenTestOrThrowHttp(database_session, test_session.test_id)
 
             response.setJsonBody(json.dumps(test.to_run_dict()))
             return state
@@ -56,6 +72,31 @@ class RunTestController(BaseController):
                 raise HttpNotFoundException()
 
             test_session = TestSession.from_db(db_test_session)
+            if not test_session.opened_at:
+                test_session.opened_at = datetime.datetime.utcnow()
+
+            database_session.add(test_session.to_db(db_test_session))
+            database_session.commit()
+
+            response.setJsonBody(json.dumps(test_session.to_dict()))
+            return state
+
+    def closeTestSession(self, state, id):
+        (request, response, session) = state.unfold()
+
+        with closing(self._database_session_maker()) as database_session:
+            db_test_session = database_session.query(DbTestSession).filter(DbTestSession.id == id).first()
+
+            if not db_test_session:
+                raise HttpNotFoundException()
+
+            test_session = TestSession.from_db(db_test_session)
+            test_session = TestSession.from_dict(request.body, test_session)
+            test_session.updated_at = datetime.datetime.utcnow()
+            test_session.closed_at = datetime.datetime.utcnow()
+
+            database_session.add(test_session.to_db(db_test_session))
+            database_session.commit()
 
             response.setJsonBody(json.dumps(test_session.to_dict()))
             return state
@@ -70,6 +111,10 @@ class RunTestController(BaseController):
                 raise HttpNotFoundException()
 
             test_session = TestSession.from_db(db_test_session)
+
+            if test_session.closed_at:
+                raise HttpBadRequestException()
+
             test_session = TestSession.from_dict(request.body, test_session)
             test_session.updated_at = datetime.datetime.utcnow()
 
@@ -103,7 +148,9 @@ class RunTestController(BaseController):
             return state
 
     def bindRoutes(self, router):
+        router.addMapping(r"^/run/test_session/([^/]+)/close", self.closeTestSession, ['POST'])
+        router.addMapping(r"^/run/test_session/([^/]+)/test", self.getTestUsingSession, ['GET'])
         router.addMapping(r"^/run/test_session/([^/]+)", self.getTestSession, ['GET'])
         router.addMapping(r"^/run/test_session/([^/]+)", self.updateTestSession, ['POST'])
         router.addMapping(r"^/run/test/([0-9]+)/invite$", self.requestTestInvite, ['POST'])
-        router.addMapping(r"^/run/test/([0-9]+)$", self.getTest, ['GET'])
+        router.addMapping(r"^/run/test/([0-9]+)/info$", self.getTestInfo, ['GET'])

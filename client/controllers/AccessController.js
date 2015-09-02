@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('AccessController', ['$scope', '$routeParams', 'runTestService', function($scope, $routeParams, runTestService) {
+app.controller('AccessController', ['$scope', '$routeParams',  '$location', 'runTestService', function($scope, $routeParams, $location, runTestService) {
     $scope.state = "loading";
     $scope.test = {};
     $scope.inviteData = {};
@@ -8,7 +8,7 @@ app.controller('AccessController', ['$scope', '$routeParams', 'runTestService', 
     $scope.init = function() {
         if (angular.isDefined($routeParams.id)) {
             $scope.state = "loading";
-            runTestService.getTest($routeParams.id)
+            runTestService.getTestInfo($routeParams.id)
                 .success(function(data) {
                     $scope.test = data;
                     $scope.state = "form"
@@ -31,6 +31,12 @@ app.controller('AccessController', ['$scope', '$routeParams', 'runTestService', 
                     $scope.state = 'error'
                 })
 
+        }
+    };
+
+    $scope.openTest = function() {
+        if($scope.test.invite_method == 'link' || $scope.test.invite_method == 'secure') {
+            $location.path("/answer/" + $scope.inviteData.code).replace()
         }
     };
 

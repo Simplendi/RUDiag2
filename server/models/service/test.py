@@ -1,11 +1,14 @@
 import json
+import urllib
 import datetime
+from framework import Config
 from models.db.test import DbTest
 from helpers.parsedatetime import parse_datetime, stringify_datetime
 
+
 class Test:
-    CHECK_METHOD_AUTOMATIC = "automatic"
-    CHECK_METHOD_MANUAL = "manual"
+    REVIEW_METHOD_AUTOMATIC = "automatic"
+    REVIEW_METHOD_MANUAL = "manual"
 
     FEEDBACK_TIMING_NEVER = "never"
     FEEDBACK_TIMING_AT = "at"
@@ -43,17 +46,17 @@ class Test:
         self.feedback_timing = Test.FEEDBACK_TIMING_NEVER
         self.feedback_at = None
         self.feedback_after = None
-        self.invite_method = ""
+        self.invite_method = Test.INVITE_METHOD_LINK
         self.invite_url = ""
-        self.check_method = Test.CHECK_METHOD_AUTOMATIC
-        self.check_anonymous = False
+        self.review_method = Test.REVIEW_METHOD_AUTOMATIC
+        self.review_anonymous = False
         self.ask_for_data = []
 
         self.created = None
         self.last_saved = None
 
     @staticmethod
-    def from_db(db_test, test = None):
+    def from_db(db_test, test=None):
         if not test:
             test = Test()
 
@@ -65,7 +68,7 @@ class Test:
         return test
 
     @staticmethod
-    def from_dict(data_dict, test = None):
+    def from_dict(data_dict, test=None):
         if not test:
             test = Test()
 
@@ -93,9 +96,8 @@ class Test:
         test.feedback_at = parse_datetime(data_dict.get("feedback_at", test.feedback_at))
         test.feedback_after = data_dict.get("feedback_after", test.feedback_after)
         test.invite_method = data_dict.get("invite_method", test.invite_method)
-        test.invite_url = data_dict.get("invite_url", test.invite_url)
-        test.check_method = data_dict.get("check_method", test.check_method)
-        test.check_anonymous = data_dict.get("check_anonymous", test.check_anonymous)
+        test.review_method = data_dict.get("review_method", test.review_method)
+        test.review_anonymous = data_dict.get("review_anonymous", test.review_anonymous)
         test.ask_for_data = data_dict.get("ask_for_data", test.ask_for_data)
 
         return test
@@ -131,12 +133,29 @@ class Test:
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["feedback_after"] = self.feedback_after
         data_dict["invite_method"] = self.invite_method
-        data_dict["invite_url"] = self.invite_url
+        data_dict["invite_url"] = self.get_invite_url()
         data_dict["ask_for_data"] = self.ask_for_data
 
         return data_dict
 
-    def to_db(self, db_test = None):
+    def to_info_dict(self):
+        data_dict = dict()
+
+        data_dict["title"] = self.title
+        data_dict["shuffle_content"] = self.shuffle_content
+        data_dict["opened_at"] = stringify_datetime(self.opened_at)
+        data_dict["close_at"] = stringify_datetime(self.close_at)
+        data_dict["closed_at"] = stringify_datetime(self.closed_at)
+        data_dict["feedback_timing"] = self.feedback_timing
+        data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
+        data_dict["feedback_after"] = self.feedback_after
+        data_dict["invite_method"] = self.invite_method
+        data_dict["invite_url"] = self.get_invite_url()
+        data_dict["ask_for_data"] = self.ask_for_data
+
+        return data_dict
+
+    def to_db(self, db_test=None):
         if not db_test:
             db_test = DbTest()
 
@@ -147,7 +166,7 @@ class Test:
 
         return db_test
 
-    def to_dict(self, data_dict = None, for_db = False):
+    def to_dict(self, data_dict=None, for_db=False):
         if not data_dict:
             data_dict = dict()
 
@@ -176,9 +195,10 @@ class Test:
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["feedback_after"] = self.feedback_after
         data_dict["invite_method"] = self.invite_method
-        data_dict["invite_url"] = self.invite_url
-        data_dict["check_method"] = self.check_method
-        data_dict["check_anonymous"] = self.check_anonymous
+        if not for_db:
+            data_dict["invite_url"] = self.get_invite_url()
+        data_dict["review_method"] = self.review_method
+        data_dict["review_anonymous"] = self.review_anonymous
         data_dict["ask_for_data"] = self.ask_for_data
 
         if not for_db:
@@ -187,3 +207,5 @@ class Test:
 
         return data_dict
 
+    def get_invite_url(self):
+        return Config()["absolute_url"] + "index.html#/test/" + str(self.id) + "/" + urllib.parse.quote_plus(self.title)

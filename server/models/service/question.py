@@ -1,8 +1,8 @@
 import json
 from models.db.question import DbQuestion
 
-class Question:
 
+class Question:
     def __init__(self):
         # Basic fields
         self.id = None
@@ -11,14 +11,13 @@ class Question:
         self.metadata = {}
         self.content = {}
         self.answers = []
-        self.feedback = {"wrong":"", "right":""}
+        self.feedback = {"wrong": "", "right": ""}
 
         self.created = None
         self.last_saved = None
 
-
     @staticmethod
-    def from_db(db_question, question = None):
+    def from_db(db_question, question=None):
         if not question:
             question = Question()
 
@@ -30,7 +29,7 @@ class Question:
         return question
 
     @staticmethod
-    def from_dict(data_dict, question = None):
+    def from_dict(data_dict, question=None):
         if not question:
             question = Question()
 
@@ -44,7 +43,7 @@ class Question:
 
         return question
 
-    def to_db(self, db_question = None):
+    def to_db(self, db_question=None):
         if not db_question:
             db_question = DbQuestion()
 
@@ -55,7 +54,7 @@ class Question:
 
         return db_question
 
-    def to_dict(self, data_dict = None, for_db = False):
+    def to_dict(self, data_dict=None, for_db=False):
         if not data_dict:
             data_dict = dict()
 
@@ -76,3 +75,6 @@ class Question:
 
         return data_dict
 
+    def is_right_answer(self, answer):
+        if self.type in ['choice', 'multiplechoice', 'open']:
+            return answer in self.answers

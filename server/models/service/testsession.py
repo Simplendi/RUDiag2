@@ -19,14 +19,16 @@ class TestSession():
         self.opened_at = None
         self.updated_at = None
         self.closed_at = None
+        self.reviewed_at = None
         self.feedback_at = None
 
         self.answers = []
-        self.feedback = []
+        self.question_feedback = []
+        self.total_feedback = ""
         self.data = {}
 
-    def generate_id(self):
-        return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(32))
+    def generate_id(self, length=32):
+        return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(length))
 
     @staticmethod
     def get_new_session_for_test(test):
@@ -50,6 +52,7 @@ class TestSession():
         test_session.opened_at = db_test_session.opened_at
         test_session.updated_at = db_test_session.updated_at
         test_session.closed_at = db_test_session.closed_at
+        test_session.reviewed_at = db_test_session.reviewed_at
         test_session.feedback_at = db_test_session.feedback_at
         test_session = TestSession.from_db_dict(json.loads(db_test_session.data), test_session)
 
@@ -69,9 +72,11 @@ class TestSession():
         test_session.opened_at = parse_datetime(data_dict.get('opened_at'))
         test_session.updated_at = parse_datetime(data_dict.get('updated_at'))
         test_session.closed_at = parse_datetime(data_dict.get('closed_at'))
+        test_session.reviewed_at = parse_datetime(data_dict.get('reviewed_at'))
         test_session.feedback_at = parse_datetime(data_dict.get('feedback_at'))
         test_session.answers = data_dict.get("answers", test_session.answers)
-        test_session.feedback = data_dict.get("feedback", test_session.feedback)
+        test_session.question_feedback = data_dict.get("question_feedback", test_session.question_feedback)
+        test_session.total_feedback = data_dict.get("total_feedback", test_session.total_feedback)
         test_session.data = data_dict.get("data", test_session.data)
 
         return test_session
@@ -79,7 +84,8 @@ class TestSession():
     @staticmethod
     def from_db_dict(data_dict, test_session):
         test_session.answers = data_dict.get("answers", test_session.answers)
-        test_session.feedback = data_dict.get("feedback", test_session.feedback)
+        test_session.question_feedback = data_dict.get("question_feedback", test_session.question_feedback)
+        test_session.total_feedback = data_dict.get("total_feedback", test_session.total_feedback)
         test_session.data = data_dict.get("data", test_session.data)
 
         return test_session
@@ -89,6 +95,8 @@ class TestSession():
         if not db_test_session:
             db_test_session = DbTestSession()
 
+        if not self.id:
+            self.id = self.generate_id()
         db_test_session.id = self.id
         db_test_session.test_id = self.test_id
         db_test_session.email = self.email
@@ -98,6 +106,7 @@ class TestSession():
         db_test_session.opened_at = self.opened_at
         db_test_session.updated_at = self.updated_at
         db_test_session.closed_at = self.closed_at
+        db_test_session.reviewed_at = self.reviewed_at
         db_test_session.feedback_at = self.feedback_at
         db_test_session.data = json.dumps(self.to_db_dict())
 
@@ -106,7 +115,8 @@ class TestSession():
     def to_db_dict(self):
         data_dict = dict()
         data_dict["answers"] = self.answers
-        data_dict["feedback"] = self.feedback
+        data_dict["question_feedback"] = self.question_feedback
+        data_dict["total_feedback"] = self.total_feedback
         data_dict["data"] = self.data
 
         return data_dict
@@ -124,9 +134,11 @@ class TestSession():
         data_dict["opened_at"] = stringify_datetime(self.opened_at)
         data_dict["updated_at"] = stringify_datetime(self.updated_at)
         data_dict["closed_at"] = stringify_datetime(self.closed_at)
+        data_dict["reviewed_at"] = stringify_datetime(self.reviewed_at)
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["answers"] = self.answers
-        data_dict["feedback"] = self.feedback
+        data_dict["question_feedback"] = self.question_feedback
+        data_dict["total_feedback"] = self.total_feedback
         data_dict["data"] = self.data
 
         return data_dict

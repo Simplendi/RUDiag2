@@ -1,3 +1,21 @@
+body {
+    background-color: #ebebeb;
+    margin: 20px;
+}
+
+.page-border {
+    border: solid #CACACA 1px;
+    background-color: white;
+    padding: 15px;
+
+}
+.status-block {
+    position: fixed;
+}
+.side-bar {
+    position: relative;
+}
+
 .editor-question-option-content {
     display: inline-block;
     width: 90%;

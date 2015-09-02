@@ -34,8 +34,10 @@ module.exports = function (grunt) {
                 files: {
                     'dist/app.min.js': [
                         'bower_components/angular/angular.js',
+                        'bower_components/moment/moment.js',
                         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
                         'bower_components/angular-sanitize/angular-sanitize.js',
+                        'bower_components/angular-moment/angular-moment.js',
                         'bower_components/angular-route/angular-route.js',
                         'app.js',
                         'controllers/*.js',
@@ -73,8 +75,8 @@ module.exports = function (grunt) {
             app: {
                 files: {
                     'dist/css/app.min.css': [
-                        'style.css',
                         'bower_components/bootstrap-css/css/bootstrap.css',
+                        'style.css',
                     ]
 
                 }

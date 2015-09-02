@@ -22,6 +22,7 @@ class DbTestSession(Base):
     opened_at = Column(DateTime)
     updated_at = Column(DateTime)
     closed_at = Column(DateTime)
+    reviewed_at = Column(DateTime)
     feedback_at = Column(DateTime)
 
     data = Column(Text, nullable=False, default="")

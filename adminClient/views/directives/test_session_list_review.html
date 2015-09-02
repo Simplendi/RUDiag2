@@ -1,0 +1,16 @@
+<div class="modal-header"><h3>Review test session</h3></div>
+<div class="modal-body">
+{{test_session}}
+    {{test}}
+    <h2>Question feedback</h2>
+    <div ng-repeat="content in test.content | filter: {'type':'question'}">
+        <h3>Question {{$index+1}}</h3>
+        
+    </div>
+    <h2>Total feedback</h2>
+    <div class="editable" contenteditable ng-model="test_session.total_feedback"></div>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()">Save</button>
+    <button ng-click="cancel()">Exit</button>
+</div>

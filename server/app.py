@@ -2,17 +2,16 @@
 import config
 config = config
 
-
-
-
 from models.db.question import DbQuestion
 from models.db.test import DbTest
 from models.db.user import DbUser
+from models.db.testsession import DbTestSession
 from models.db.metadata import DbMetadata
 from models.service.question import Question
 from models.service.test import Test
 from models.service.user import User
 from models.service.metadata import Metadata
+from models.service.testsession import TestSession
 
 from framework.application import Application
 from framework.router import Router
@@ -24,6 +23,7 @@ from controllers.logincontroller import LoginController
 from controllers.genericcontroller import GenericController
 from controllers.usercontroller import UserController
 from controllers.runtestcontroller import RunTestController
+from controllers.testsessioncontroller import TestSessionController
 
 class App(Application):
     def __init__(self):
@@ -50,6 +50,9 @@ class App(Application):
 
         metadata_controller = GenericController(Metadata, DbMetadata)
         metadata_controller.bindRoutes (self.router, "metadata")
+
+        test_session_controller = TestSessionController()
+        test_session_controller.bindRoutes(self.router, "test_session")
 
         self.router.addStaticMapping(r"^/admin/static/", "../adminClient/dist")
         self.router.addStaticMapping(r"^/admin/", "../adminClient/dist")
