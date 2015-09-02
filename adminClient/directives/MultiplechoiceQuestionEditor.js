@@ -5,7 +5,9 @@ app.directive('multiplechoiceQuestionEditor', function() {
         restrict: 'E',
         scope: {
             data: '=',
-            disabled: '=ngDisabled'
+            disabled: '=ngDisabled',
+            answer: '=',
+            showResult: '=showResult'
         },
         templateUrl: 'views/directives/multiplechoice_question_editor.html',
         controller: ['$scope', function($scope) {
@@ -27,6 +29,14 @@ app.directive('multiplechoiceQuestionEditor', function() {
                         }
                     }
                 }
+            };
+            $scope.answerIsRight = function() {
+                for(var answer_index = 0; answer_index < $scope.data.answers.length; answer_index++) {
+                    if(angular.equals($scope.data.answers[answer_index], $scope.answer)) {
+                        return true;
+                    }
+                }
+                return false;
             }
         }]
     }

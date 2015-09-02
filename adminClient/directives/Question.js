@@ -1,14 +1,15 @@
 var app = angular.module('app');
 
-app.directive('openQuestionEditor', function() {
+app.directive('question', function() {
     return {
         restrict: 'E',
         scope: {
             data: '=',
             disabled: '=ngDisabled',
-            answer: '='
+            answer: '=',
+            showResult: '=showResult'
         },
-        templateUrl: 'views/directives/open_question_editor.html',
+        templateUrl: 'views/directives/question.html',
         controller: ['$scope', function($scope) {
 
         }]

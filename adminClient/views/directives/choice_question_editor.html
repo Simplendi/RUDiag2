@@ -1,11 +1,17 @@
-<div class="editable" contenteditable ng-model="data.content.question_before" ng-disabled="disabled"></div><br>
-
+<div class="editable" contenteditable ng-model="data.content.question_before" ng-disabled="disabled"></div>
 <span class="editor-question-option" ng-repeat="choice in data.content.choices track by $index">
-<input type="radio" disabled="disabled" />
+<img src="/admin/static/img/tick.png" ng-if="showResult&&answerIsRight()&&answer==$index"/>
+<img src="/admin/static/img/tick.png" ng-if="showResult&&!answerIsRight()&&data.answers[0]==$index"/>
+<img src="/admin/static/img/cross.png" ng-if="showResult&&!answerIsRight()&&answer==$index"/>
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&answer!=$index&&!(!answerIsRight()&&data.answers[0]==$index)"/>
+<input type="radio" disabled="disabled" ng-checked="answer==$index"/>
+
+
+
 <div class="editor-question-option-content editable" contenteditable ng-model="data.content.choices[$index]" ng-disabled="disabled"></div>
 <a href="" ng-hide="disabled" ng-click="deleteChoice($index)"><img src="/admin/static/img/cross.png" /></a>
 </span>
 <a href="" ng-hide="disabled" ng-click="addChoice()"><img src="/admin/static/img/add.png" /></a>
 
-<div class="editable" contenteditable ng-model="data.content.question_after" ng-disabled="disabled"></div><br>
+<div class="editable" contenteditable ng-model="data.content.question_after" ng-disabled="disabled"></div>
 

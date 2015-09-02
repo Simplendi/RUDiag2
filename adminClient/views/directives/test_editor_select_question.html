@@ -2,9 +2,7 @@
 <div class="modal-body">
     <input type="text" ng-model="search"/>
     <div ng-repeat="question in questions | filter:{question: search}">
-        <choice-question ng-if="question.type=='choice'" data="question"></choice-question>
-        <multiplechoice-question ng-if="question.type=='multiplechoice'" data="question"></multiplechoice-question>
-        <open-question ng-if="question.type=='open'" data="question"></open-question>
+        <question ng-disabled="true" data="question"></question>
         <a href="" ng-click="selectQuestion(question)" class="btn">Select</a>
     </div>
 </div>

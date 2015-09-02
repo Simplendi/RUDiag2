@@ -59,8 +59,15 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
             }
 
             // Listen to disable
-            scope.$watch('disabled', function (newVal) {
-                element.attr("contenteditable", !newVal);
+            scope.$watch('disabled', function (disabled) {
+                element.attr("contenteditable", !disabled);
+                if(disabled) {
+                    if(element.hasClass("editable")) {
+                        element.removeClass("editable");
+                    }
+                } else {
+                    element.addClass("editable");
+                }
             })
         }
     };

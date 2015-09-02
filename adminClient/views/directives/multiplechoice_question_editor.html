@@ -1,11 +1,22 @@
-<div class="editable" contenteditable ng-model="data.content.question_before" ng-disabled="disabled"></div><br>
+<div class="editable" contenteditable ng-model="data.content.question_before" ng-disabled="disabled"></div>
 
 <span class="editor-question-option" ng-repeat="choice in data.content.choices track by $index">
-<input type="checkbox" disabled="disabled" />
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&answerIsRight()"/>
+<img src="/admin/static/img/tick.png" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)>=0"/>
+    <img src="/admin/static/img/16x16.png" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)<0"/>
+
+
+<img src="/admin/static/img/tick.png" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) >= 0"/>
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) < 0"/>
+
+<img src="/admin/static/img/cross.png" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) >= 0"/>
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) < 0"/>
+
+<input type="checkbox" disabled="disabled" ng-checked="answer.indexOf($index) >= 0" />
     <div class="editor-question-option-content editable" contenteditable ng-model="data.content.choices[$index]" ng-disabled="disabled"></div>
     <a href="" ng-hide="disabled" ng-click="deleteChoice($index)"><img src="/admin/static/img/cross.png" /></a>
 </span>
 
 <a href=""  ng-hide="disabled" ng-click="addChoice()"><img src="/admin/static/img/add.png" /></a>
 
-<div class="editable" contenteditable ng-model="data.content.question_after" ng-disabled="disabled"></div><br>
+<div class="editable" contenteditable ng-model="data.content.question_after" ng-disabled="disabled"></div>

@@ -1,0 +1,6 @@
+<div>
+    <choice-question-editor ng-if="data.type=='choice'" ng-disabled="disabled" data="data" answer="answer" show-result="showResult"></choice-question-editor>
+    <multiplechoice-question-editor ng-if="data.type=='multiplechoice'" ng-disabled="disabled"
+                                    data="data" answer="answer" show-result="showResult"></multiplechoice-question-editor>
+    <open-question-editor ng-if="data.type=='open'" ng-disabled="disabled" data="data" answer="answer" show-result="showResult"></open-question-editor>
+</div>

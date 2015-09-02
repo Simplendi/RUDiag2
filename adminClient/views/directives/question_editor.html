@@ -79,9 +79,6 @@
         </select>
          <a href="" ng-click="openMetadataModal()">Edit metadata</a>
         <br>
-        <choice-question-editor ng-if="data.type=='choice'" ng-disabled="disabled" data="data"></choice-question-editor>
-        <multiplechoice-question-editor ng-if="data.type=='multiplechoice'" ng-disabled="disabled"
-                                        data="data"></multiplechoice-question-editor>
-        <open-question-editor ng-if="data.type=='open'" ng-disabled="disabled" data="data"></open-question-editor>
+        <question ng-disabled="disabled" data="data"></question>
     </div>
 </div>

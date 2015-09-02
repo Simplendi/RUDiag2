@@ -155,7 +155,7 @@ MathJax.Hub.Config({
   //  in the lower left-hand corner.  Set to "false" to prevent those messages (though
   //  file loading and other messages will still be shown).
   //
-  showProcessingMessages: true,
+  showProcessingMessages: false,
   
   //
   //  This value controls the verbosity of the messages in the lower left-hand corner.
@@ -163,7 +163,7 @@ MathJax.Hub.Config({
   //  "Loading..." and "Processing..." rather than showing the full file name and the
   //  percentage of the mathematics processed.
   //
-  messageStyle: "normal",
+  messageStyle: "none",
   
   //
   //  These two parameters control the alignment and shifting of displayed equations.
@@ -226,8 +226,8 @@ MathJax.Hub.Config({
   //  have been moved to this more central location since they are shared
   //  by all output jax.
   //
-  showMathMenu: true,
-  showMathMenuMSIE: true,
+  showMathMenu: false,
+  showMathMenuMSIE: false,
 
 
   //

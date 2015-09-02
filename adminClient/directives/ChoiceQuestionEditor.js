@@ -5,7 +5,9 @@ app.directive('choiceQuestionEditor', function() {
         restrict: 'E',
         scope: {
             data: '=',
-            disabled: '=ngDisabled'
+            disabled: '=ngDisabled',
+            answer: '=',
+            showResult: '=showResult'
         },
         templateUrl: 'views/directives/choice_question_editor.html',
         controller: ['$scope', function($scope) {
@@ -25,6 +27,9 @@ app.directive('choiceQuestionEditor', function() {
                         $scope.data.answers.splice(answer_index, 1);
                     }
                 }
+            };
+            $scope.answerIsRight = function() {
+                return $scope.data.answers.indexOf($scope.answer) >= 0;
             }
         }]
     }
