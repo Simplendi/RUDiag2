@@ -3,10 +3,13 @@
         <h1 class="editable" contenteditable ng-model="data.title" ng-disabled="!isPlanned()" ng-text="true"></h1>
 
         <div ng-repeat="element in data.content track by $index">
-            <button ng-if="isPlanned()" ng-click="deleteElement($index)">Delete</button>
-            <button ng-if="!$first && isPlanned()" ng-click="moveElementUp($index)">Up</button>
-            <button ng-if="!$last && isPlanned()" ng-click="moveElementDown($index)">Down</button>
-            <button ng-if="data.content[$index].data.id!=undefined && isPlanned()" ng-click="makeQuestionLocal($index)">Edit</button>
+            <button class="btn btn-default" ng-if="isPlanned()" ng-click="deleteElement($index)">Delete</button>
+            <button class="btn btn-default" ng-if="!$first && isPlanned()" ng-click="moveElementUp($index)">Up</button>
+            <button class="btn btn-default" ng-if="!$last && isPlanned()" ng-click="moveElementDown($index)">Down
+            </button>
+            <button class="btn btn-default" ng-if="data.content[$index].data.id!=undefined && isPlanned()"
+                    ng-click="makeQuestionLocal($index)">Edit
+            </button>
             <br>
             <question-editor ng-if="data.content[$index].type=='question'"
                              ng-disabled="data.content[$index].data.id!=undefined || !isPlanned()" inline="true"
@@ -17,97 +20,130 @@
 
         </div>
         <div>
-            <button ng-if="isPlanned()" ng-click="addTextElement()">Add text element</button>
-            <button ng-if="isPlanned()" ng-click="addNewQuestionElement()">Add new question</button>
-            <button ng-if="isPlanned()" ng-click="addExistingQuestionElement()">Add existing question</button>
+            <button class="btn btn-default" ng-if="isPlanned()" ng-click="addTextElement()">Add text element</button>
+            <button class="btn btn-default" ng-if="isPlanned()" ng-click="addNewQuestionElement()">Add new question
+            </button>
+            <button class="btn btn-default" ng-if="isPlanned()" ng-click="addExistingQuestionElement()">Add existing
+                question
+            </button>
         </div>
     </tab>
     <tab heading="Answers">
-    <div ng-repeat="question in data.content | filter: {'type':'question'}">
-        <h4>Question {{$index+1}}</h4><button ng-if="question.data.id!=undefined" ng-click="makeQuestionLocal(questionToContentIndex($index))">Edit</button>
-        <choice-question-answer-editor ng-if="question.data.type=='choice'" data="question.data" ng-disabled="question.data.id"></choice-question-answer-editor>
-        <multiplechoice-question-answer-editor ng-if="question.data.type=='multiplechoice'" data="question.data" ng-disabled="question.data.id"></multiplechoice-question-answer-editor>
-        <open-question-answer-editor ng-if="question.data.type=='open'" data="question.data" ng-disabled="question.data.id"></open-question-answer-editor>
-    </div>
+        <div ng-repeat="question in data.content | filter: {'type':'question'}">
+            <h4>Question {{$index+1}}</h4>
+            <button ng-if="question.data.id!=undefined" ng-click="makeQuestionLocal(questionToContentIndex($index))">
+                Edit
+            </button>
+            <choice-question-answer-editor ng-if="question.data.type=='choice'" data="question.data"
+                                           ng-disabled="question.data.id"></choice-question-answer-editor>
+            <multiplechoice-question-answer-editor ng-if="question.data.type=='multiplechoice'" data="question.data"
+                                                   ng-disabled="question.data.id"></multiplechoice-question-answer-editor>
+            <open-question-answer-editor ng-if="question.data.type=='open'" data="question.data"
+                                         ng-disabled="question.data.id"></open-question-answer-editor>
+        </div>
     </tab>
     <tab heading="Feedback">
         <h2>Default feedback</h2>
         <label>Wrong</label><br>
+
         <div class="editable" contenteditable ng-model="data.default_feedback.wrong"></div>
         <br>
         <label>Right</label><br>
+
         <div class="editable" contenteditable ng-model="data.default_feedback.right"></div>
         <h2>Question feedback</h2>
+
         <div ng-repeat="question in data.content | filter: {'type':'question'}">
             <h4>Question {{$index+1}}</h4>
             <label>Wrong</label>
-             <a href="" ng-click="insertTestDefaultFeedback($index, 'wrong')">Insert test default</a>
-             <a href="" ng-click="insertQuestionDefaultFeedback($index, 'wrong')" ng-if="data.content[questionToContentIndex($index)].data.feedback['wrong']">Insert question default</a><br>
+            <a href="" ng-click="insertTestDefaultFeedback($index, 'wrong')">Insert test default</a>
+            <a href="" ng-click="insertQuestionDefaultFeedback($index, 'wrong')"
+               ng-if="data.content[questionToContentIndex($index)].data.feedback['wrong']">Insert question
+                default</a><br>
+
             <div class="editable" contenteditable ng-model="data.question_feedback[$index].wrong"></div>
             <label>Right</label>
-             <a href="" ng-click="insertTestDefaultFeedback($index, 'right')">Insert test default</a>
-            <a href="" ng-click="insertQuestionDefaultFeedback($index, 'right')"  ng-if="data.content[questionToContentIndex($index)].data.feedback['right']">Insert question default</a><br>
+            <a href="" ng-click="insertTestDefaultFeedback($index, 'right')">Insert test default</a>
+            <a href="" ng-click="insertQuestionDefaultFeedback($index, 'right')"
+               ng-if="data.content[questionToContentIndex($index)].data.feedback['right']">Insert question
+                default</a><br>
+
             <div class="editable" contenteditable ng-model="data.question_feedback[$index].right"></div>
         </div>
         <h2>Score feedback</h2>
+
         <div ng-repeat="total_feedback in data.total_feedback">
             <label>From</label>
             <select ng-model="total_feedback.min" ng-disabled="true">
                 <option ng-repeat="option in getTotalFeedbackRange($index, true)">{{option}}</option>
             </select>
             <label>To</label>
-            <select ng-model="total_feedback.max"  ng-change="onTotalFeedbackRangeChange($index, false)" ng-disabled="$index == data.total_feedback.length-1">
+            <select ng-model="total_feedback.max" ng-change="onTotalFeedbackRangeChange($index, false)"
+                    ng-disabled="$index == data.total_feedback.length-1">
                 <option ng-repeat="option in getTotalFeedbackRange($index, false)" ng-value="option">{{option}}</option>
             </select>
             <a href="" ng-click="removeTotalFeedback($index)">Remove</a>
+
             <div class="editable" contenteditable ng-model="total_feedback.feedback"></div>
         </div>
-        <a href="" ng-click="addTotalFeedback()" ng-if="data.total_feedback.length <= data.question_feedback.length">Add feedback option</a>
+        <a href="" ng-click="addTotalFeedback()" ng-if="data.total_feedback.length <= data.question_feedback.length">Add
+            feedback option</a>
     </tab>
     <tab heading="Planning">
         <form class="form-horizontal">
             <div class="form-group">
                 <label for="is_template" class="col-sm-2 control-label">Is template</label>
+
                 <div class="col-sm-10">
                     <div class="checkbox">
-                        <label><input type="checkbox" class="" id="is_template" ng-model="data.is_template" ng-disabled="!isPlanned()"  />&NonBreakingSpace;</label>
+                        <label><input type="checkbox" class="" id="is_template" ng-model="data.is_template"
+                                      ng-disabled="!isPlanned()"/>&NonBreakingSpace;</label>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="open_at" class="col-sm-2 control-label">Open at</label>
+
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" datetime-picker ng-min="now" ng-model="data.open_at" ng-disabled="!isPlanned()" id="open_at" />
+                    <input type="text" class="form-control" datetime-picker ng-min="now" ng-model="data.open_at"
+                           ng-disabled="!isPlanned()" id="open_at"/>
                     <a href="" ng-if="isPlanned()" ng-click="openTest()" class="btn btn-default">Open now</a>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Opened at</label>
+
                 <div class="col-sm-10">
                     <div class="form-control-static">
-                        <input ng-if="!isPlanned()" type="text" class="form-control" datetime-picker ng-model="data.opened_at" ng-disabled="true" />
+                        <input ng-if="!isPlanned()" type="text" class="form-control" datetime-picker
+                               ng-model="data.opened_at" ng-disabled="true"/>
                         <span ng-if="isPlanned()">not yet</span>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="close_at" class="col-sm-2 control-label">Close at</label>
+
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" datetime-picker ng-min="data.open_at" ng-model="data.close_at" ng-disabled="isClosed()" id="close_at" />
+                    <input type="text" class="form-control" datetime-picker ng-min="data.open_at"
+                           ng-model="data.close_at" ng-disabled="isClosed()" id="close_at"/>
                     <a href="" ng-if="isOpened()" ng-click="closeTest()" class="btn btn-default">Close now</a>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Closed at</label>
+
                 <div class="col-sm-10">
                     <div class="form-control-static">
-                        <input ng-if="isClosed()" type="text" class="form-control" datetime-picker ng-model="data.closed_at" ng-disabled="true" />
+                        <input ng-if="isClosed()" type="text" class="form-control" datetime-picker
+                               ng-model="data.closed_at" ng-disabled="true"/>
                         <span ng-if="!isClosed()">not yet</span>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="feedback_timing" class="col-sm-2 control-label">Feedback timing</label>
+
                 <div class="col-sm-10">
                     <select class="form-control" ng-model="data.feedback_timing" id="feedback_timing">
                         <option value="never">Never send feedback</option>
@@ -118,20 +154,26 @@
             </div>
             <div ng-if="data.feedback_timing=='at'" class="form-group">
                 <label for="feedback_at" class="col-sm-2 control-label">Feedback at</label>
+
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" datetime-picker ng-min="data.close_at" ng-model="data.feedback_at" id="feedback_at" />
+                    <input type="text" class="form-control" datetime-picker ng-min="data.close_at"
+                           ng-model="data.feedback_at" id="feedback_at"/>
                 </div>
             </div>
             <div ng-if="data.feedback_timing=='after'" class="form-group">
                 <label for="feedback_after" class="col-sm-2 control-label">Feedback after</label>
+
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" ng-model="data.feedback_after" id="feedback_after" /> minutes
+                    <input type="number" class="form-control" ng-model="data.feedback_after" id="feedback_after"/>
+                    minutes
                 </div>
             </div>
             <div class="form-group">
                 <label for="invite_method" class="col-sm-2 control-label">Invite method</label>
+
                 <div class="col-sm-10">
-                    <select class="form-control" ng-model="data.invite_method" id="invite_method" ng-disabled="!isPlanned()">
+                    <select class="form-control" ng-model="data.invite_method" id="invite_method"
+                            ng-disabled="!isPlanned()">
                         <option value="link">Using a link to request an access-code</option>
                         <option value="email">By sending an e-mail with an access-code</option>
                         <option value="code">By providing the an access-code manually</option>
@@ -142,14 +184,17 @@
             </div>
             <div class="form-group">
                 <label for="invite_url" class="col-sm-2 control-label">Invite URL</label>
+
                 <div class="col-sm-10">
                     <div id="invite_url" class="form-control-static">{{data.invite_url}}</div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="review_method" class="col-sm-2 control-label">Review method</label>
+
                 <div class="col-sm-10">
-                    <select class="form-control" ng-model="data.review_method" id="review_method" ng-disabled="!isPlanned()">
+                    <select class="form-control" ng-model="data.review_method" id="review_method"
+                            ng-disabled="!isPlanned()">
                         <option value="automatic">Automatically</option>
                         <option value="manual">Manually</option>
                     </select>
@@ -157,9 +202,11 @@
             </div>
             <div ng-if="data.review_method=='manual'" class="form-group">
                 <label for="review_anonymous" class="col-sm-2 control-label">Review anonymously</label>
+
                 <div class="col-sm-10">
                     <div class="checkbox">
-                        <label><input type="checkbox" class="" id="review_anonymous" ng-model="data.review_anonymous" ng-disabled="!isPlanned()"  />&NonBreakingSpace;</label>
+                        <label><input type="checkbox" class="" id="review_anonymous" ng-model="data.review_anonymous"
+                                      ng-disabled="!isPlanned()"/>&NonBreakingSpace;</label>
                     </div>
                 </div>
             </div>

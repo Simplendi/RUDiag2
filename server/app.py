@@ -1,5 +1,7 @@
 # Do not remove this import as it is actually used
 import config
+from controllers.imagecontroller import ImageController
+
 config = config
 
 from models.db.question import DbQuestion
@@ -53,6 +55,11 @@ class App(Application):
 
         test_session_controller = TestSessionController()
         test_session_controller.bindRoutes(self.router, "test_session")
+
+        image_controller = ImageController()
+        image_controller.bindRoutes(self.router)
+
+        self.router.addStaticMapping(r"^/image/", self.config["upload_folder"])
 
         self.router.addStaticMapping(r"^/admin/static/", "../adminClient/dist")
         self.router.addStaticMapping(r"^/admin/", "../adminClient/dist")

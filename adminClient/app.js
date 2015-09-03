@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ui.select', 'angularMoment']);
+var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ui.select', 'angularMoment', 'ngFileUpload']);
 
 var auth_is_user = function(user) {
     return user;

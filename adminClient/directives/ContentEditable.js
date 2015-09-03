@@ -11,6 +11,7 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
             if (!ngModel) return;
 
             scope.model = ngModel;
+            scope.element = element;
 
             ngModel.$render = function () {
                 element.html(ngModel.$viewValue || '');

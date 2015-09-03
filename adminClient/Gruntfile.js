@@ -42,6 +42,7 @@ module.exports = function (grunt) {
                         'bower_components/angular-route/angular-route.js',
                         'bower_components/angular-ui-select/dist/select.js',
                         'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+                        'bower_components/ng-file-upload/ng-file-upload.js',
                         'app.js',
                         'controllers/*.js',
                         'directives/*.js',
