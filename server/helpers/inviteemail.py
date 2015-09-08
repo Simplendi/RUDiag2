@@ -12,7 +12,7 @@ class InviteEmail(EmailMessage):
         config = Config()
         self.from_address = from_address
         self.to_address = to_address
-        self.subject = "Invite for " + test.title
+        self.subject = "Invite for " + test.title.encode("ascii", 'ignore').decode('ascii')
         self.body = config["template_lookup"]("invite_email.html").render(test_session = test_session, test = test, absolute_url = config["absolute_url"])
 
     def send(self):

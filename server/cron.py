@@ -1,4 +1,6 @@
 import config
+from helpers.feedbackjob import FeedbackJob
+
 config=config
 
 from helpers.reviewjob import ReviewJob
@@ -12,3 +14,5 @@ if __name__ == "__main__":
     invite_job.run()
     review_job = ReviewJob()
     review_job.run()
+    feedback_job = FeedbackJob()
+    feedback_job.run()

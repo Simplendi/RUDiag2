@@ -151,6 +151,20 @@ app.directive('testSessionList', function () {
             };
 
             $scope.sendFeedback = function (test_session_id) {
+                var sendingModal = $modal.open({
+                    templateUrl: "views/directives/test_session_list_send_feedback.html",
+                });
+                testSessionService.sendFeedback(test_session_id)
+                    .success(function () {
+                        sendingModal.close();
+                        $scope.loadTestSessions();
+                    })
+                    .error(function () {
+                        sendingModal.close();
+                        $modal.open({
+                            templateUrl: "views/error_modal.html",
+                        })
+                    })
 
             };
 

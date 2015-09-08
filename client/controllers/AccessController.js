@@ -25,7 +25,7 @@ app.controller('AccessController', ['$scope', '$routeParams',  '$location', 'run
         if($scope.test.invite_method == 'link') {
             runTestService.requestInvite($routeParams.id, $scope.inviteData)
                 .success(function() {
-                    $scope.state = 'form'
+                    $scope.state = 'done'
                 })
                 .error(function() {
                     $scope.state = 'error'

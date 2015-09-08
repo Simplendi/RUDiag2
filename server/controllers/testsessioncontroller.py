@@ -1,3 +1,4 @@
+from helpers.feedbacksender import FeedbackSender
 import io
 import json
 import csv
@@ -111,7 +112,11 @@ class TestSessionController(GenericController):
             if test_session.reviewed_at is None or not test_session.email:
                 raise HttpBadRequestException()
 
-            #TODO: Send feedback
+            try:
+                feedback_sender = FeedbackSender()
+                feedback_sender.sendFeedback(database_session, test_session, db_test_session)
+            except:
+                raise HttpBadRequestException()
 
         return state
 
