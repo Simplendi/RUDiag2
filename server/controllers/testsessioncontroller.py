@@ -2,6 +2,7 @@ from helpers.feedbacksender import FeedbackSender
 import io
 import json
 import csv
+import tempfile
 from contextlib import closing
 from controllers.genericcontroller import GenericController
 from framework.httpexceptions import HttpBadRequestException, HttpNotFoundException
@@ -75,6 +76,74 @@ class TestSessionController(GenericController):
 
         return state
 
+    def export(self, state, test_id):
+        (request, response, session) = state.unfold()
+
+        with closing(self._database_session_maker()) as database_session:
+            try:
+                test_id = int(test_id)
+            except:
+                raise HttpBadRequestException()
+
+            db_test = database_session.query(DbTest).filter(DbTest.id==test_id).first()
+
+            if not db_test:
+                raise HttpNotFoundException()
+
+            test = Test.from_db(db_test)
+
+            if test.type == Test.TYPE_TREE:
+                pass
+            else:
+
+                # Create temporary file and csv-writer to write csv in it.
+                csv_file = tempfile.TemporaryFile(mode="w+", encoding = "utf-8")
+                csv_writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_NONNUMERIC)
+
+                # Fill header
+                header_row = []
+                header_row.append("Student ID")
+                header_row.append("Student Name")
+                header_row.append("Student E-mail")
+                header_row.append("Score")
+
+                for (question_index, question) in enumerate([content["data"] for content in test.content if content["type"] == 'question']):
+                    header_row.append("Question " + str(question_index + 1) + " right")
+                    header_row.append("Question " + str(question_index + 1) + " answer")
+
+                csv_writer.writerow(header_row)
+
+                db_test_sessions = database_session.query(DbTestSession).filter(DbTestSession.test_id == test.id).all()
+
+                for test_session in [TestSession.from_db(db_test_session) for db_test_session in db_test_sessions]:
+                    row = []
+                    row.append(test_session.student_id)
+                    row.append(test_session.name)
+                    row.append(test_session.email)
+                    row.append(test_session.get_score())
+
+                    for question_answer in test_session.question_feedback:
+                        row.append(1 if question_answer["right"] else 0)
+                        row.append(question_answer["answer"])
+
+                    csv_writer.writerow(row)
+
+
+                # Set Content Type
+                response.content_type = "text/csv"
+
+                # Set Content Disposition such that the file will be downloaded
+                response.headers["Content-Disposition"] = "attachment; filename=" + str(test.id) + ".csv"
+
+                csv_file.seek(0)
+                response.body = csv_file.read()
+
+                csv_file.close()
+
+
+        return state
+
+
 
     def sendInvite(self, state, test_session_id):
         (request, response, session) = state.unfold()
@@ -125,3 +194,4 @@ class TestSessionController(GenericController):
         router.addMapping(r"^/" + path + "/([^/]+)/send_invite$", self.sendInvite, ['POST'])
         router.addMapping(r"^/" + path + "/([^/]+)/send_feedback$", self.sendFeedback, ['POST'])
         router.addMapping(r"^/" + path + "/([^/]+)/import$", self.import_from_file, ['POST'])
+        router.addMapping(r"^/" + path + "/([^/]+)/export$", self.export, ['GET'])

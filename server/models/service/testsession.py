@@ -142,3 +142,6 @@ class TestSession():
         data_dict["data"] = self.data
 
         return data_dict
+
+    def get_score(self):
+        return sum([1 if question["right"] else 0 for question in self.question_feedback])
