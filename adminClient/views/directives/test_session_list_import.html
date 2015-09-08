@@ -1,0 +1,18 @@
+<div class="modal-header"><h3>Import</h3></div>
+<div class="modal-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Upload file</label>
+
+            <div class="col-sm-8 form-control-static">
+                <button class="btn btn-default" type="file" ngf-select="upload($file)"
+                        accept=".txt,.csv, " ngf-max-height="1000" ngf-max-size="20MB">Select file
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="ok()">Import</button>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

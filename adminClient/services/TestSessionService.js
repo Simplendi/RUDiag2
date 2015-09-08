@@ -20,6 +20,12 @@ app.factory('testSessionService', ['$http', function($http) {
                 method: "GET",
                 params: {test_id: test_id}
             });
+        },
+        sendInvite: function(test_session_id) {
+            return $http.post('/test_session/' + test_session_id + '/send_invite');
+        },
+        sendFeedback: function(test_session_id) {
+            return $http.post('/test_session/' + test_session_id + '/send_feedback');
         }
 
     }

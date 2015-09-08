@@ -53,3 +53,9 @@ if not config["absolute_url"].endswith("/"):
 config["upload_folder"] = config_parser.get("path", "upload_folder")
 if not config["upload_folder"].endswith("/"):
     config["upload_folder"] += "/"
+
+
+config["smtp_server"] = config_parser.get("mail", "smtp_server")
+config["smtp_use_tls"] = config_parser.getboolean("mail", "smtp_use_tls")
+config["smtp_username"] = config_parser.get("mail", "smtp_username")
+config["smtp_password"] = config_parser.get("mail", "smtp_password")

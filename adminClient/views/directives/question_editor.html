@@ -6,6 +6,7 @@
                 <option value="choice">Choice</option>
                 <option value="multiplechoice">Multiple choice</option>
                 <option value="open">Open</option>
+                <option value="text">Text</option>
             </select>
             <br>
             <choice-question-editor ng-if="data.type=='choice'" ng-disabled="disabled"
@@ -13,6 +14,7 @@
             <multiplechoice-question-editor ng-if="data.type=='multiplechoice'" ng-disabled="disabled"
                                             data="data"></multiplechoice-question-editor>
             <open-question-editor ng-if="data.type=='open'" ng-disabled="disabled" data="data"></open-question-editor>
+            <text-question-editor ng-if="data.type=='text'" ng-disabled="disabled" data="data"></text-question-editor>
         </tab>
         <tab ng-if="!inline" heading="Answers">
             <choice-question-answer-editor ng-if="data.type=='choice'" ng-disabled="disabled"
@@ -21,6 +23,8 @@
                                                    data="data"></multiplechoice-question-answer-editor>
             <open-question-answer-editor ng-if="data.type=='open'" ng-disabled="disabled"
                                          data="data"></open-question-answer-editor>
+            <text-question-answer-editor ng-if="data.type=='text'" ng-disabled="disabled"
+                                         data="data"></text-question-answer-editor>
         </tab>
         <tab ng-if="!inline" heading="Feedback">
             <label>Wrong</label><br>
@@ -35,7 +39,7 @@
         <tab heading="Metadata">
             <question-metadata-editor data="data" ng-disabled="disabled"></question-metadata-editor>
         </tab>
-        <tab ng-if="!inline" heading="Permissions">
+        <tab ng-if="!inline&&!intest" heading="Permissions">
             <div ng-if="loadingUsers">
                 Loading the user list
             </div>
@@ -76,6 +80,7 @@
             <option value="choice">Choice</option>
             <option value="multiplechoice">Multiple choice</option>
             <option value="open">Open</option>
+            <option value="text">Text</option>
         </select>
          <a href="" ng-click="openMetadataModal()">Edit metadata</a>
         <br>

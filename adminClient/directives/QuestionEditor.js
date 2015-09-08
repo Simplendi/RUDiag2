@@ -6,6 +6,7 @@ app.directive('questionEditor', function () {
         scope: {
             data: '=',
             inline: '=',
+            intest: '=',
             disabled: '=ngDisabled'
         },
         templateUrl: 'views/directives/question_editor.html',

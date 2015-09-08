@@ -1,93 +1,26 @@
+{{data}}
 <tabset>
     <tab heading="Content">
         <h1 class="editable" contenteditable ng-model="data.title" ng-disabled="!isPlanned()" ng-text="true"></h1>
 
-        <div ng-repeat="element in data.content track by $index">
-            <button class="btn btn-default" ng-if="isPlanned()" ng-click="deleteElement($index)">Delete</button>
-            <button class="btn btn-default" ng-if="!$first && isPlanned()" ng-click="moveElementUp($index)">Up</button>
-            <button class="btn btn-default" ng-if="!$last && isPlanned()" ng-click="moveElementDown($index)">Down
-            </button>
-            <button class="btn btn-default" ng-if="data.content[$index].data.id!=undefined && isPlanned()"
-                    ng-click="makeQuestionLocal($index)">Edit
-            </button>
-            <br>
-            <question-editor ng-if="data.content[$index].type=='question'"
-                             ng-disabled="data.content[$index].data.id!=undefined || !isPlanned()" inline="true"
-                             data="data.content[$index].data"></question-editor>
-            <test-text-editor ng-if="data.content[$index].type=='text'"
-                              ng-disabled="!isPlanned()"
-                              data="data.content[$index].data"></test-text-editor>
-
+        <div class="row">
+            <div class="col-xs-8">
+                {{editElement}}
+                <test-text-editor ng-if="editElement.type=='text' || editElement.type=='depth'" data="editElement.data"></test-text-editor>
+                <question-editor data="editElement.data" ng-if="editElement.type=='question'" intest="true"></question-editor>
+                <route-question-editor data="editElement.data" ng-if="editElement.type=='route'"></route-question-editor>
+                <div ng-if="editElement && editElement.type!='route'" ng-repeat="child in editElement.children track by $index">
+                    <a href="" ng-click=""><span class="editable" contenteditable ng-model="editElement.child_labels[$index]" ng-text="true"></span></a>
+                    <a href="" ng-click="deleteChild($index)"><img src="/admin/static/img/cross.png"></a><br>
+                </div>
+                <div ng-if="editElement && editElement.type!='route'" >
+                    <a href="" class="btn btn-default" ng-click="addChild()">Add child</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <tree-test-tree content="data.content" depth="0" edit-element-handler="onEditElement" is-edit-element="isEditElement"></tree-test-tree>
+            </div>
         </div>
-        <div>
-            <button class="btn btn-default" ng-if="isPlanned()" ng-click="addTextElement()">Add text element</button>
-            <button class="btn btn-default" ng-if="isPlanned()" ng-click="addNewQuestionElement()">Add new question
-            </button>
-            <button class="btn btn-default" ng-if="isPlanned()" ng-click="addExistingQuestionElement()">Add existing
-                question
-            </button>
-        </div>
-    </tab>
-    <tab heading="Answers">
-        <div ng-repeat="question in data.content | filter: {'type':'question'}">
-            <h4>Question {{$index+1}}</h4>
-            <button ng-if="question.data.id!=undefined" ng-click="makeQuestionLocal(questionToContentIndex($index))">
-                Edit
-            </button>
-            <choice-question-answer-editor ng-if="question.data.type=='choice'" data="question.data"
-                                           ng-disabled="question.data.id"></choice-question-answer-editor>
-            <multiplechoice-question-answer-editor ng-if="question.data.type=='multiplechoice'" data="question.data"
-                                                   ng-disabled="question.data.id"></multiplechoice-question-answer-editor>
-            <open-question-answer-editor ng-if="question.data.type=='open'" data="question.data"
-                                         ng-disabled="question.data.id"></open-question-answer-editor>
-        </div>
-    </tab>
-    <tab heading="Feedback">
-        <h2>Default feedback</h2>
-        <label>Wrong</label><br>
-
-        <div class="editable" contenteditable ng-model="data.default_feedback.wrong"></div>
-        <br>
-        <label>Right</label><br>
-
-        <div class="editable" contenteditable ng-model="data.default_feedback.right"></div>
-        <h2>Question feedback</h2>
-
-        <div ng-repeat="question in data.content | filter: {'type':'question'}">
-            <h4>Question {{$index+1}}</h4>
-            <label>Wrong</label>
-            <a href="" ng-click="insertTestDefaultFeedback($index, 'wrong')">Insert test default</a>
-            <a href="" ng-click="insertQuestionDefaultFeedback($index, 'wrong')"
-               ng-if="data.content[questionToContentIndex($index)].data.feedback['wrong']">Insert question
-                default</a><br>
-
-            <div class="editable" contenteditable ng-model="data.question_feedback[$index].wrong"></div>
-            <label>Right</label>
-            <a href="" ng-click="insertTestDefaultFeedback($index, 'right')">Insert test default</a>
-            <a href="" ng-click="insertQuestionDefaultFeedback($index, 'right')"
-               ng-if="data.content[questionToContentIndex($index)].data.feedback['right']">Insert question
-                default</a><br>
-
-            <div class="editable" contenteditable ng-model="data.question_feedback[$index].right"></div>
-        </div>
-        <h2>Score feedback</h2>
-
-        <div ng-repeat="total_feedback in data.total_feedback">
-            <label>From</label>
-            <select ng-model="total_feedback.min" ng-disabled="true">
-                <option ng-repeat="option in getTotalFeedbackRange($index, true)">{{option}}</option>
-            </select>
-            <label>To</label>
-            <select ng-model="total_feedback.max" ng-change="onTotalFeedbackRangeChange($index, false)"
-                    ng-disabled="$index == data.total_feedback.length-1">
-                <option ng-repeat="option in getTotalFeedbackRange($index, false)" ng-value="option">{{option}}</option>
-            </select>
-            <a href="" ng-click="removeTotalFeedback($index)">Remove</a>
-
-            <div class="editable" contenteditable ng-model="total_feedback.feedback"></div>
-        </div>
-        <a href="" ng-click="addTotalFeedback()" ng-if="data.total_feedback.length <= data.question_feedback.length">Add
-            feedback option</a>
     </tab>
     <tab heading="Planning">
         <form class="form-horizontal">
@@ -161,7 +94,7 @@
                 <label for="feedback_at" class="col-sm-2 control-label">Feedback at</label>
 
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" datetime-picker
+                    <input type="text" class="form-control" datetime-picker ng-min="data.close_at"
                            ng-model="data.feedback_at" id="feedback_at"/>
                 </div>
             </div>

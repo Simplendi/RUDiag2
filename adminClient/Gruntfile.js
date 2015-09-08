@@ -79,10 +79,10 @@ module.exports = function (grunt) {
             app: {
                 files: {
                     'dist/css/app.min.css': [
-                        'style.css',
                         'bower_components/bootstrap-css/css/bootstrap.css',
                         'bower_components/angular-ui-select/dist/select.css',
-                        'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
+                        'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+                        'style.css',
                     ]
 
                 }

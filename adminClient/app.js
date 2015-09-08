@@ -37,12 +37,34 @@ app.config(['$routeProvider', function ($routeProvider) {
         .when('/test/add', {
             controller: 'EditTestController',
             templateUrl: 'views/test_edit.html',
-            auth: auth_is_user
+            auth: auth_is_user,
+            resolve: {
+                is_tree: function () {
+                    return false;
+
+                }
+            }
+        })
+        .when('/test/add_tree', {
+            controller: 'EditTestController',
+            templateUrl: 'views/test_edit.html',
+            auth: auth_is_user,
+            resolve: {
+                is_tree: function() {
+                    return true;
+                }
+            }
         })
         .when('/test/:id/edit', {
             controller: 'EditTestController',
             templateUrl: 'views/test_edit.html',
-            auth: auth_is_user
+            auth: auth_is_user,
+            resolve: {
+                is_tree: function () {
+                    return false;
+
+                }
+            }
         })
         .when('/question/', {
             controller: 'ListQuestionController',

@@ -1,12 +1,13 @@
 var app = angular.module('app');
 
-app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$location', '$routeParams', 'testService', 'moment', function ($scope, $rootScope, $modal, $location, $routeParams, testService, moment) {
+app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$location', '$routeParams', 'testService', 'moment', 'is_tree', function ($scope, $rootScope, $modal, $location, $routeParams, testService, moment, is_tree) {
     // Set initial values
     $scope.loading = false;
     $scope.saving = false;
     $scope.deleting = false;
     $scope.data = {};
     $scope.data.content = [];
+
 
     $scope.save = function () {
         $scope.saving = true;
@@ -66,12 +67,17 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
         if (angular.isDefined($routeParams.id)) {
             $scope.loading = true;
 
-            // If copy if present we delete the id and make a new question
+            // If copy if present we delete the id and make a new test
             if(angular.isDefined($routeParams.copy)) {
                 testService.getTest($routeParams.id)
                     .success(function (data) {
                         delete data["id"];
                         $scope.data = data;
+                        $scope.data.opened_at = null;
+                        $scope.data.closed_at = null;
+                        $scope.data.last_saved = null;
+                        $scope.data.created = null;
+
                         $scope.loading = false;
                     })
                     .error(function (data) {
@@ -88,6 +94,11 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
                     });
             }
         } else {
+            if(is_tree) {
+                $scope.data.type = 'tree';
+            } else {
+                $scope.data.type = 'basic';
+            }
             var stopWatch = $rootScope.$watch('user', function(user) {
                 if(angular.isDefined(user)) {
                     $scope.data.owners = [$rootScope.user.id];

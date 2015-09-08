@@ -1,0 +1,33 @@
+<ul class="test-tree">
+    <li ng-repeat="element in content" class="test-tree-element">
+        <span ng-if="element.type=='text'" class="test-tree-simple-element">Text</span>
+        <span ng-if="element.type=='question'" class="test-tree-simple-element">Question</span>
+        <span ng-if="element.type=='route'" class="test-tree-branch-element">Route question</span>
+        <span ng-if="isEditElement()(element)">Editing</span>
+        <a href="" ng-click="onEditElement(element)">Edit</a>
+        <a href="" ng-click="deleteElement($index)">Delete</a>
+        <a href="" ng-if="!$first" ng-click="moveElementUp($index)">Up</a>
+        <a href="" ng-if="!$last" ng-click="moveElementDown($index)">Down</a>
+
+        <ul ng-if="element.children.length>0 && element.type!='route'" class="test-tree-options">
+            <li class="test-tree-option" ng-repeat="child in element.children track by $index">
+                {{element.child_labels[$index]}}
+                <tree-test-tree content="element.children[$index]" depth="depth+1" edit-element-handler="editElementHandler()"  is-edit-element="isEditElement()"></tree-test-tree>
+            </li>
+        </ul>
+        <ul ng-if="element.type=='route'" class="test-tree-options">
+            <li class="test-tree-option" ng-repeat="option in element.data.content.choices track by $index">
+                Answer {{$index+1}}
+                <tree-test-tree content="element.children[$index]" depth="depth+1" edit-element-handler="editElementHandler()"  is-edit-element="isEditElement()"></tree-test-tree>
+            </li>
+        </ul>
+    </li>
+    <li class="test-tree-element test-tree-add-element">
+        <select ng-model="newElement.element">
+            <option value="text">Text</option>
+            <option value="question">Question</option>
+            <option value="route">Route-question</option>
+        </select>
+         <a href="" ng-click="addElement()">Add</a>
+    </li>
+</ul>

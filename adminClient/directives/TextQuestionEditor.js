@@ -1,13 +1,14 @@
 var app = angular.module('app');
 
-app.directive('testTextEditor', function() {
+app.directive('textQuestionEditor', function() {
     return {
         restrict: 'E',
         scope: {
             data: '=',
-            disabled: '=ngDisabled'
+            disabled: '=ngDisabled',
+            answer: '='
         },
-        templateUrl: 'views/directives/test_text_editor.html',
+        templateUrl: 'views/directives/text_question_editor.html',
         controller: ['$scope', function($scope) {
 
         }]

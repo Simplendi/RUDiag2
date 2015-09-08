@@ -21,6 +21,7 @@
     "angular-moment": "~0.10.2",
     "moment": "~2.10.6",
     "eonasdan-bootstrap-datetimepicker": "~4.15.35",
-    "ng-file-upload": "~7.0.17"
+    "ng-file-upload": "~7.0.17",
+    "ng-js-tree": "~0.0.6"
   }
 }

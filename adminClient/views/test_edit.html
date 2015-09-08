@@ -7,5 +7,6 @@
 </div>
 <div ng-show="loading">Loading</div>
 <div ng-hide="loading">
-    <test-editor data="data" open-test-handler="open()" close-test-handler="close()"></test-editor>
+    <test-editor ng-if="data.type!='tree'" data="data" open-test-handler="open()" close-test-handler="close()"></test-editor>
+    <tree-test-editor ng-if="data.type=='tree'"  data="data" open-test-handler="open()" close-test-handler="close"></tree-test-editor>
 </div>

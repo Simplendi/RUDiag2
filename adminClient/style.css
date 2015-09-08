@@ -1,28 +1,38 @@
+body {
+    margin-bottom: 20px;
+}
+
 .editor-question-option-content {
     display: inline-block;
     width: 90%;
 }
+
 .editor-question-option {
     display: block;
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
 .editor-question-option input {
     vertical-align: top;
 }
+
 .question-option-content {
     display: inline-block;
     padding-left: 10px;
     width: 90%;
 }
+
 .question-option {
     display: block;
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
 .question-option input {
     vertical-align: top;
 }
+
 .question-list-question {
     border: solid 1px #CACACA;
     background-color: white;
@@ -31,9 +41,49 @@
     width: 100%;
 }
 
+.test-tree {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.test-tree-option {
+    background-image: url('/admin/static/img/arrow_branch_down.png');
+    background-repeat: no-repeat;
+    background-position: 0px top;
+    padding-left: 16px;
+}
+
+.test-tree-options {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.test-tree-simple-element {
+    background-image: url('/admin/static/img/arrow_down.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    padding-left: 16px;
+}
+
+.test-tree-branch-element {
+    background-image: url('/admin/static/img/arrow_down.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    padding-left: 16px;
+}
+.test-tree-add-element {
+    background-image: url('/admin/static/img/add.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    padding-left: 16px;
+}
+
 .editable {
     border: dotted 2px gray;
 }
+
 .content-editor {
     position: absolute;
     display: block;

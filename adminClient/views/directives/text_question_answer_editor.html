@@ -1,0 +1,20 @@
+<div>
+    Create a row for each right answer.
+<table class="table">
+    <thead>
+    <tr>
+        <th>Answer</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="answer in data.answers track by $index" ng-init="answer_index = $index">
+            <td>
+                <input class="form-control" type="text" ng-model="data.answers[answer_index]" ng-disabled="disabled">
+            </td>
+            <td><a href="" class="btn btn-default" ng-click="deleteAnswer(answer_index)" ng-disabled="disabled">Delete</a></td>
+        </tr>
+    </tbody>
+</table>
+<a href="" class="btn btn-default" ng-click="addAnswer()" ng-disabled="disabled">Add answer</a>
+</div>

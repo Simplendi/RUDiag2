@@ -20,9 +20,13 @@ class Test:
     INVITE_METHOD_LOGIN = "login"
     INVITE_METHOD_SECURE = "secure"
 
+    TYPE_BASIC = "basic"
+    TYPE_TREE = "tree"
+
     def __init__(self):
         # Basic fields
         self.id = None
+        self.type = Test.TYPE_BASIC
         self.title = ""
         self.owners = []
         self.reviewers = []
@@ -74,6 +78,7 @@ class Test:
 
         # Basic fields
         test.id = data_dict.get("id", test.id)
+        test.type = data_dict.get("type", test.type)
         test.title = data_dict.get("title", test.title)
         test.owners = data_dict.get("owners", test.owners)
         test.reviewers = data_dict.get("reviewers", test.reviewers)
@@ -115,6 +120,7 @@ class Test:
     def to_run_dict(self):
         data_dict = dict()
         data_dict["title"] = self.title
+        data_dict["type"] = self.type
         data_dict["shuffle_content"] = self.shuffle_content
 
         # Strip content of sensitive details
@@ -142,6 +148,7 @@ class Test:
         data_dict = dict()
 
         data_dict["title"] = self.title
+        data_dict["type"] = self.type
         data_dict["shuffle_content"] = self.shuffle_content
         data_dict["opened_at"] = stringify_datetime(self.opened_at)
         data_dict["close_at"] = stringify_datetime(self.close_at)
@@ -173,6 +180,8 @@ class Test:
         # Basic fields
         if self.id is not None and not for_db:
             data_dict["id"] = self.id
+
+        data_dict["type"] = self.type
         data_dict["title"] = self.title
         data_dict["owners"] = self.owners
         data_dict["reviewers"] = self.reviewers

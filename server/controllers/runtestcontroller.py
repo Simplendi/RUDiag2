@@ -6,13 +6,17 @@ from framework.httpexceptions import HttpNotFoundException
 from framework.httpexceptions import HttpBadRequestException
 
 from controllers.basecontroller import BaseController
+from helpers.inviteemail import InviteEmail
+from helpers.invitesender import InviteSender
 from models.db.test import DbTest
 from models.db.testsession import DbTestSession
+from models.db.user import DbUser
 
 from models.service.question import Question
 from models.db.question import DbQuestion
 from models.service.test import Test
 from models.service.testsession import TestSession
+from models.service.user import User
 
 
 class RunTestController(BaseController):
@@ -138,12 +142,21 @@ class RunTestController(BaseController):
             if test.invite_method != Test.INVITE_METHOD_LINK:
                 raise HttpNotFoundException()
 
+            if not request.body.get("email", ""):
+                response.statuscode = 400
+                response.setJsonBody(json.dumps({'error':'invalid'}))
+                return state
+
+
             test_session = TestSession.get_new_session_for_test(test)
             test_session.email = request.body.get("email", "")
-            test_session.invited_at = datetime.datetime.utcnow()
 
-            database_session.add(test_session.to_db())
-            database_session.commit()
+            try:
+                invite_sender = InviteSender()
+                invite_sender.sendInvite(database_session, test_session, test=test)
+            except:
+                response.statuscode = 400
+                response.setJsonBody(json.dumps({'error':'mail'}))
 
             return state
 
