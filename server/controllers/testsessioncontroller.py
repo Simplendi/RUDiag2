@@ -1,3 +1,4 @@
+import traceback
 from helpers.feedbacksender import FeedbackSender
 import io
 import json
@@ -163,6 +164,8 @@ class TestSessionController(GenericController):
                 invite_sender = InviteSender()
                 invite_sender.sendInvite(database_session, test_session, db_test_session)
             except:
+                print("Error while sending invite")
+                traceback.print_exc()
                 raise HttpBadRequestException()
 
         return state
@@ -185,6 +188,8 @@ class TestSessionController(GenericController):
                 feedback_sender = FeedbackSender()
                 feedback_sender.sendFeedback(database_session, test_session, db_test_session)
             except:
+                print("Error while sending feedback")
+                traceback.print_exc()
                 raise HttpBadRequestException()
 
         return state

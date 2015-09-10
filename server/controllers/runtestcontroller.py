@@ -1,4 +1,5 @@
 import json
+import traceback
 import hashlib
 import datetime
 from contextlib import closing
@@ -155,6 +156,8 @@ class RunTestController(BaseController):
                 invite_sender = InviteSender()
                 invite_sender.sendInvite(database_session, test_session, test=test)
             except:
+                print("Error while sending invite")
+                traceback.print_exc()
                 response.statuscode = 400
                 response.setJsonBody(json.dumps({'error':'mail'}))
 
