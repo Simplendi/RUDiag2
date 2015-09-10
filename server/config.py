@@ -27,11 +27,13 @@ config = Config()
 if "database" not in config_parser:
     exit("No database section in config found")
 
+config["base_path"] = config_parser.get("path", "base_path")
+
 config["database_engine"] = create_engine(config_parser.get("database", "url"), echo=config_parser.getboolean("database", "echo"))
 config["database_session_maker"] = sessionmaker(bind=config["database_engine"])
 
 # Create template lookup to get templates
-config["template_lookup"] = TemplateLookup(["views/"]).get_template
+config["template_lookup"] = TemplateLookup([config["base_path"] + "/server/views/"]).get_template
 
 # Read session configuration
 if "session" not in config_parser:
