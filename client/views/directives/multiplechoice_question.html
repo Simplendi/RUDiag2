@@ -1,7 +1,23 @@
 <div contentable ng-model="data.content.question_before"></div>
 
 <span class="question-option" ng-repeat="choice in data.content.choices track by $index">
-<input type="checkbox" ng-click="toggleAnswerOption($index)" ng-checked="$parent.answer.indexOf($index) >= 0"/>
+
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&answerIsRight()"/>
+<img src="/admin/static/img/tick.png" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)>=0"/>
+    <img src="/admin/static/img/16x16.png" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)<0"/>
+
+
+<img src="/admin/static/img/tick.png" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) >= 0"/>
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) < 0"/>
+
+<img src="/admin/static/img/cross.png" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) >= 0"/>
+<img src="/admin/static/img/16x16.png" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) < 0"/>
+
+<input ng-if="showResult" type="checkbox" disabled="disabled" ng-checked="answer.indexOf($index) >= 0" />
+
+
+
+<input ng-if="!showResult" type="checkbox" ng-click="toggleAnswerOption($index)" ng-checked="$parent.$parent.answer.indexOf($index) >= 0"/>
 <div contentable class="question-option-content" ng-model="data.content.choices[$index]" ></div>
 </span>
 

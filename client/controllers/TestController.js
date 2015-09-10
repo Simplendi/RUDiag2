@@ -3,7 +3,7 @@ var app = angular.module('app');
 app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal', 'runTestService', 'moment', function($scope, $routeParams, $interval, $modal, runTestService, moment) {
     $scope.saving = false;
     $scope.test = {};
-    $scope.test_session = {};
+    $scope.testSession = {};
 
     // The state indicates what state the controller has. There are multiple states:
     // loading: the test is loading
@@ -20,11 +20,14 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
         if (angular.isDefined($routeParams.id)) {
             runTestService.getTestSession($routeParams.id)
                 .success(function (session) {
-                    $scope.test_session = session;
+                    $scope.testSession = session;
                     runTestService.getTestUsingSession($routeParams.id)
                         .success(function(test) {
                             $scope.test = test;
-                            if($scope.test_session.closed_at != null) {
+                            if($scope.testSession.feedback_at != null) {
+                                $scope.state = 'feedback';
+                            }
+                            else if($scope.testSession.closed_at != null) {
                                 $scope.state = 'done';
                             } else {
                                 $scope.state = 'data';
@@ -64,7 +67,7 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
     };
 
     $scope.onAutoupdate = function() {
-      if($scope.test_session.closed_at == null) {
+      if($scope.testSession.closed_at == null) {
           $scope.update();
       } else {
           $scope.stopAutoupdate();
@@ -72,9 +75,9 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
     };
 
     $scope.update = function() {
-        runTestService.updateTestSession($routeParams.id, $scope.test_session)
-            .success(function(test_session) {
-                $scope.test_session.updated_at = test_session.updated_at;
+        runTestService.updateTestSession($routeParams.id, $scope.testSession)
+            .success(function(testSession) {
+                $scope.testSession.updated_at = testSession.updated_at;
             })
     };
 
@@ -102,7 +105,7 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
 
         submitModal.result.then(function () {
             $scope.stopAutoupdate();
-            runTestService.closeTestSession($routeParams.id, $scope.test_session)
+            runTestService.closeTestSession($routeParams.id, $scope.testSession)
                 .success(function() {
                     $scope.state = 'done';
                 })

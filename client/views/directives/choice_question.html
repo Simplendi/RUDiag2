@@ -1,7 +1,18 @@
 <div contentable ng-model="data.content.question_before"></div>
 
 <span class="question-option" ng-repeat="choice in data.content.choices track by $index">
-<input type="radio" ng-model="$parent.answer" ng-value="$index" />
+
+
+<img src="/static/img/16x16.png" ng-if="showResult&&(!answerIsRight()&&data.answers[0]!=$index||answerIsRight())"/>
+<img src="/static/img/tick.png" ng-if="showResult&&!answerIsRight()&&data.answers[0]==$index"/>
+
+<img src="/static/img/16x16.png" ng-if="showResult&&answer!=$index"/>
+<img src="/static/img/tick.png" ng-if="showResult&&answerIsRight()&&answer==$index"/>
+<img src="/static/img/cross.png" ng-if="showResult&&!answerIsRight()&&answer==$index"/>
+
+<input ng-if="showResult" type="radio" disabled="disabled" ng-checked="answer==$index"/>
+
+<input ng-if="!showResult" type="radio" ng-model="$parent.$parent.answer" ng-value="$index" />
 <div contentable class="question-option-content" ng-model="data.content.choices[$index]" ></div>
 </span>
 

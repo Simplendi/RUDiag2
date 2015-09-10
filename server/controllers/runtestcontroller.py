@@ -1,5 +1,4 @@
 import json
-import traceback
 import hashlib
 import datetime
 from contextlib import closing
@@ -64,7 +63,11 @@ class RunTestController(BaseController):
 
             test = self._getOpenTestOrThrowHttp(database_session, test_session.test_id)
 
-            response.setJsonBody(json.dumps(test.to_run_dict()))
+            if test_session.feedback_at is not None:
+                response.setJsonBody(json.dumps(test.to_feedback_dict()))
+            else:
+                response.setJsonBody(json.dumps(test.to_run_dict()))
+
             return state
 
     def getTestSession(self, state, id):

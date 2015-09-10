@@ -117,6 +117,44 @@ class Test:
 
         return item_dict
 
+    def _get_question_for_feedback(self, item_dict):
+        question_dict = item_dict["data"]
+        new_question_dict = dict()
+        new_question_dict["type"] = question_dict["type"]
+        new_question_dict["content"] = question_dict["content"]
+        new_question_dict["answers"] = question_dict["answers"]
+
+        item_dict["data"] = new_question_dict
+
+        return item_dict
+
+    def to_feedback_dict(self):
+        data_dict = dict()
+        data_dict["title"] = self.title
+        data_dict["type"] = self.type
+        data_dict["shuffle_content"] = self.shuffle_content
+
+        # Strip content of sensitive details
+        content = []
+        for item in self.content:
+            if item["type"] == "question":
+                content.append(self._get_question_for_feedback(item))
+            else:
+                content.append(item)
+        data_dict["content"] = content
+
+        data_dict["opened_at"] = stringify_datetime(self.opened_at)
+        data_dict["close_at"] = stringify_datetime(self.close_at)
+        data_dict["closed_at"] = stringify_datetime(self.closed_at)
+        data_dict["feedback_timing"] = self.feedback_timing
+        data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
+        data_dict["feedback_after"] = self.feedback_after
+        data_dict["invite_method"] = self.invite_method
+        data_dict["invite_url"] = self.get_invite_url()
+        data_dict["ask_for_data"] = self.ask_for_data
+
+        return data_dict
+
     def to_run_dict(self):
         data_dict = dict()
         data_dict["title"] = self.title

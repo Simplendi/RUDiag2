@@ -6,10 +6,14 @@ app.directive('choiceQuestion', function() {
         scope: {
             data: '=',
             answer: '=',
-            disabled: '=ngDisabled'
+            disabled: '=ngDisabled',
+            showResult: '=showResult'
         },
         templateUrl: 'views/directives/choice_question.html',
         controller: ['$scope', function ($scope) {
+            $scope.answerIsRight = function() {
+                return $scope.data.answers.indexOf($scope.answer) >= 0;
+            }
 
         }]
     }

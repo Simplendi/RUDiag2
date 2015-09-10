@@ -1,0 +1,23 @@
+<div>
+    {{testSession}}
+    <h1>{{test.title}}</h1>
+
+    <h2>Question feedback</h2>
+
+    <div ng-repeat="content in test.content | filter: {'type':'question'}">
+        <h3>Question {{$index+1}}</h3>
+        <choice-question ng-if="content.data.type=='choice'" data="content.data"
+                         answer="testSession.answers[$index]"
+                         show-result="true"></choice-question>
+        <multiplechoice-question ng-if="content.data.type=='multiplechoice'" data="content.data"
+                                 answer="testSession.answers[$index]" show-result="true"></multiplechoice-question>
+        <open-question ng-if="content.data.type=='open'" data="content.data"
+                                 answer="testSession.answers[$index]" show-result="true"></open-question>
+        <text-question ng-if=" content.data.type=='text'" data="content.data"
+                                 answer="testSession.answers[$index]" show-result="true"></text-question>
+        <h4>Feedback</h4>
+        <div contentable ng-model="testSession['question_feedback'][$index]['feedback']"></div>
+    </div>
+<h2>Total feedback</h2>
+<div contentable ng-model="testSession.total_feedback"></div>
+</div>

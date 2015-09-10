@@ -6,7 +6,8 @@ app.directive('multiplechoiceQuestion', function() {
         scope: {
             data: '=',
             answer: '=',
-            disabled: '=ngDisabled'
+            disabled: '=ngDisabled',
+            showResult: '=showResult'
         },
         templateUrl: 'views/directives/multiplechoice_question.html',
         controller: ['$scope', function ($scope) {
@@ -22,6 +23,14 @@ app.directive('multiplechoiceQuestion', function() {
                     $scope.answer.push(option_index);
                 }
 
+            };
+            $scope.answerIsRight = function() {
+                for(var answer_index = 0; answer_index < $scope.data.answers.length; answer_index++) {
+                    if(angular.equals($scope.data.answers[answer_index], $scope.answer)) {
+                        return true;
+                    }
+                }
+                return false;
             };
 
         }]

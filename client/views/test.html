@@ -11,19 +11,19 @@
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="name" placeholder="Firstname Lastname"
-                           ng-model="test_session.name">
+                           ng-model="testSession.name">
                 </div>
                 <label for="student_id" class="col-sm-2 control-label">Student-ID</label>
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="student_id" placeholder="3123456"
-                           ng-model="test_session.student_id">
+                           ng-model="testSession.student_id">
                 </div>
                 <label for="email" class="col-sm-2 control-label">Email</label>
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="email" placeholder="yourname@example.org"
-                           ng-model="test_session.email">
+                           ng-model="testSession.email">
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
                     <a href="" class="btn btn-default" ng-click="dataDone()">Done</a>
@@ -32,22 +32,7 @@
         </form>
     </div>
     <div class="page-border col-xs-9" ng-if="state=='answer'">
-        <h1>{{test.title}}</h1>
-        {{test_session}}
-        <div ng-repeat="content in test.content">
-            <div ng-if="content.type=='text'" contentable ng-model="content.data"></div>
-            <div ng-if="content.type=='question'">
-                <h3>Question {{contentToQuestionIndex($index)+1}}</h3>
-                <choice-question ng-if="content.data.type=='choice'" data="content.data"
-                                 answer="test_session.answers[contentToQuestionIndex($index)]"></choice-question>
-                <multiplechoice-question ng-if="content.data.type=='multiplechoice'" data="content.data"
-                                         answer="test_session.answers[contentToQuestionIndex($index)]"></multiplechoice-question>
-                <open-question ng-if="content.data.type=='open'" data="content.data"
-                               answer="test_session.answers[contentToQuestionIndex($index)]"></open-question>
-
-            </div>
-        </div>
-
+        <test test="test" test-session="testSession"></test>
     </div>
     <div class="page-border col-xs-12" ng-if="state=='done'">
         <h1>{{test.title}}</h1>
@@ -56,9 +41,14 @@
         <span ng-if="test.feedback_timing=='at'">You can see your results at {{test.feedback_at | timeFormat }} by visiting this page again.</span>
         <span ng-if="test.feedback_timing=='after'">Your results will be available after {{test.feedback_after}} minutes by visting this page again.</span>
     </div>
+    <div class="page-border col-xs-12" ng-if="state=='feedback'">
+        <test-feedback test="test" test-session="testSession">
+
+        </test-feedback>
+    </div>
     <div ng-if="state=='answer'" class="col-xs-3 side-bar">
         <div ng-if="state=='answer'" class="col-xs-3 status-block page-border">
-            Last saved <span second-difference ng-model="test_session.updated_at" scale="minutes"></span> minutes ago
+            Last saved <span second-difference ng-model="testSession.updated_at" scale="minutes"></span> minutes ago
             <a href="" ng-click="submit()" class="btn btn-default">Submit answers</a>
 
         </div>

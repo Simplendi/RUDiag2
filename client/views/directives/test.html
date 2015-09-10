@@ -1,0 +1,14 @@
+<div>
+    {{testSession}}
+<h1>{{test.title}}</h1>
+<div ng-repeat="content in test.content">
+    <div ng-if="content.type=='text'" contentable ng-model="content.data"></div>
+    <div ng-if="content.type=='question'">
+        <h3>Question {{contentToQuestionIndex($index)+1}}</h3>
+        <choice-question ng-if="content.data.type=='choice'" data="content.data" answer="testSession.answers[contentToQuestionIndex($index)]" ng-disabled="disabled"></choice-question>
+        <multiplechoice-question ng-if="content.data.type=='multiplechoice'" data="content.data" answer="testSession.answers[contentToQuestionIndex($index)]" ng-disabled="disabled"></multiplechoice-question>
+        <open-question ng-if="content.data.type=='open'" data="content.data" answer="testSession.answers[contentToQuestionIndex($index)]" ng-disabled="disabled"></open-question>
+        <text-question ng-if="content.data.type=='text'" data="content.data" answer="testSession.answers[contentToQuestionIndex($index)]" ng-disabled="disabled"></text-question>
+    </div>
+</div>
+</div>
