@@ -6,6 +6,7 @@ app.directive('choiceQuestion', function() {
         scope: {
             data: '=',
             answer: '=',
+            previousAnswers: '=',
             disabled: '=ngDisabled',
             showResult: '=showResult'
         },

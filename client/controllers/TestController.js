@@ -207,7 +207,8 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
         if (!angular.isArray($scope.testSession["answers"]["answers"][$scope.openPath])) {
             $scope.testSession["answers"]["answers"][$scope.openPath] = [];
         }
-        $scope.testSession["answers"]["answers"][$scope.openPath].push($scope.openAnswer.answer);
+        $scope.testSession["answers"]["answers"][$scope.openPath].push(angular.copy($scope.openAnswer.answer));
+        $scope.openAnswer = {};
     };
 
     $scope.getPreviousAnswers = function () {

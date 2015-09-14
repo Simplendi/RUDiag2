@@ -1,7 +1,7 @@
 <div contentable ng-model="data.content.question_before" ng-disabled="disabled"></div>
 
 <textarea class="form-control" rows="10" ng-model="answer" ng-disabled="disabled"></textarea>
-<textarea class="form-control" rows="10" disabled ng-repeat="previousAnswer in previousAnswers | reverse">
+<textarea class="form-control" rows="10" disabled ng-repeat="previousAnswer in previousAnswers | reverse track by $index">
 {{previousAnswer}}
 </textarea>
 

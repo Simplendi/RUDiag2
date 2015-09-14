@@ -35,8 +35,6 @@
         <test test="test" ng-if="test.type=='basic'" test-session="testSession"></test>
         <div ng-if="test.type=='tree'">
             <h2>{{openElement.title}}</h2>
-            {{openElement}}
-            {{testSession}}
 
             <div contentable ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
             <div ng-if="openElement.type=='question'">

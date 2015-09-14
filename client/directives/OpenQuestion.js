@@ -6,6 +6,7 @@ app.directive('openQuestion', function() {
         scope: {
             data: '=',
             answer: '=',
+            previousAnswers: '=',
             disabled: '=ngDisabled'
         },
         templateUrl: 'views/directives/open_question.html',

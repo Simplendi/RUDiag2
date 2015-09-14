@@ -1,6 +1,9 @@
 <div contentable ng-model="data.content.question_before" ng-disabled="disabled"></div>
 
-<input type="text" ng-model="answer"/>
+<input class="form-control" type="text" ng-model="answer"/>
+<div ng-repeat="previousAnswer in previousAnswers | reverse track by $index">
+    <input class="form-control" type="text" ng-model="previousAnswer" disabled/>
+</div>
 
 <div contentable ng-model="data.content.question_after" ng-disabled="disabled"></div>
 
