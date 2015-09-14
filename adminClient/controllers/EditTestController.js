@@ -16,6 +16,7 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
             promise = testService.addTest($scope.data);
             promise = promise.success(function(data) {
                 $location.path("/test/" + data.id + "/edit").replace();
+                $location.search("");
             })
         } else {
             promise = testService.saveTest($scope.data)

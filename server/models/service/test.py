@@ -135,13 +135,16 @@ class Test:
         data_dict["shuffle_content"] = self.shuffle_content
 
         # Strip content of sensitive details
-        content = []
-        for item in self.content:
-            if item["type"] == "question":
-                content.append(self._get_question_for_feedback(item))
-            else:
-                content.append(item)
-        data_dict["content"] = content
+        if self.type == Test.TYPE_BASIC:
+            content = []
+            for item in self.content:
+                if item["type"] == "question":
+                    content.append(self._get_question_for_feedback(item))
+                else:
+                    content.append(item)
+            data_dict["content"] = content
+        else:
+            data_dict["content"] = self.content
 
         data_dict["opened_at"] = stringify_datetime(self.opened_at)
         data_dict["close_at"] = stringify_datetime(self.close_at)
@@ -162,13 +165,16 @@ class Test:
         data_dict["shuffle_content"] = self.shuffle_content
 
         # Strip content of sensitive details
-        content = []
-        for item in self.content:
-            if item["type"] == "question":
-                content.append(self._get_question_for_run(item))
-            else:
-                content.append(item)
-        data_dict["content"] = content
+        if self.type == Test.TYPE_BASIC:
+            content = []
+            for item in self.content:
+                if item["type"] == "question":
+                    content.append(self._get_question_for_run(item))
+                else:
+                    content.append(item)
+            data_dict["content"] = content
+        else:
+            data_dict["content"] = self.content
 
         data_dict["opened_at"] = stringify_datetime(self.opened_at)
         data_dict["close_at"] = stringify_datetime(self.close_at)

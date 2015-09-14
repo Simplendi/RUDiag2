@@ -6,6 +6,7 @@ app.directive('textQuestion', function() {
         scope: {
             data: '=',
             answer: '=',
+            previousAnswers: '=',
             disabled: '=ngDisabled'
         },
         templateUrl: 'views/directives/text_question.html',

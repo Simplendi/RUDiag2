@@ -32,7 +32,43 @@
         </form>
     </div>
     <div class="page-border col-xs-9" ng-if="state=='answer'">
-        <test test="test" test-session="testSession"></test>
+        <test test="test" ng-if="test.type=='basic'" test-session="testSession"></test>
+        <div ng-if="test.type=='tree'">
+            <h2>{{openElement.title}}</h2>
+            {{openElement}}
+            {{testSession}}
+
+            <div contentable ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
+            <div ng-if="openElement.type=='question'">
+
+            <choice-question ng-if="openElement.data.type=='choice'"
+                             data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()"></choice-question>
+            <multiplechoice-question ng-if="openElement.data.type=='multiplechoice'"
+                                     data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()"></multiplechoice-question>
+            <open-question ng-if="openElement.data.type=='open'" data="openElement.data"
+                           answer="openAnswer.answer"  previous-answers="getPreviousAnswers()"></open-question>
+            <text-question ng-if="openElement.data.type=='text'" data="openElement.data"
+                           answer="openAnswer.answer"  previous-answers="getPreviousAnswers()"></text-question>
+
+            <a href="" ng-click="answerQuestion()" class="btn btn-default">Answer</a>
+
+            </div>
+
+            <div ng-if="openElement && openElement.type!='route'"
+                 ng-repeat="child in openElement.children track by $index">
+                <a href="" ng-click="openElementByPath(openPath + '.' + ($index+1).toString() + '.1')"><span contentable
+                                                                                                             ng-model="openElement.child_labels[$index]"></span></a>
+            </div>
+
+            <div ng-if="openElement.type=='route'">
+                <choice-question data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()"></choice-question>
+
+                <a href="" ng-disabled="!hasAnswerElement()" ng-click="openAnswerElement()" class="btn btn-default">Answer</a>
+            </div>
+
+            <a href="" ng-if="hasNextElement()" ng-click="openNextElement()">Next</a>
+            <a href="" ng-if="!hasNextElement()&&hasUpElement()" ng-click="openUpElement()">Up</a>
+        </div>
     </div>
     <div class="page-border col-xs-12" ng-if="state=='done'">
         <h1>{{test.title}}</h1>
@@ -51,8 +87,10 @@
             Last saved <span second-difference ng-model="testSession.updated_at" scale="minutes"></span> minutes ago
             <a href="" ng-click="submit()" class="btn btn-default">Submit answers</a>
 
+
+            <tree-test-tree content="test.content" test-session="testSession" path=""
+                            open-element-handler="openElementHandler" is-element-open="isElementOpen"
+                            is-element-visited="isElementVisited"></tree-test-tree>
         </div>
-
-
     </div>
 </div>

@@ -205,6 +205,8 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
         scope: {
             content: '=',
             depth: '=',
+            path: '=',
+            disabled: '=ngDisabled',
             editElementHandler: '&',
             isEditElement: '&',
         },
@@ -267,6 +269,10 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
                 $scope.content.splice(oldIndex, 1);
                 $scope.content.splice(newIndex, 0, element);
             };
+
+            $scope.getPath = function(element) {
+                return ($scope.path || '') + ($scope.content.indexOf(element)+1).toString() + "."
+            }
         }],
         compile: function(element) {
             // Use the compile function from the RecursionHelper,

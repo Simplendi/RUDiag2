@@ -6,19 +6,20 @@
         <div class="row">
             <div class="col-xs-8">
                 {{editElement}}
-                <test-text-editor ng-if="editElement.type=='text' || editElement.type=='depth'" data="editElement.data"></test-text-editor>
-                <question-editor data="editElement.data" ng-if="editElement.type=='question'" intest="true"></question-editor>
-                <route-question-editor data="editElement.data" ng-if="editElement.type=='route'"></route-question-editor>
+                <h2 class="editable" contenteditable ng-model="editElement.title" ng-text="true" ng-if="editElement" ng-disabled="!isPlanned()"></h2>
+                <test-text-editor ng-if="editElement.type=='text' || editElement.type=='depth'" data="editElement.data" ng-disabled="!isPlanned()"></test-text-editor>
+                <question-editor data="editElement.data" ng-if="editElement.type=='question'" intest="true" ng-disabled="!isPlanned()"></question-editor>
+                <route-question-editor data="editElement.data" ng-if="editElement.type=='route'" ng-disabled="!isPlanned()"></route-question-editor>
                 <div ng-if="editElement && editElement.type!='route'" ng-repeat="child in editElement.children track by $index">
-                    <a href="" ng-click=""><span class="editable" contenteditable ng-model="editElement.child_labels[$index]" ng-text="true"></span></a>
-                    <a href="" ng-click="deleteChild($index)"><img src="/admin/static/img/cross.png"></a><br>
+                    <a href="" ng-click=""><span class="editable" contenteditable ng-model="editElement.child_labels[$index]" ng-text="true" ng-disabled="!isPlanned()"></span></a>
+                    <a href="" ng-click="deleteChild($index)" ng-if="isPlanned()"><img src="/admin/static/img/cross.png"></a><br>
                 </div>
-                <div ng-if="editElement && editElement.type!='route'" >
+                <div ng-if="editElement && editElement.type!='route' && isPlanned()" >
                     <a href="" class="btn btn-default" ng-click="addChild()">Add child</a>
                 </div>
             </div>
             <div class="col-xs-4">
-                <tree-test-tree content="data.content" depth="0" edit-element-handler="onEditElement" is-edit-element="isEditElement"></tree-test-tree>
+                <tree-test-tree content="data.content" depth="0" path="" ng-disabled="!isPlanned()" edit-element-handler="onEditElement" is-edit-element="isEditElement"></tree-test-tree>
             </div>
         </div>
     </tab>

@@ -60,3 +60,35 @@ body {
     border-right: 1px solid black;
     border-left: 1px solid black;
 }
+.test-tree {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.test-tree-option {
+    background-image: url('/static/img/arrow_branch_down.png');
+    background-repeat: no-repeat;
+    background-position: 0px top;
+    padding-left: 16px;
+}
+
+.test-tree-options {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.test-tree-simple-element {
+    background-image: url('/static/img/arrow_down.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    padding-left: 16px;
+}
+
+.test-tree-branch-element {
+    background-image: url('/static/img/arrow_down.png');
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    padding-left: 16px;
+}
