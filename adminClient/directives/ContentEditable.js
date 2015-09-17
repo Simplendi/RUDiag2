@@ -37,6 +37,7 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
                 scope.$evalAsync(readValue(element));
                 if(!scope.text) {
                     element.next().filter("content-editor").remove();
+                    angular.element("a", element).attr("target", "_blank");
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
                 }
             });

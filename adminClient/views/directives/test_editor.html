@@ -109,7 +109,7 @@
                            ng-if="isPlanned()" id="open_at"/>
                     <input type="text" class="form-control" datetime-picker ng-model="data.open_at"
                            ng-if="!isPlanned()" ng-disabled="true" id="open_at"/>
-                    <a href="" ng-if="isPlanned()" ng-click="openTest()" class="btn btn-default">Open now</a>
+                    <a href="" ng-if="isPlanned()&&!is_template" ng-click="openTest()" class="btn btn-default">Open now</a>
                 </div>
             </div>
             <div class="form-group">
@@ -182,8 +182,8 @@
                         <option value="link">Using a link to request an access-code</option>
                         <option value="email">By sending an e-mail with an access-code</option>
                         <option value="code">By providing the an access-code manually</option>
-                        <option value="login">By logging in</option>
-                        <option value="secure">By using an secure access-code</option>
+                        <option disabled value="login">By logging in</option>
+                        <option disabled value="secure">By using an secure access-code</option>
                     </select>
                 </div>
             </div>

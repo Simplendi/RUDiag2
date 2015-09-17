@@ -1,17 +1,19 @@
 <ul class="test-tree">
     <li ng-repeat="element in content" class="test-tree-element" ng-show="isElementVisited()((path || '') + ($index+1).toString())">
-        <span class="test-tree-simple-element"><a href="" ng-click="openElementHandler()(element, path + ($index+1).toString())">{{path}}{{$index+1}} {{element.title}}</a></span>
+        <span class="test-tree-simple-element" ng-if="isElementOpen()(element)"><b><a href="" ng-click="openElementHandler()(element, path + ($index+1).toString())">{{path}}{{$index+1}} {{element.title}}</a></b></span>
+        <span class="test-tree-simple-element" ng-if="!isElementOpen()(element)"><a href="" ng-click="openElementHandler()(element, path + ($index+1).toString())">{{path}}{{$index+1}} {{element.title}}</a></span>
+
 
         <ul ng-if="element.children.length>0 && element.type!='route'" class="test-tree-options">
             <li class="test-tree-option" ng-repeat="child in element.children track by $index" ng-show="isElementVisited()(getPath(element) + ($index+1) + '.1')">
                 {{element.child_labels[$index]}}
-                <tree-test-tree content="element.children[$index]" path="getPath(element) + ($index+1) + '.'"  is-element-visited="isElementVisited()" open-element-handler="openElementHandler()"></tree-test-tree>
+                <tree-test-tree content="element.children[$index]" path="getPath(element) + ($index+1) + '.'"  is-element-visited="isElementVisited()" open-element-handler="openElementHandler()" is-element-open="isElementOpen()"></tree-test-tree>
             </li>
         </ul>
         <ul ng-if="element.type=='route'" class="test-tree-options">
             <li class="test-tree-option" ng-repeat="option in element.data.content.choices track by $index" ng-show="isElementVisited()(getPath(element) + ($index+1) + '.1')">
                 Answer {{$index+1}}
-                <tree-test-tree content="element.children[$index]" path="getPath(element) + ($index+1) + '.'"  is-element-visited="isElementVisited()" open-element-handler="openElementHandler()"></tree-test-tree>
+                <tree-test-tree content="element.children[$index]" path="getPath(element) + ($index+1) + '.'"  is-element-visited="isElementVisited()" open-element-handler="openElementHandler()" is-element-open="isElementOpen()"></tree-test-tree>
             </li>
         </ul>
     </li>

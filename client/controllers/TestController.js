@@ -31,6 +31,10 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
                             $scope.test = test;
                             if ($scope.testSession.feedback_at != null) {
                                 $scope.state = 'feedback';
+                                if ($scope.test.type == 'tree') {
+                                    $scope.initTree();
+                                }
+
                             }
                             else if ($scope.testSession.closed_at != null) {
                                 $scope.state = 'done';
@@ -177,8 +181,10 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
     };
 
     $scope.openAnswerElement = function() {
-        var element = $scope.getElementByPath($scope.openPath + "." + ($scope.openAnswer.answer+1).toString() + ".1");
-        $scope.openElementHandler(element, $scope.openPath + "." + ($scope.openAnswer.answer+1).toString() + ".1");
+        var answerIndex = $scope.openAnswer.answer;
+        var element = $scope.getElementByPath($scope.openPath + "." + (answerIndex+1).toString() + ".1");
+        $scope.answerQuestion();
+        $scope.openElementHandler(element, $scope.openPath + "." + (answerIndex+1).toString() + ".1");
     };
 
     $scope.openElementHandler = function (element, path) {

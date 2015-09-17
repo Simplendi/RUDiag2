@@ -4,13 +4,14 @@ body {
 
 .editor-question-option-content {
     display: inline-block;
+    padding-left: 10px;
     width: 90%;
 }
 
 .editor-question-option {
     display: block;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .editor-question-option input {
@@ -25,8 +26,8 @@ body {
 
 .question-option {
     display: block;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .question-option input {

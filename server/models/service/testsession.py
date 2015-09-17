@@ -1,7 +1,9 @@
 import json
 import random
 import string
+import urllib
 import datetime
+from framework import Config
 from models.db.testsession import DbTestSession
 from helpers.parsedatetime import parse_datetime, stringify_datetime
 
@@ -141,7 +143,12 @@ class TestSession():
         data_dict["total_feedback"] = self.total_feedback
         data_dict["data"] = self.data
 
+        data_dict["invite_url"] = self.get_invite_url()
+
         return data_dict
 
     def get_score(self):
         return sum([1 if question["right"] else 0 for question in self.question_feedback])
+
+    def get_invite_url(self):
+        return Config()["absolute_url"] + "index.html#/answer/" + urllib.parse.quote_plus(self.id)

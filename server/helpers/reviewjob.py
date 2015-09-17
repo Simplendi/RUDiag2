@@ -22,7 +22,7 @@ class ReviewJob():
 
             for db_test in db_tests:
                 test = Test.from_db(db_test)
-                if test.opened_at != None and test.review_method == Test.REVIEW_METHOD_AUTOMATIC:
+                if test.type == Test.TYPE_BASIC and test.opened_at != None and test.review_method == Test.REVIEW_METHOD_AUTOMATIC:
                     reviewer = Reviewer()
                     reviewer.set_test(test)
 
@@ -40,6 +40,23 @@ class ReviewJob():
 
                         database_session.add(test_session.to_db(db_test_session))
                         database_session.commit()
+                elif test.type == Test.TYPE_TREE:
+                    db_test_sessions = database_session.query(DbTestSession) \
+                        .filter(DbTestSession.test_id == test.id) \
+                        .filter(DbTestSession.closed_at != None) \
+                        .filter(DbTestSession.reviewed_at == None) \
+                        .all()
+
+                    for db_test_session in db_test_sessions:
+                        test_session = TestSession.from_db(db_test_session)
+
+                        #TODO: Do we need some kind of review?
+
+                        test_session.reviewed_at = datetime.datetime.utcnow()
+
+                        database_session.add(test_session.to_db(db_test_session))
+                        database_session.commit()
+
 
 
 

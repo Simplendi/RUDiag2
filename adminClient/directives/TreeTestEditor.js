@@ -246,7 +246,16 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
             };
 
             $scope.deleteElement = function ($index) {
-                $scope.content.splice($index, 1);
+
+                var deleteElementModal = $modal.open({
+                    templateUrl: "views/directives/tree_test_editor_delete.html",
+                    controller: "DefaultModalController"
+                });
+
+                deleteElementModal.result.then(function () {
+
+                    $scope.content.splice($index, 1);
+                });
             };
 
             $scope.moveElementUp = function ($index) {

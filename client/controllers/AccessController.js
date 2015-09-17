@@ -11,7 +11,11 @@ app.controller('AccessController', ['$scope', '$routeParams',  '$location', 'run
             runTestService.getTestInfo($routeParams.id)
                 .success(function(data) {
                     $scope.test = data;
-                    $scope.state = "form"
+                    if($scope.test.closed_at!=null) {
+                        $scope.state = "unknown"
+                    } else {
+                        $scope.state = "form"
+                    }
                 })
                 .error(function() {
                     $scope.state = "unknown"

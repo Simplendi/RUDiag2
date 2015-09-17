@@ -1,12 +1,19 @@
-<div class="content-editor">
-    <a ng-mousedown="basicCommand('bold', $event)"><img src="/admin/static/img/text_bold.png" /></a>
-    <a ng-mousedown="basicCommand('italic', $event)"><img src="/admin/static/img/text_italic.png" /></a>
-    <a ng-mousedown="basicCommand('underline', $event)"><img src="/admin/static/img/text_underline.png" /></a>
-    <a ng-mousedown="basicCommand('justifyLeft', $event)"><img src="/admin/static/img/text_align_left.png" /></a>
-    <a ng-mousedown="basicCommand('justifyCenter', $event)"><img src="/admin/static/img/text_align_center.png" /></a>
-    <a ng-mousedown="basicCommand('justifyRight', $event)"><img src="/admin/static/img/text_align_right.png" /></a>
-    <a ng-mousedown="editLink($event)"><img src="/admin/static/img/link_add.png" /></a>
-    <a ng-mousedown="basicCommand('unlink', $event)"><img src="/admin/static/img/link_break.png" /></a>
-    <a ng-mousedown="editHtml($event)"><img src="/admin/static/img/html_go.png" /></a>
-    <a ng-mousedown="addImage($event)"><img src="/admin/static/img/image_add.png" /></a>
+<a class="content-editor">
+    <a ng-mousedown="basicCommand('bold', $event)"><img src="/admin/static/img/text_bold.png" title="Make text bold" /></a>
+    <a ng-mousedown="basicCommand('italic', $event)"><img src="/admin/static/img/text_italic.png" title="Make text italic"/></a>
+    <a ng-mousedown="basicCommand('underline', $event)"><img src="/admin/static/img/text_underline.png" title="Make text underlined" /></a>
+    <a ng-mousedown="basicCommand('justifyLeft', $event)"><img src="/admin/static/img/text_align_left.png" title="Justify text left"/></a>
+    <a ng-mousedown="basicCommand('justifyCenter', $event)"><img src="/admin/static/img/text_align_center.png" title="Center text"/></a>
+    <a ng-mousedown="basicCommand('justifyRight', $event)"><img src="/admin/static/img/text_align_right.png" title="Justify text right"/></a>
+    <a ng-mousedown="basicCommandWithValue('formatBlock', 'H2', $event)"><img src="/admin/static/img/text_heading_2.png" title="Make H2 header from text"/></a>
+    <a ng-mousedown="basicCommandWithValue('formatBlock', 'H3', $event)"><img src="/admin/static/img/text_heading_3.png" title="Make H2 header from text"/></a>
+    <a ng-mousedown="basicCommandWithValue('formatBlock', 'H4', $event)"><img src="/admin/static/img/text_heading_4.png" title="Make H2 header from text"/></a>
+    <a ng-mousedown="basicCommandWithValue('formatBlock', 'H5', $event)"><img src="/admin/static/img/text_heading_5.png" title="Make H2 header from text"/></a>
+    <a ng-mousedown="basicCommandWithValue('formatBlock', 'H6', $event)"><img src="/admin/static/img/text_heading_6.png" title="Make H2 header from text"/></a>
+    <a ng-mousedown="basicCommandWithValue('formatBlock', 'p', $event)"><img src="/admin/static/img/style_delete.png" title="Remove all styling"/></a>
+    <a ng-mousedown="editLink($event)"><img src="/admin/static/img/link_add.png" title="Add link"/></a>
+    <a ng-mousedown="basicCommand('unlink', $event)"><img src="/admin/static/img/link_break.png" title="Remove link"/></a>
+    <a ng-mousedown="editHtml($event)"><img src="/admin/static/img/html_go.png" title="Edit html"/></a>
+    <a ng-mousedown="addImage($event)"><img src="/admin/static/img/image_add.png" title="Add image"/></a>
+    <a ng-mousedown="preview($event)"><img src="/admin/static/img/magnifier.png" title="preview"/></a>
 </div>

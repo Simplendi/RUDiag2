@@ -10,6 +10,11 @@ app.directive('contentEditor', function () {
                     document.execCommand(command, false, null);
                 };
 
+                $scope.basicCommandWithValue = function(command, value, $event) {
+                    $event.preventDefault();
+                    document.execCommand(command, false, value);
+                };
+
                 $scope.editHtml = function ($event) {
                     var html = $scope.model.$viewValue;
 
@@ -74,6 +79,19 @@ app.directive('contentEditor', function () {
                         });
                     })
                 };
+
+                $scope.preview = function($event) {
+                    $modal.open({
+                        templateUrl: 'views/directives/content_editor_preview.html',
+                        controller: 'ContentEditorPreviewModalController',
+                        size: 'lg',
+                        resolve: {
+                            content: function () {
+                                return $scope.model.$viewValue;
+                            }
+                        }
+                    });
+                }
             }
             ]
         }
@@ -119,4 +137,18 @@ app.controller('ContentEditorImageModalController', ['$scope', '$modalInstance',
     $scope.ok = function () {
         $modalInstance.close($scope.link);
     }
+}]);
+
+
+app.controller('ContentEditorPreviewModalController', ['$scope', '$modalInstance', 'content', function ($scope, $modalInstance, content) {
+    // Set initial values
+    $scope.content = content;
+
+    $scope.ok = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    };
 }]);
