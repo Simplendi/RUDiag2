@@ -33,6 +33,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'dist/app.min.js': [
+                        'bower_components/jquery/dist/jquery.js',
                         'bower_components/angular/angular.js',
                         'bower_components/moment/moment.js',
                         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',

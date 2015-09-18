@@ -2,6 +2,10 @@ body {
     margin-bottom: 20px;
 }
 
+.contentable {
+    overflow: hidden;
+}
+
 .editor-question-option-content {
     display: inline-block;
     padding-left: 10px;
@@ -83,6 +87,7 @@ body {
 
 .editable {
     border: dotted 2px gray;
+    overflow: hidden;
 }
 
 .content-editor {

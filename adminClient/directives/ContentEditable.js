@@ -64,11 +64,11 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
             scope.$watch('disabled', function (disabled) {
                 element.attr("contenteditable", !disabled);
                 if(disabled) {
-                    if(element.hasClass("editable")) {
-                        element.removeClass("editable");
-                    }
+                    element.removeClass("editable");
+                    element.addClass("contentable");
                 } else {
                     element.addClass("editable");
+                    element.removeClass("contentable");
                 }
             })
         }

@@ -22,7 +22,7 @@
         <td>
             <a href="" class="btn btn-default" ng-click="edit($index)">Edit</a>
             <a href="" class="btn btn-default" ng-if="test.type=='basic'" ng-click="review($index)">Review</a>
-            <a href="{{test_session.invite_url}}" target="_blank" class="btn btn-default" ng-if="test.type=='tree'">Review</a>
+            <a href="{{test_session.invite_url}}" target="_blank" class="btn btn-default" ng-if="test.type=='tree'&&test_session.closed_at!=null">Review</a>
             <a href="" class="btn btn-default" ng-click="delete($index)">Delete</a>
             <a href="" class="btn btn-default" ng-if="test_session.closed_at==null && test.opened_at!=null && test.closed_at==null" ng-click="sendInvite(test_session.id)">Send invite</a>
             <a href="" class="btn btn-default" ng-if="test_session.reviewed_at!=null" ng-click="sendFeedback(test_session.id)">Send feedback</a>

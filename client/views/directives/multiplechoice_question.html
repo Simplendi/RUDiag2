@@ -1,4 +1,4 @@
-<div contentable ng-model="data.content.question_before"></div>
+<div contentable class="contentable" ng-model="data.content.question_before"></div>
 
 <span class="question-option" ng-repeat="choice in data.content.choices track by $index" ng-if="!(disabled&&previousAnswers&&previousAnswers.length>0)">
 
@@ -18,16 +18,16 @@
 
 
 <input ng-if="!showResult" type="checkbox" ng-disabled="disabled" ng-click="toggleAnswerOption($index)" ng-checked="$parent.$parent.answer.indexOf($index) >= 0"/>
-<div contentable class="question-option-content" ng-model="data.content.choices[$index]" ></div>
+<div contentable class="question-option-content contentable" ng-model="data.content.choices[$index]" ></div>
 </span>
 
 <div ng-repeat="previousAnswer in previousAnswers | reverse track by $index">
  <span class="question-option" ng-repeat="choice in data.content.choices track by $index">
 
      <input type="checkbox" disabled="disabled" ng-checked="previousAnswer.indexOf($index) >= 0" />
-     <div contentable class="question-option-content" ng-model="data.content.choices[$index]"></div>
+     <div contentable class="question-option-content contentable" ng-model="data.content.choices[$index]"></div>
  </span>
 </div>
 
-<div contentable ng-model="data.content.question_after"></div>
+<div contentable class="contentable" ng-model="data.content.question_after"></div>
 

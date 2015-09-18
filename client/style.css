@@ -3,6 +3,10 @@ body {
     margin: 20px;
 }
 
+.contentable {
+    overflow: hidden;
+}
+
 .page-border {
     border: solid #CACACA 1px;
     background-color: white;
@@ -52,6 +56,7 @@ body {
 
 .editable {
     border: dotted 2px gray;
+    overflow: hidden;
 }
 .content-editor {
     position: absolute;

@@ -16,8 +16,8 @@
                     <a href="" class="btn btn-default" ng-click="addChild()">Add child</a>
                 </div>
                 <div ng-if="editElement && (editElement.type == 'route' || editElement.type=='question')">
-                    <input type="number" ng-model="editElement.minAnswers" style="width: 60px; display: inline-block" class="form-control"/><span>answers are needed before next button is showed (empty = always show)</span><br>
-                    <input type="number" ng-model="editElement.maxAnswers" style="width: 60px; display: inline-block" class="form-control"/><span>answers can maximally be given (empty = no limit)</span><br>
+                    <input type="number" ng-model="editElement.minAnswers" ng-disabled="!isPlanned()" style="width: 60px; display: inline-block" class="form-control"/><span>answers are needed before next button is showed (empty = always show)</span><br>
+                    <input type="number" ng-model="editElement.maxAnswers" ng-disabled="!isPlanned()" style="width: 60px; display: inline-block" class="form-control"/><span>answers can maximally be given (empty = no limit)</span><br>
 
                 </div>
             </div>

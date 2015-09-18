@@ -15,8 +15,8 @@
         <text-question ng-if=" content.data.type=='text'" data="content.data"
                                  answer="testSession.answers[$index]" show-result="true"></text-question>
         <h4>Feedback</h4>
-        <div contentable ng-model="testSession['question_feedback'][$index]['feedback']"></div>
+        <div contentable class="contentable" ng-model="testSession['question_feedback'][$index]['feedback']"></div>
     </div>
 <h2>Total feedback</h2>
-<div contentable ng-model="testSession.total_feedback"></div>
+<div contentable class="contentable" ng-model="testSession.total_feedback"></div>
 </div>

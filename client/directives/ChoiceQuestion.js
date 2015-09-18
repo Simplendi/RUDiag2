@@ -14,6 +14,10 @@ app.directive('choiceQuestion', function() {
         controller: ['$scope', function ($scope) {
             $scope.answerIsRight = function() {
                 return $scope.data.answers.indexOf($scope.answer) >= 0;
+            };
+
+            $scope.shouldBlockAnswer = function(optionIndex) {
+                return angular.isDefined($scope.previousAnswers) && $scope.previousAnswers.indexOf(optionIndex) >= 0
             }
 
         }]

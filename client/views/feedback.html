@@ -5,7 +5,7 @@
     <div class="page-border col-xs-12" ng-if="state=='feedback'">
         <h1>{{test.title}}</h1>
         <div ng-repeat="content in test.content">
-            <div ng-if="content.type=='text'" contentable ng-model="content.data"></div>
+            <div ng-if="content.type=='text'" contentable class="contentable" ng-model="content.data"></div>
             <div ng-if="content.type=='question'">
                 <h3>Question {{contentToQuestionIndex($index)+1}}</h3>
                 <choice-question ng-if="content.data.type=='choice'" data="content.data"

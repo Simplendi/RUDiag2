@@ -36,25 +36,25 @@
         <div ng-if="test.type=='tree'">
             <h2>{{openElement.title}}</h2>
 
-            <div contentable ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
+            <div contentable class="contentable" ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
             <div ng-if="openElement.type=='question'">
 
             <choice-question ng-if="openElement.data.type=='choice'"
-                             data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()"></choice-question>
+                             data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></choice-question>
             <multiplechoice-question ng-if="openElement.data.type=='multiplechoice'"
-                                     data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()"></multiplechoice-question>
+                                     data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></multiplechoice-question>
             <open-question ng-if="openElement.data.type=='open'" data="openElement.data"
-                           answer="openAnswer.answer"  previous-answers="getPreviousAnswers()"></open-question>
+                           answer="openAnswer.answer"  previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></open-question>
             <text-question ng-if="openElement.data.type=='text'" data="openElement.data"
-                           answer="openAnswer.answer"  previous-answers="getPreviousAnswers()"></text-question>
-            <a ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-click="answerQuestion()" class="btn btn-default">Answer</a>
+                           answer="openAnswer.answer"  previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></text-question>
+            <a ng-disabled="((openAnswer.answer==undefined)||(openElement.data.type!='choice'&&openAnswer.answer.length==0))" ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-click="answerQuestion()" class="btn btn-default">Answer</a>
 
             </div>
 
             <div ng-if="openElement && openElement.type!='route'"
                  ng-repeat="child in openElement.children track by $index">
-                <a href="" ng-click="openElementByPath(openPath + '.' + ($index+1).toString() + '.1')"><span contentable
-                                                                                                             ng-model="openElement.child_labels[$index]"></span></a>
+                <a href="" ng-click="openElementByPath(openPath + '.' + ($index+1).toString() + '.1')">
+                    <span contentable class="contentable" ng-model="openElement.child_labels[$index]"></span></a>
             </div>
 
             <div ng-if="openElement.type=='route'">
@@ -82,7 +82,7 @@
     <div class="page-border col-xs-9" ng-if="state=='feedback'&&test.type=='tree'">
             <h2>{{openElement.title}}</h2>
 
-            <div contentable ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
+            <div contentable class="contentable" ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
             <div ng-if="openElement.type=='question'">
 
                 <choice-question ng-if="openElement.data.type=='choice'"
