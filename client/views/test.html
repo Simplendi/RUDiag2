@@ -58,7 +58,7 @@
             </div>
 
             <div ng-if="openElement.type=='route'">
-                <choice-question data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()"></choice-question>
+                <choice-question data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></choice-question>
 
                 <a ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-disabled="!hasAnswerElement()" ng-click="openAnswerElement()" class="btn btn-default">Answer</a>
             </div>

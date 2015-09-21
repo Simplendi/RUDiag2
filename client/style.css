@@ -58,6 +58,12 @@ body {
     border: dotted 2px gray;
     overflow: hidden;
 }
+.previous-answer {
+    border: solid 1px #d0d0d0;
+    background-color: #fafafa;
+    margin-top: 5px;
+    padding-left: 5px
+}
 .content-editor {
     position: absolute;
     display: block;

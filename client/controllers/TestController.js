@@ -149,6 +149,8 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
     $scope.openElementByPath = function (path) {
         var element = $scope.getElementByPath(path);
         $scope.openElementHandler(element, path);
+
+
     };
 
     $scope.hasNextElement = function () {
@@ -197,6 +199,9 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
         $scope.openAnswer = {};
         if(!$scope.testSession["answers"]["visited"].hasOwnProperty(path) || !$scope.testSession["answers"]["visited"][path]) {
             $scope.testSession["answers"]["visited"][path] = true;
+
+            // Update test-session when a new path is opened
+            $scope.update();
         }
     };
 
@@ -215,6 +220,9 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
         }
         $scope.testSession["answers"]["answers"][$scope.openPath].push(angular.copy($scope.openAnswer.answer));
         $scope.openAnswer = {};
+
+        // Update test-session when a new answer is given
+        $scope.update();
     };
 
     $scope.getPreviousAnswers = function () {

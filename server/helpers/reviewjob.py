@@ -22,7 +22,7 @@ class ReviewJob():
 
             for db_test in db_tests:
                 test = Test.from_db(db_test)
-                if test.type == Test.TYPE_BASIC and test.opened_at != None and test.review_method == Test.REVIEW_METHOD_AUTOMATIC:
+                if test.type == Test.TYPE_BASIC and test.opened_at != None and test.review_timing != Test.REVIEW_TIMING_NEVER:
                     reviewer = Reviewer()
                     reviewer.set_test(test)
 
@@ -34,6 +34,9 @@ class ReviewJob():
 
                     for db_test_session in db_test_sessions:
                         test_session = TestSession.from_db(db_test_session)
+
+                        if not test_session.should_review(test):
+                            continue
 
                         test_session = reviewer.review(test_session)
                         test_session.reviewed_at = datetime.datetime.utcnow()
@@ -49,6 +52,9 @@ class ReviewJob():
 
                     for db_test_session in db_test_sessions:
                         test_session = TestSession.from_db(db_test_session)
+
+                        if not test_session.should_review(test):
+                            continue
 
                         #TODO: Do we need some kind of review?
 

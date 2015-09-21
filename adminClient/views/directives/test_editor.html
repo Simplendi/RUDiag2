@@ -109,7 +109,7 @@
                            ng-if="isPlanned()" id="open_at"/>
                     <input type="text" class="form-control" datetime-picker ng-model="data.open_at"
                            ng-if="!isPlanned()" ng-disabled="true" id="open_at"/>
-                    <a href="" ng-if="isPlanned()&&!is_template" ng-click="openTest()" class="btn btn-default">Open now</a>
+                    <a href="" ng-if="isPlanned()&&!data.is_template" ng-click="openTest()" class="btn btn-default">Open now</a>
                 </div>
             </div>
             <div class="form-group">
@@ -143,6 +143,39 @@
                         <input ng-if="isClosed()" type="text" class="form-control" datetime-picker
                                ng-model="data.closed_at" ng-disabled="true"/>
                         <span ng-if="!isClosed()">not yet</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="review_timing" class="col-sm-2 control-label">Review at</label>
+
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="data.review_timing" id="review_timing"
+                            ng-disabled="!isPlanned()">
+                        <option value="never">Never review</option>
+                        <option value="answer">When answered</option>
+                        <option value="feedback">When feedback is sent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="review_method" class="col-sm-2 control-label">Review method</label>
+
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="data.review_method" id="review_method"
+                            ng-disabled="!isPlanned()">
+                        <option value="automatic">Automatically</option>
+                        <option disabled value="manual">Manually</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-if="data.review_method=='manual'" class="form-group">
+                <label for="review_anonymous" class="col-sm-2 control-label">Review anonymously</label>
+
+                <div class="col-sm-10">
+                    <div class="checkbox">
+                        <label><input type="checkbox" class="" id="review_anonymous" ng-model="data.review_anonymous"
+                                      ng-disabled="!isPlanned()"/>&NonBreakingSpace;</label>
                     </div>
                 </div>
             </div>
@@ -192,27 +225,6 @@
 
                 <div class="col-sm-10">
                     <div id="invite_url" class="form-control-static">{{data.invite_url}}</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="review_method" class="col-sm-2 control-label">Review method</label>
-
-                <div class="col-sm-10">
-                    <select class="form-control" ng-model="data.review_method" id="review_method"
-                            ng-disabled="!isPlanned()">
-                        <option value="automatic">Automatically</option>
-                        <option value="manual">Manually</option>
-                    </select>
-                </div>
-            </div>
-            <div ng-if="data.review_method=='manual'" class="form-group">
-                <label for="review_anonymous" class="col-sm-2 control-label">Review anonymously</label>
-
-                <div class="col-sm-10">
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="" id="review_anonymous" ng-model="data.review_anonymous"
-                                      ng-disabled="!isPlanned()"/>&NonBreakingSpace;</label>
-                    </div>
                 </div>
             </div>
         </form>

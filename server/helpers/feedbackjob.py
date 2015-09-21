@@ -21,16 +21,11 @@ class FeedbackJob():
 
             for db_test in db_tests:
                 test = Test.from_db(db_test)
-                if test.opened_at is not None and \
-                        ((test.feedback_timing == Test.FEEDBACK_TIMING_AT
-                          and test.feedback_at is not None
-                          and test.feedback_at.time() < datetime.datetime.utcnow().time())
-                         or
-                             (test.feedback_timing == Test.FEEDBACK_TIMING_AFTER)):
+                if test.opened_at is not None:
 
                     db_test_sessions = database_session.query(DbTestSession) \
                         .filter(DbTestSession.test_id == test.id) \
-                        .filter(DbTestSession.closed_at != None) \
+                        .filter(DbTestSession.reviewed_at != None) \
                         .all()
 
                     for db_test_session in db_test_sessions:
@@ -39,10 +34,8 @@ class FeedbackJob():
                         if test_session.feedback_at is not None:
                             continue
 
-                        if test.feedback_timing == Test.FEEDBACK_TIMING_AFTER:
-                            if test_session.closed_at and (
-                                datetime.datetime.utcnow() - test_session.closed_at).seconds / 60 < test.feedback_after:
-                                continue
+                        if not test_session.should_send_feedback(test):
+                            continue
 
                         try:
                             feedback_sender = FeedbackSender()

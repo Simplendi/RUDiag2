@@ -1,4 +1,5 @@
 import json
+from models.service.test import Test
 import random
 import string
 import urllib
@@ -152,3 +153,33 @@ class TestSession():
 
     def get_invite_url(self):
         return Config()["absolute_url"] + "index.html#/answer/" + urllib.parse.quote_plus(self.id)
+
+    def should_send_feedback(self, test):
+        if test.feedback_timing == Test.FEEDBACK_TIMING_NEVER:
+            return False
+        elif test.feedback_timing == Test.FEEDBACK_TIMING_AFTER:
+            if self.closed_at and (
+                        datetime.datetime.utcnow() - self.closed_at).seconds / 60 > test.feedback_after:
+                return True
+            else:
+                return False
+        elif test.feedback_timing == Test.FEEDBACK_TIMING_AT:
+            if self.closed_at and test.feedback_at and test.feedback_at < datetime.datetime.utcnow():
+                return True
+            else:
+                return False
+
+    def should_review(self, test):
+        if test.review_timing == Test.REVIEW_TIMING_NEVER:
+            return False
+        elif test.review_timing == Test.REVIEW_TIMING_ANSWER:
+            if self.closed_at:
+                return True
+            else:
+                return False
+        elif test.review_timing == Test.REVIEW_TIMING_FEEDBACK:
+            if self.should_send_feedback(test):
+                return True
+            else:
+                return False
+

@@ -14,6 +14,10 @@ class Test:
     FEEDBACK_TIMING_AT = "at"
     FEEDBACK_TIMING_AFTER = "after"
 
+    REVIEW_TIMING_NEVER = "never"
+    REVIEW_TIMING_ANSWER = "answer"
+    REVIEW_TIMING_FEEDBACK = "feedback"
+
     INVITE_METHOD_LINK = "link"
     INVITE_METHOD_EMAIL = "email"
     INVITE_METHOD_CODE = "code"
@@ -52,6 +56,7 @@ class Test:
         self.feedback_after = None
         self.invite_method = Test.INVITE_METHOD_LINK
         self.invite_url = ""
+        self.review_timing = Test.REVIEW_TIMING_FEEDBACK
         self.review_method = Test.REVIEW_METHOD_AUTOMATIC
         self.review_anonymous = False
         self.ask_for_data = []
@@ -101,6 +106,7 @@ class Test:
         test.feedback_at = parse_datetime(data_dict.get("feedback_at", test.feedback_at))
         test.feedback_after = data_dict.get("feedback_after", test.feedback_after)
         test.invite_method = data_dict.get("invite_method", test.invite_method)
+        test.review_timing = data_dict.get("review_timing", test.review_timing)
         test.review_method = data_dict.get("review_method", test.review_method)
         test.review_anonymous = data_dict.get("review_anonymous", test.review_anonymous)
         test.ask_for_data = data_dict.get("ask_for_data", test.ask_for_data)
@@ -152,6 +158,7 @@ class Test:
         data_dict["feedback_timing"] = self.feedback_timing
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["feedback_after"] = self.feedback_after
+        data_dict["review_timing"] = self.review_timing
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.get_invite_url()
         data_dict["ask_for_data"] = self.ask_for_data
@@ -182,6 +189,7 @@ class Test:
         data_dict["feedback_timing"] = self.feedback_timing
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["feedback_after"] = self.feedback_after
+        data_dict["review_timing"] = self.review_timing
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.get_invite_url()
         data_dict["ask_for_data"] = self.ask_for_data
@@ -200,6 +208,7 @@ class Test:
         data_dict["feedback_timing"] = self.feedback_timing
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["feedback_after"] = self.feedback_after
+        data_dict["review_timing"] = self.review_timing
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.get_invite_url()
         data_dict["ask_for_data"] = self.ask_for_data
@@ -250,6 +259,8 @@ class Test:
         data_dict["invite_method"] = self.invite_method
         if not for_db:
             data_dict["invite_url"] = self.get_invite_url()
+
+        data_dict["review_timing"] = self.review_timing
         data_dict["review_method"] = self.review_method
         data_dict["review_anonymous"] = self.review_anonymous
         data_dict["ask_for_data"] = self.ask_for_data
