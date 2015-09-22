@@ -1,13 +1,23 @@
 <ul class="test-tree">
     <li ng-repeat="element in content" class="test-tree-element">
-        <span ng-if="element.type=='text'" class="test-tree-simple-element">{{path}}{{$index+1}} {{element.title}} (Text)</span>
-        <span ng-if="element.type=='question'" class="test-tree-simple-element">{{path}}{{$index+1}} {{element.title}} (Question)</span>
-        <span ng-if="element.type=='route'" class="test-tree-branch-element">{{path}}{{$index+1}} {{element.title}} (Route question)</span>
-        <span ng-if="isEditElement()(element)">Editing</span>
-        <a href="" ng-click="onEditElement(element)">Edit</a>
-        <a href="" ng-if="!disabled" ng-click="deleteElement($index)">Delete</a>
-        <a href="" ng-if="!$first&&!disabled" ng-click="moveElementUp($index)">Up</a>
-        <a href="" ng-if="!$last&&!disabled" ng-click="moveElementDown($index)">Down</a>
+        <span ng-if="element.type=='text'" class="test-tree-simple-element">
+            <b ng-if="isEditElement()(element)">{{path}}{{$index+1}} {{element.title}} (Text)</b>
+            <span ng-if="!isEditElement()(element)">{{path}}{{$index+1}} {{element.title}} (Text)</span>
+        </span>
+        <span ng-if="element.type=='question'" class="test-tree-simple-element">
+            <b ng-if="isEditElement()(element)">{{path}}{{$index+1}} {{element.title}} (Question)</b>
+            <span ng-if="!isEditElement()(element)">{{path}}{{$index+1}} {{element.title}} (Question)</span>
+        </span>
+        <span ng-if="element.type=='route'" class="test-tree-branch-element">
+            <b ng-if="isEditElement()(element)">{{path}}{{$index+1}} {{element.title}} (Route question)</b>
+            <span ng-if="!isEditElement()(element)">{{path}}{{$index+1}} {{element.title}} (Route question)</span>
+        </span>
+        <a ng-if="!isEditElement()(element)" href="" ng-click="onEditElement(element)"><img src="/admin/static/img/pencil.png" title="Edit"/></a>
+        <span ng-if="isEditElement()(element)">
+            <a href="" ng-if="!disabled" ng-click="deleteElement($index)"><img src="/admin/static/img/cross.png" title="Delete"/></a>
+            <a href="" ng-if="!$first&&!disabled" ng-click="moveElementUp($index)"><img src="/admin/static/img/arrow_up.png" title="Move up"/></a>
+            <a href="" ng-if="!$last&&!disabled" ng-click="moveElementDown($index)"><img src="/admin/static/img/arrow_down.png" title="Move down"/></a>
+        </span>
 
         <ul ng-if="element.children.length>0 && element.type!='route'" class="test-tree-options">
             <li class="test-tree-option" ng-repeat="child in element.children track by $index">
@@ -25,9 +35,10 @@
     <li ng-if="!disabled" class="test-tree-element test-tree-add-element">
         <select ng-model="newElement.element">
             <option value="text">Text</option>
-            <option value="question">Question</option>
+            <option value="question">New question</option>
+            <option value="existing_question">Existing question</option>
             <option value="route">Route-question</option>
         </select>
-         <a ng-if="!disabled" href="" ng-click="addElement()">Add</a>
+         <a ng-if="!disabled" href="" ng-click="addElement()"><img src="/admin/static/img/add.png" title="Add element"/></a>
     </li>
 </ul>

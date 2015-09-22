@@ -31,7 +31,7 @@
             </div>
         </form>
     </div>
-    <div class="page-border col-xs-9" ng-if="state=='answer'">
+    <div class="page-border col-xs-8" ng-if="state=='answer'">
         <test test="test" ng-if="test.type=='basic'" test-session="testSession"></test>
         <div ng-if="test.type=='tree'">
             <h2>{{openElement.title}}</h2>
@@ -63,9 +63,9 @@
                 <a ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-disabled="!hasAnswerElement()" ng-click="openAnswerElement()" class="btn btn-default">Answer</a>
             </div>
 
-            <div ng-if="!openElement.minAnswers || (openElement.minAnswers && getPreviousAnswers().length>=openElement.minAnswers)">
-            <a href="" ng-if="hasNextElement()" ng-click="openNextElement()">Next</a>
-            <a href="" ng-if="!hasNextElement()&&hasUpElement()" ng-click="openUpElement()">Up</a>
+            <div ng-if="(!openElement.minAnswers && !openElement.hideNext) || (openElement.minAnswers && getPreviousAnswers().length>=openElement.minAnswers)">
+            <a href="" class="btn btn-default" ng-if="hasNextElement()" ng-click="openNextElement()">Next</a>
+            <a href="" class="btn btn-default" ng-if="!hasNextElement()&&hasUpElement()" ng-click="openUpElement()">Up</a>
             </div>
         </div>
     </div>
@@ -82,7 +82,7 @@
     <div class="page-border col-xs-12" ng-if="state=='feedback'&&test.type=='basic'">
         <test-feedback test="test" test-session="testSession"></test-feedback>
     </div>
-    <div class="page-border col-xs-9" ng-if="state=='feedback'&&test.type=='tree'">
+    <div class="page-border col-xs-8" ng-if="state=='feedback'&&test.type=='tree'">
             <h2>{{openElement.title}}</h2>
 
             <div contentable class="contentable" ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
@@ -104,19 +104,21 @@
             </div>
 
     </div>
-    <div ng-if="state=='answer'||(state=='feedback'&&test.type=='tree')" class="col-xs-3 side-bar">
-        <div class="col-xs-3 status-block page-border">
+    <div ng-if="state=='answer'||(state=='feedback'&&test.type=='tree')" class="col-xs-4">
+        <div class="page-border">
             Email: {{testSession.email}}<br>
             Name: {{testSession.name}}<br>
             Student-ID: {{testSession.student_id}}<br><br>
             <div ng-if="state=='answer'">
-            Last saved <span second-difference ng-model="testSession.updated_at" scale="minutes"></span> minutes ago
+            Last auto-saved <span second-difference ng-model="testSession.updated_at" scale="minutes"></span> minutes ago<br>
             <a href="" ng-click="submit()" class="btn btn-default">Submit answers</a>
             </div>
 
+            <div class="test-tree-container">
             <tree-test-tree ng-if="test.type=='tree'" content="test.content" test-session="testSession" path=""
                             open-element-handler="openElementHandler" is-element-open="isElementOpen"
                             is-element-visited="isElementVisited"></tree-test-tree>
+            </div>
         </div>
     </div>
 </div>

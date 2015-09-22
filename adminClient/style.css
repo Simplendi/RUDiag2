@@ -79,7 +79,6 @@ body {
     padding-left: 16px;
 }
 .test-tree-add-element {
-    background-image: url('/admin/static/img/add.png');
     background-repeat: no-repeat;
     background-position: 0px center;
     padding-left: 16px;

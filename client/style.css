@@ -13,12 +13,6 @@ body {
     padding: 15px;
 
 }
-.status-block {
-    position: fixed;
-}
-.side-bar {
-    position: relative;
-}
 
 .editor-question-option-content {
     display: inline-block;
@@ -103,4 +97,7 @@ body {
     background-repeat: no-repeat;
     background-position: 0px center;
     padding-left: 16px;
+}
+.test-tree-container {
+    padding-top: 10px;
 }

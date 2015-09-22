@@ -222,8 +222,8 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
                     $scope.addTextElement();
                 } else if ($scope.newElement.element == 'question') {
                     $scope.addQuestionElement();
-                } else if ($scope.newElement.element == 'depth') {
-                    $scope.addDepthElement();
+                } else if ($scope.newElement.element == 'existing_question') {
+                    $scope.addExistingQuestionElement();
                 } else if ($scope.newElement.element == 'route') {
                     $scope.addRouteQuestionElement();
                 }
@@ -234,7 +234,19 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
             };
 
             $scope.addQuestionElement = function () {
-                $scope.content.push({type: 'question', data: {}})
+                $scope.content.push({type: 'question', data: {}, minAnswers:1, maxAnswers:1})
+            };
+
+            $scope.addExistingQuestionElement = function() {
+                var selectQuestionElementModal = $modal.open({
+                    templateUrl: "views/directives/test_editor_select_question.html",
+                    controller: "TestEditorSelectQuestionController",
+                    size: "lg"
+                });
+
+                selectQuestionElementModal.result.then(function (question_data) {
+                    $scope.content.push({type: 'question', data: question_data, minAnswers:1, maxAnswers:1})
+                })
             };
 
             $scope.addRouteQuestionElement = function() {

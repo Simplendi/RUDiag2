@@ -20,6 +20,9 @@
                     <input type="number" ng-model="editElement.maxAnswers" ng-disabled="!isPlanned()" style="width: 60px; display: inline-block" class="form-control"/><span>answers can maximally be given (empty = no limit)</span><br>
 
                 </div>
+                <div ng-if="editElement && (editElement.type=='text')">
+                    <input type="checkbox" ng-model="editElement.hideNext" ng-disabled="!isPlanned" /> hide next or up button.
+                </div>
             </div>
             <div class="col-xs-4">
                 <tree-test-tree content="data.content" depth="0" path="" ng-disabled="!isPlanned()" edit-element-handler="onEditElement" is-edit-element="isEditElement"></tree-test-tree>
@@ -65,7 +68,7 @@
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" datetime-picker
-                           ng-model="data.close_at" ng-if="!isClosed()" id="close_at" ng-min="data.open_at"/>
+                           ng-model="data.close_at" ng-if="!isClosed()" id="close_at" />
                     <input type="text" class="form-control" datetime-picker
                            ng-model="data.close_at" ng-if="isClosed()" ng-disabled="true" id="close_at"/>
 

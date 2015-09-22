@@ -25,13 +25,13 @@ class TimerJob():
                     continue
 
                 # Open tests that should be opened
-                if test.open_at and test.open_at.time() < datetime.datetime.utcnow().time() and test.opened_at is None:
+                if test.open_at and test.open_at < datetime.datetime.utcnow() and test.opened_at is None:
                     test.opened_at = datetime.datetime.utcnow()
                     print("Opened test {} (id={}) at {}".format(test.title, test.id, test.opened_at))
                     database_session.add(test.to_db(db_test))
 
                 # Close tests that should be closed
-                if test.close_at and test.close_at.time() < datetime.datetime.utcnow().time() and test.closed_at is None:
+                if test.close_at and test.close_at < datetime.datetime.utcnow() and test.closed_at is None:
                     test.closed_at = datetime.datetime.utcnow()
                     print("Closed test {} (id={}) at {}".format(test.title, test.id, test.closed_at))
                     database_session.add(test.to_db(db_test))
