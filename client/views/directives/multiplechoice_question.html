@@ -27,6 +27,11 @@
      <input type="checkbox" disabled="disabled" ng-checked="previousAnswer.indexOf($index) >= 0" />
      <div contentable class="question-option-content contentable" ng-model="data.content.choices[$index]"></div>
  </span>
+    <div ng-if="data.answers.length > 0">
+        <h6>Feedback</h6>
+        <span ng-if="isAnswerRight(previousAnswer)">{{data.feedback["right"]}}</span>
+        <span ng-if="!isAnswerRight(previousAnswer)">{{data.feedback["wrong"]}}</span>
+    </div>
 </div>
 
 <div contentable class="contentable" ng-model="data.content.question_after"></div>

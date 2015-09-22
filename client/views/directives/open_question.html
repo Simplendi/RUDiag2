@@ -3,6 +3,11 @@
 <input class="form-control" type="text" ng-model="$parent.answer" ng-disabled="disabled" ng-if="!(disabled&&previousAnswers&&previousAnswers.length>0)"/>
 <div ng-repeat="previousAnswer in previousAnswers | reverse track by $index">
     <input class="form-control" type="text" ng-model="previousAnswer" disabled/>
+    <div ng-if="data.answers.length > 0">
+        <h6>Feedback</h6>
+        <span ng-if="data.answers.indexOf(previousAnswer) >= 0">{{data.feedback["right"]}}</span>
+        <span ng-if="data.answers.indexOf(previousAnswer) < 0">{{data.feedback["wrong"]}}</span>
+    </div>
 </div>
 
 <div contentable class="contentable" ng-model="data.content.question_after" ng-disabled="disabled"></div>

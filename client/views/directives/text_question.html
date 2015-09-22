@@ -1,9 +1,17 @@
 <div contentable class="contentable" ng-model="data.content.question_before" ng-disabled="disabled"></div>
 
-<textarea class="form-control" rows="10" ng-model="$parent.answer" ng-disabled="disabled" ng-if="!(disabled&&previousAnswers&&previousAnswers.length>0)"></textarea>
-<textarea class="form-control" rows="10" disabled ng-repeat="previousAnswer in previousAnswers | reverse track by $index">
+<textarea class="form-control" rows="10" ng-model="$parent.answer" ng-disabled="disabled"
+          ng-if="!(disabled&&previousAnswers&&previousAnswers.length>0)"></textarea>
+<div ng-repeat="previousAnswer in previousAnswers | reverse track by $index">
+<textarea class="form-control" rows="10" disabled>
 {{previousAnswer}}
 </textarea>
 
+    <div ng-if="data.answers.length > 0">
+        <h6>Feedback</h6>
+        <span ng-if="data.answers.indexOf(previousAnswer) >= 0">{{data.feedback["right"]}}</span>
+        <span ng-if="data.answers.indexOf(previousAnswer) < 0">{{data.feedback["wrong"]}}</span>
+    </div>
+</div>
 <div contentable class="contentable" ng-model="data.content.question_after" ng-disabled="disabled"></div>
 

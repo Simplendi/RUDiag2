@@ -26,8 +26,12 @@ app.directive('multiplechoiceQuestion', function() {
 
             };
             $scope.answerIsRight = function() {
-                for(var answer_index = 0; answer_index < $scope.data.answers.length; answer_index++) {
-                    if(angular.equals($scope.data.answers[answer_index], $scope.answer)) {
+                return $scope.isAnswerRight(answer);
+            };
+
+            $scope.isAnswerRight = function(answer) {
+                for (var answer_index = 0; answer_index < $scope.data.answers.length; answer_index++) {
+                    if (angular.equals($scope.data.answers[answer_index], answer)) {
                         return true;
                     }
                 }
