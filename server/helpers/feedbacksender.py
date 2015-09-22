@@ -1,4 +1,5 @@
 import datetime
+from framework import Config
 from helpers.feedbackemail import FeedbackEmail
 from helpers.inviteemail import InviteEmail
 from models.db.test import DbTest
@@ -16,11 +17,13 @@ class FeedbackSender():
             db_test = database_session.query(DbTest).filter(DbTest.id == test_session.test_id).first()
             test = Test.from_db(db_test)
 
-        db_owner = database_session.query(DbUser).filter(DbUser.id == test.owners[0]).first()
-        owner = User.from_db(db_owner)
+        if test.sender_email:
+            sender_email = test.sender_email
+        else:
+            sender_email = Config()["sender_emailaddress"]
 
         test_session.feedback_at = datetime.datetime.utcnow()
-        feedback_email = FeedbackEmail(owner.email, test_session.email, test_session, test)
+        feedback_email = FeedbackEmail(sender_email, test_session.email, test_session, test)
         feedback_email.send()
 
         database_session.add(test_session.to_db(db_test_session))

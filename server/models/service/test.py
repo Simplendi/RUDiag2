@@ -59,6 +59,7 @@ class Test:
         self.review_timing = Test.REVIEW_TIMING_FEEDBACK
         self.review_method = Test.REVIEW_METHOD_AUTOMATIC
         self.review_anonymous = False
+        self.sender_email = ""
         self.ask_for_data = []
 
         self.created = None
@@ -89,6 +90,7 @@ class Test:
         test.reviewers = data_dict.get("reviewers", test.reviewers)
         test.shuffle_content = data_dict.get("shuffle_content", test.shuffle_content)
         test.content = data_dict.get("content", test.content)
+        test.sender_email = data_dict.get("sender_mail", test.sender_email)
 
         # Feedback fields
         test.question_feedback = data_dict.get("question_feedback", test.question_feedback)
@@ -240,6 +242,7 @@ class Test:
         data_dict["reviewers"] = self.reviewers
         data_dict["shuffle_content"] = self.shuffle_content
         data_dict["content"] = self.content
+        data_dict["sender_email"] = self.sender_email
 
         # Feedback fields
         data_dict["question_feedback"] = self.question_feedback

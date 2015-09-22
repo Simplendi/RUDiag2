@@ -74,7 +74,10 @@
         Your answers are submitted successfully.
 
         <span ng-if="test.feedback_timing=='at'">You can see your results at {{test.feedback_at | timeFormat }} by visiting this page again.</span>
-        <span ng-if="test.feedback_timing=='after'">Your results will be available after {{test.feedback_after}} minutes by visting this page again.</span>
+        <span ng-if="test.feedback_timing=='after'">Your results will be available
+            <span ng-if="test.feedback_after && test.feedback_after < 15">soon</span>
+            <span ng-if="test.feedback_after >= 15">after {{test.feedback_after}} minutes</span>
+            by visting this page again.
     </div>
     <div class="page-border col-xs-12" ng-if="state=='feedback'&&test.type=='basic'">
         <test-feedback test="test" test-session="testSession"></test-feedback>
