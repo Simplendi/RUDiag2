@@ -1,4 +1,5 @@
 import datetime
+from framework import Config
 from helpers.inviteemail import InviteEmail
 from models.db.test import DbTest
 from models.db.user import DbUser
