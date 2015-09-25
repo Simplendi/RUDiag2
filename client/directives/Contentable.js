@@ -7,7 +7,7 @@ app.directive('contentable', ['$sce', '$compile', function ($sce, $compile) {
             if (!ngModel) return;
 
             ngModel.$render = function () {
-                element.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
+                element.html(ngModel.$viewValue);
                 angular.element("a", element).attr("target", "_blank");
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
             };

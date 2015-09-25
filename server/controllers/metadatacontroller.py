@@ -1,42 +1,39 @@
 from controllers.genericcontroller import GenericController
 from framework.httpexceptions import HttpUnauthorizedException
-from models.db.user import DbUser
-from models.service.user import User
+from models.db.metadata import DbMetadata
+from models.service.metadata import Metadata
 
 
-class UserController(GenericController):
+class MetadataController(GenericController):
 
     def __init__(self):
-        super().__init__(User, DbUser)
+        super().__init__(Metadata, DbMetadata)
 
-    def runBeforeAdd(self, state, user):
+    def runBeforeAdd(self, state, metadata):
         if not self._is_user_admin(state.session):
             raise HttpUnauthorizedException()
 
-        if state.request.body.get("password"):
-            user.set_password(state.request.body.get("password"))
-        return user
+        return metadata
 
-    def runBeforeSave(self, state, user):
+    def runBeforeSave(self, state, metadata):
         if not self._is_user_admin(state.session):
             raise HttpUnauthorizedException()
 
-        if state.request.body.get("password"):
-            user.set_password(state.request.body.get("password"))
-        return user
+        return metadata
 
-    def runBeforeDelete(self, state, user):
+    def runBeforeDelete(self, state, metadata):
         if not self._is_user_admin(state.session):
             raise HttpUnauthorizedException()
 
-        return user
+        return metadata
 
     def runBeforeList(self, state):
         if not self._get_user_id(state.session):
             raise HttpUnauthorizedException()
 
-    def runBeforeGet(self, state, user):
+
+    def runBeforeGet(self, state, metadata):
         if not self._is_user_admin(state.session):
             raise HttpUnauthorizedException()
 
-        return user
+        return metadata

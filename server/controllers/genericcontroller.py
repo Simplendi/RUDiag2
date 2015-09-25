@@ -34,11 +34,15 @@ class GenericController(BaseController):
                 raise HttpNotFoundException()
 
             obj = self.clazz.from_db(db_obj)
+            obj = self.runBeforeGet(state, obj)
             obj_dict = obj.to_dict()
 
             response.setJsonBody(json.dumps(obj_dict))
 
         return state
+
+    def runBeforeGet(self, state, obj):
+        return obj
 
     def add(self, state):
         (request, response, session) = state.unfold()
@@ -82,6 +86,7 @@ class GenericController(BaseController):
 
             obj_dict = request.body
             obj = self.clazz.from_db(db_obj)
+            obj = self.runAfterSaveLoad(state, obj)
             obj = self.clazz.from_dict(obj_dict, obj)
             obj = self.runBeforeSave(state, obj)
             db_obj = obj.to_db(db_obj)
@@ -99,6 +104,10 @@ class GenericController(BaseController):
     def runBeforeSave(self, state, obj):
         return obj
 
+    def runAfterSaveLoad(self, state, obj):
+        return obj
+
+
     def delete(self, state, id):
         (request, response, session) = state.unfold()
 
@@ -113,13 +122,22 @@ class GenericController(BaseController):
 
             if not db_obj:
                 raise HttpNotFoundException()
+
+            obj = self.clazz.from_db(db_obj)
+            self.runBeforeDelete(state, obj)
+
             database_session.delete(db_obj)
             database_session.commit()
 
         return state
 
+    def runBeforeDelete(self, state, obj):
+        return obj
+
     def list(self, state):
         (request, response, session) = state.unfold()
+
+        self.runBeforeList(state)
 
         with closing(self._database_session_maker()) as database_session:
             db_objs = database_session.query(self.db_clazz).order_by(self.db_clazz.id).all()
@@ -132,6 +150,17 @@ class GenericController(BaseController):
             response.setJsonBody(json.dumps(obj_datas))
 
         return state
+
+    def runBeforeList(self, state):
+        pass
+
+    def _get_user_id(self, session):
+        user_data = json.loads(session.get("user", '{}'))
+        return user_data.get("id")
+
+    def _is_user_admin(self, session):
+        user_data = json.loads(session.get("user", '{}'))
+        return user_data.get("is_admin", False)
 
     def bindRoutes(self, router, path):
         router.addMapping(r"^/" + path + "/([^/]+)$", self.get, ['GET'])

@@ -6,7 +6,7 @@ import csv
 import tempfile
 from contextlib import closing
 from controllers.genericcontroller import GenericController
-from framework.httpexceptions import HttpBadRequestException, HttpNotFoundException
+from framework.httpexceptions import HttpBadRequestException, HttpNotFoundException, HttpUnauthorizedException
 from helpers.invitesender import InviteSender
 from models.db.test import DbTest
 from models.db.testsession import DbTestSession
@@ -19,6 +19,12 @@ class TestSessionController(GenericController):
     def __init__(self):
         super().__init__(TestSession, DbTestSession, False)
 
+    def _is_owner_or_reviewer(self, session, test):
+        return self._get_user_id(session) is not None and (self._get_user_id(session) in test.owners or self._get_user_id(session) in test.reviewers)
+
+    def _is_owner(self, session, test):
+        return self._get_user_id(session) is not None and self._get_user_id(session) in test.owners
+
     def list(self, state):
         (request, response, session) = state.unfold()
 
@@ -27,6 +33,16 @@ class TestSessionController(GenericController):
                 test_id = int(request.query.get("test_id"))
             except:
                 raise HttpBadRequestException()
+
+            db_test = database_session.query(DbTest).get(test_id)
+
+            if not db_test:
+                raise HttpNotFoundException
+
+            test = Test.from_db(db_test)
+
+            if not self._is_owner_or_reviewer(session, test):
+                raise HttpUnauthorizedException
 
             db_objs = database_session.query(self.db_clazz).order_by(self.db_clazz.id).filter(self.db_clazz.test_id == test_id).all()
 
@@ -54,6 +70,9 @@ class TestSessionController(GenericController):
                 raise HttpNotFoundException()
 
             test = Test.from_db(db_test)
+
+            if not self._is_owner(session, test):
+                raise HttpUnauthorizedException
 
             with io.TextIOWrapper(request.body["file"].file) as text_file:
 
@@ -92,6 +111,9 @@ class TestSessionController(GenericController):
                 raise HttpNotFoundException()
 
             test = Test.from_db(db_test)
+
+            if not self._is_owner(session, test):
+                raise HttpUnauthorizedException
 
             if test.type == Test.TYPE_TREE:
                 pass
@@ -157,6 +179,16 @@ class TestSessionController(GenericController):
 
             test_session = TestSession.from_db(db_test_session)
 
+            db_test = database_session.query(DbTest).get(test_session.test_id)
+
+            if not db_test:
+                raise HttpNotFoundException
+
+            test = Test.from_db(db_test)
+
+            if not self._is_owner_or_reviewer(session, test):
+                raise HttpUnauthorizedException
+
             if test_session.closed_at is not None or not test_session.email:
                 raise HttpBadRequestException()
 
@@ -180,6 +212,16 @@ class TestSessionController(GenericController):
                 raise HttpNotFoundException()
 
             test_session = TestSession.from_db(db_test_session)
+
+            db_test = database_session.query(DbTest).get(test_session.test_id)
+
+            if not db_test:
+                raise HttpNotFoundException
+
+            test = Test.from_db(db_test)
+
+            if not self._is_owner_or_reviewer(session, test):
+                raise HttpUnauthorizedException
 
             if test_session.reviewed_at is None or not test_session.email:
                 raise HttpBadRequestException()

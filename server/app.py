@@ -26,6 +26,9 @@ from controllers.genericcontroller import GenericController
 from controllers.usercontroller import UserController
 from controllers.runtestcontroller import RunTestController
 from controllers.testsessioncontroller import TestSessionController
+from controllers.testcontroller import TestController
+from controllers.questioncontroller import QuestionController
+from controllers.metadatacontroller import MetadataController
 
 class App(Application):
     def __init__(self):
@@ -41,16 +44,16 @@ class App(Application):
         self.router.addMapping(r"^/logout", login_controller.doLogout, ["POST"])
         self.router.addMapping(r"^/login$", login_controller.getLogin, ["GET"])
 
-        question_controller = GenericController(Question, DbQuestion)
+        question_controller = QuestionController()
         question_controller.bindRoutes(self.router, "question")
 
-        test_controller = GenericController(Test, DbTest)
+        test_controller = TestController()
         test_controller.bindRoutes(self.router, "test")
 
         user_controller = UserController()
         user_controller.bindRoutes(self.router, "user")
 
-        metadata_controller = GenericController(Metadata, DbMetadata)
+        metadata_controller = MetadataController()
         metadata_controller.bindRoutes (self.router, "metadata")
 
         test_session_controller = TestSessionController()

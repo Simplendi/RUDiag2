@@ -29,12 +29,12 @@
         <tab ng-if="!inline" heading="Feedback">
             <label>Wrong</label><br>
 
-            <div class="editable" contenteditable ng-model="data.feedback.wrong"></div>
+            <div class="editable" contenteditable ng-model="data.feedback.wrong" ng-disabled="disabled"></div>
             <br>
 
             <label>Right</label><br>
 
-            <div class="editable" contenteditable ng-model="data.feedback.right"></div>
+            <div class="editable" contenteditable ng-model="data.feedback.right" ng-disabled="disabled"></div>
         </tab>
         <tab heading="Metadata">
             <question-metadata-editor data="data" ng-disabled="disabled"></question-metadata-editor>
@@ -53,11 +53,11 @@
                                 <div class="form-control-static col-sm-5">{{getUserById(owner_id).fullname}}
                                     ({{getUserById(owner_id).username}})
                                 </div>
-                                <a href="" class="btn btn-default" ng-if="canRemoveOwner(owner_id)"
+                                <a href="" class="btn btn-default" ng-if="canRemoveOwner(owner_id)&&!disabled"
                                    ng-click="deleteOwner($index)">Delete</a>
                             </div>
                             <div class="row">
-                                <ui-select class="col-sm-5" ng-model="newReviewer.id" theme="bootstrap">
+                                <ui-select class="col-sm-5" ng-model="newReviewer.id" theme="bootstrap" ng-disabled="disabled">
                                     <ui-select-match allow-clear="true" placeholder="Enter user to add">
                                         {{$select.selected.fullname}} ({{$select.selected.username}})
                                     </ui-select-match>
@@ -65,7 +65,7 @@
                                         {{user.fullname}} ({{user.username}})
                                     </ui-select-choices>
                                 </ui-select>
-                                <a href="" ng-click="addOwner()" class="btn btn-default">Add</a>
+                                <a ng-disabled="disabled" href="" ng-click="addOwner()" class="btn btn-default">Add</a>
                             </div>
                         </div>
                     </div>

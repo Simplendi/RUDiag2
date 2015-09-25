@@ -2,6 +2,7 @@ import json
 import uuid
 from controllers.basecontroller import BaseController
 from framework.httpexceptions import HttpBadRequestException
+from framework.httpexceptions import HttpUnauthorizedException
 
 
 class ImageController(BaseController):
@@ -21,6 +22,9 @@ class ImageController(BaseController):
         """Handle a upload of an image
         """
         (request, response, session) = state.unfold()
+
+        if not session.get("user"):
+            raise HttpUnauthorizedException
 
         if request.body.done != 0:
             raise HttpBadRequestException()
