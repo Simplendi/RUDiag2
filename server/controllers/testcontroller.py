@@ -31,6 +31,8 @@ class TestController(GenericController):
         if not self._get_user_id(session):
             raise HttpUnauthorizedException
 
+        return obj
+
 
     def runBeforeDelete(self, state, obj):
         (request, response, session) = state.unfold()
