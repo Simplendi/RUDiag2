@@ -7,9 +7,14 @@ app.controller('LoginController', ['$scope', '$rootScope', '$location', 'loginSe
                 // Redirect back to home page
                 $location.url('/');
                 $rootScope.user = data;
+                $scope.error = "";
             })
-            .error(function() {
-                console.log("Error logging in!");
+            .error(function(data, status) {
+                if(status==401) {
+                    $scope.error = "Wrong username or password. Please try again or contact the administrator";
+                } else {
+                    $scope.error = "Unknown error. Please try again later or contact the administrator";
+                }
             })
     }
 }]);

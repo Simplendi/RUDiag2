@@ -186,6 +186,14 @@ app.directive('testSessionList', function () {
                 })
             };
 
+            $scope.isOwner = function() {
+                if (angular.isDefined($scope.test)&&angular.isDefined($scope.test.owners)) {
+                    return $scope.test.owners.indexOf($rootScope.user.id) >= 0;
+                } else {
+                    return false;
+                }
+            };
+
             $scope.init();
         }]
     }

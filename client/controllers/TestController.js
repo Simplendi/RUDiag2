@@ -45,8 +45,14 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
                                 }
                             }
                         })
+                        .error(function() {
+                            $scope.state = 'error';
+                        });
 
                 })
+                .error(function() {
+                   $scope.state = 'error';
+                });
         }
 
         updateTimer = $interval($scope.onAutoupdate, 100000);

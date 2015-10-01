@@ -1,8 +1,8 @@
 <div>
-    <a href="" class="btn btn-default" ng-click="add()">Add</a>
+    <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="add()">Add</a>
     <a href="" class="btn btn-default" ng-click="loadTestSessions()">Refresh</a>
-    <a href="" class="btn btn-default" ng-click="import()">Import</a>
-    <a href="/test_session/{{test.id}}/export" target="_blank" ng-if="test.type=='basic'" class="btn btn-default">Export</a>
+    <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="import()">Import</a>
+    <a href="/test_session/{{test.id}}/export" target="_blank" ng-if="test.type=='basic'&&isOwner()" class="btn btn-default">Export</a>
 <table class="table">
     <thead>
     <tr>
@@ -22,8 +22,8 @@
         <td>
             <a href="" class="btn btn-default" ng-click="edit($index)">Edit</a>
             <a href="" class="btn btn-default" ng-if="test.type=='basic'" ng-click="review($index)">Review</a>
-            <a href="{{test_session.invite_url}}" target="_blank" class="btn btn-default" ng-if="test.type=='tree'&&test_session.reviewed_at!=null">See answers</a>
-            <a href="" class="btn btn-default" ng-click="delete($index)">Delete</a>
+            <a href="{{test_session.invite_url}}" target="_blank" class="btn btn-default" ng-if="test.type=='tree'&&test_session.feedback_at!=null">See answers</a>
+            <a href="" class="btn btn-default" ng-click="delete($index)" ng-if="isOwner()">Delete</a>
             <a href="" class="btn btn-default" ng-if="test_session.closed_at==null && test.opened_at!=null && test.closed_at==null" ng-click="sendInvite(test_session.id)">Send invite</a>
             <a href="" class="btn btn-default" ng-if="test_session.reviewed_at!=null" ng-click="sendFeedback(test_session.id)">Send feedback</a>
 

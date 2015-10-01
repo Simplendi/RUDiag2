@@ -347,6 +347,14 @@ app.directive('testEditor', function () {
                     return $scope.getStatus() == "closed";
                 };
 
+                $scope.isOwner = function() {
+                    if (angular.isDefined($scope.data)&&angular.isDefined($scope.data.owners)) {
+                        return $scope.data.owners.indexOf($rootScope.user.id) >= 0;
+                    } else {
+                        return false;
+                    }
+                };
+
                 $scope.init();
 
 

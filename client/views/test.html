@@ -2,6 +2,11 @@
     <div class="page-border col-xs-12" ng-if="state=='loading'">
         Loading
     </div>
+    <div class="page-border col-xs-12" ng-if="state=='error'">
+        <h2>Error</h2>
+        An error occurred, the test could not be loaded. This could mean that the test is closed and the feedback can not
+        be accessed or the access-code was wrong.
+    </div>
     <div class="page-border col-xs-12" ng-if="state=='data'">
         <p>Please complete the following data to start the test.</p>
 
@@ -112,6 +117,9 @@
             <div ng-if="state=='answer'">
             Last auto-saved <span second-difference ng-model="testSession.updated_at" scale="minutes"></span> minutes ago<br>
             <a href="" ng-click="submit()" class="btn btn-default">Submit answers</a>
+            </div>
+            <div ng-if="state=='feedback'&&test.type=='tree'">
+                <a href="/run/test_session/{{testSession.id}}/answers" target="_blank">Printable answers</a>
             </div>
 
             <div class="test-tree-container">

@@ -24,6 +24,8 @@ class RunTestController(BaseController):
     def __init__(self):
         super().__init__()
 
+        self._get_template = self._config["template_lookup"]
+
     def _getOpenTestOrThrowHttp(self, database_session, test_id):
         db_test = database_session.query(DbTest).filter(DbTest.id == test_id).first()
 
@@ -89,6 +91,38 @@ class RunTestController(BaseController):
 
             response.setJsonBody(json.dumps(test_session.to_dict()))
             return state
+
+    def getTestSessionAnswers(self, state, id):
+        (request, response, session) = state.unfold()
+
+        with closing(self._database_session_maker()) as database_session:
+            db_test_session = database_session.query(DbTestSession).filter(DbTestSession.id == id).first()
+
+            if not db_test_session:
+                raise HttpNotFoundException()
+
+            test_session = TestSession.from_db(db_test_session)
+
+            if test_session.reviewed_at == None:
+                raise HttpNotFoundException()
+
+            db_test = database_session.query(DbTest).filter(DbTest.id == test_session.test_id).first()
+
+            if not db_test:
+                raise HttpNotFoundException()
+
+            test = Test.from_db(db_test)
+
+            if test.type != Test.TYPE_TREE:
+                raise HttpNotFoundException()
+
+            response.body = self._get_template("answers.html").render(state=state, test=test, test_session=test_session)
+
+            return state
+
+
+
+
 
     def closeTestSession(self, state, id):
         (request, response, session) = state.unfold()
@@ -170,6 +204,7 @@ class RunTestController(BaseController):
     def bindRoutes(self, router):
         router.addMapping(r"^/run/test_session/([^/]+)/close", self.closeTestSession, ['POST'])
         router.addMapping(r"^/run/test_session/([^/]+)/test", self.getTestUsingSession, ['GET'])
+        router.addMapping(r"^/run/test_session/([^/]+)/answers", self.getTestSessionAnswers, ['GET'])
         router.addMapping(r"^/run/test_session/([^/]+)", self.getTestSession, ['GET'])
         router.addMapping(r"^/run/test_session/([^/]+)", self.updateTestSession, ['POST'])
         router.addMapping(r"^/run/test/([0-9]+)/invite$", self.requestTestInvite, ['POST'])

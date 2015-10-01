@@ -3,6 +3,7 @@ import json
 
 from .basecontroller import BaseController
 from framework.httpexceptions import HttpNotFoundException
+from framework.httpexceptions import HttpUnauthorizedException
 from models.db.user import DbUser
 from models.service.user import User
 
@@ -19,14 +20,14 @@ class LoginController(BaseController):
         with closing(self._database_session_maker()) as database_session:
             db_user = database_session.query(DbUser).filter(DbUser.username==username).first()
             if not db_user:
-                raise HttpNotFoundException()
+                raise HttpUnauthorizedException()
 
             user = User.from_db(db_user)
             if user.is_password(request.body.get("password", "")):
                 response.setJsonBody(json.dumps(user.to_dict()))
                 session["user"] = json.dumps(user.to_dict())
             else:
-                raise HttpNotFoundException()
+                raise HttpUnauthorizedException()
 
         return state
 
