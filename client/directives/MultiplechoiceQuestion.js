@@ -26,7 +26,7 @@ app.directive('multiplechoiceQuestion', function() {
 
             };
             $scope.answerIsRight = function() {
-                return $scope.isAnswerRight(answer);
+                return $scope.isAnswerRight($scope.answer);
             };
 
             $scope.isAnswerRight = function(answer) {

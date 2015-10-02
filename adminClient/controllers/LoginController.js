@@ -1,6 +1,8 @@
 var app = angular.module('app');
 
 app.controller('LoginController', ['$scope', '$rootScope', '$location', 'loginService', function($scope, $rootScope, $location, loginService) {
+    $rootScope.title = "Login";
+
     $scope.onLoginClick = function() {
         loginService.doLogin($scope.username, $scope.password)
             .success(function(data) {

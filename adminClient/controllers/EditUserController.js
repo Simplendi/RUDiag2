@@ -1,11 +1,15 @@
 var app = angular.module('app');
 
-app.controller('EditUserController', ['$scope', '$routeParams', '$location', 'userService', function ($scope, $routeParams, $location, userService) {
+app.controller('EditUserController', ['$scope', '$rootScope', '$routeParams', '$location', 'userService', function ($scope, $rootScope, $routeParams, $location, userService) {
     // Set initial values
     $scope.loading = false;
     $scope.saving = false;
     $scope.deleting = false;
     $scope.data = {};
+
+
+    $rootScope.title = "Edit User";
+
 
     if (angular.isDefined($routeParams.id)) {
         $scope.loading = true;

@@ -3,7 +3,9 @@ import json
 from framework.httpexceptions import HttpUnauthorizedException
 from controllers.genericcontroller import GenericController
 from models.db.question import DbQuestion
+from models.db.metadata import DbMetadata
 from models.service.question import Question
+from models.service.metadata import Metadata
 
 
 class QuestionController(GenericController):
@@ -46,12 +48,58 @@ class QuestionController(GenericController):
             raise HttpUnauthorizedException
 
         with closing(self._database_session_maker()) as database_session:
-            db_objs = database_session.query(self.db_clazz).order_by(self.db_clazz.id).all()
+            questions = [Question.from_db(db_obj) for db_obj in database_session.query(self.db_clazz).order_by(self.db_clazz.id).all()]
+            metadata = [Metadata.from_db(db_obj) for db_obj in database_session.query(DbMetadata).all()]
 
-            obj_datas = []
-            for db_obj in db_objs:
-                obj_datas.append(self.clazz.from_db(db_obj).to_dict())
+            filter = json.loads(request.query.get("filter"))
 
-            response.setJsonBody(json.dumps(obj_datas))
+            question_datas = []
+            for question in self.apply_filter(filter, questions, metadata):
+                question_datas.append(question.to_dict())
+
+            response.setJsonBody(json.dumps(question_datas))
 
         return state
+
+    def index_metadata(self, metadata):
+        metadata_index = {}
+        for metadata_obj in metadata:
+            metadata_index[metadata_obj.name] = metadata_obj
+
+        return metadata_index
+
+    def apply_filter(self, filter, questions, metadatas):
+        metadata_index = self.index_metadata(metadatas)
+
+        for question in questions:
+
+            filtered = False
+            for (filter_metadata_name, filter_metadata_values) in filter.items():
+                if not question.metadata.get(filter_metadata_name):
+                    filtered = True
+                    break
+
+                if not metadata_index.get(filter_metadata_name):
+                    filtered = True
+                    break
+
+                metadata = metadata_index.get(filter_metadata_name)
+
+                if metadata.type == Metadata.TYPE_TEXT or metadata.type == Metadata.TYPE_URL:
+                    if not len(set(filter_metadata_values).intersection(question.metadata[filter_metadata_name])) == len(filter_metadata_values):
+                        filtered = True
+                        break
+                elif metadata.type == Metadata.TYPE_TREE:
+                    for filter_metadata_value in filter_metadata_values:
+                        match = False
+                        for metadata_value in question.metadata[filter_metadata_name]:
+                            if metadata_value.startswith(filter_metadata_value):
+                                match = True
+
+                        if not match:
+                            filtered = True
+                            break
+
+
+            if not filtered:
+                yield question

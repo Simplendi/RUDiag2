@@ -1,8 +1,76 @@
 <div class="modal-header"><h3>Select existing question</h3></div>
 <div class="modal-body">
-    <input type="text" ng-model="search"/>
+    <h4>Filter</h4>
+    <div ng-if="loadingFilter">
+        Loading filter...
+    </div>
+    <div ng-if="!loadingFilter">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="col-md-6">Metadata</th>
+                <th class="col-md-6">Value</th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="(name, values) in filter | orderBy: 'name'">
+            <tr ng-repeat="value in values track by $index">
+                <td>{{name}}</td>
+                <td>
+                    <input ng-if="getMetadataByName(name).type=='text' || getMetadataByName(name).type=='url'"
+                           ng-model="filter[name][$index]"
+                           ng-disabled="disabled"
+                           type="text"
+                           class="form-control"
+                           style="width:80%; display:inline-block"/>
+                    <ui-select ng-if="getMetadataByName(name).type=='tree'"
+                               ng-disabled="disabled"
+                               ng-model="filter[name][$index]"
+                               theme="bootstrap"
+                               style="width:80%; display:inline-block">
+                        <ui-select-match placeholder="Enter metadata value">
+                            {{$select.selected.description}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option.value as option in getMetadataByName(name).options | filter: $select.search">
+                            {{option.description}}
+                        </ui-select-choices>
+                    </ui-select>
+                    <a href="" ng-disabled="disabled" ng-click="deleteMetadataValue(name, $index)" class="btn btn-default">Delete</a>
+                </td>
+            </tr>
+            <tr ng-if="getMetadataByName(name).multivalue">
+                <td>
+                    {{name}}
+                </td>
+                <td>
+                    <a href="" ng-disabled="disabled" ng-click="addMetadataValue(name)" class="btn btn-default">Add</a>
+                </td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <td>
+                    <ui-select ng-disabled="disabled" ng-model="newMetadata.name" theme="bootstrap">
+                        <ui-select-match allow-clear="true" placeholder="Enter metadata to add">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="metadata.name as metadata in metadata | filter: filterMetadataNames | filter: $select.search">
+                            {{metadata.name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+                <td>
+                    <a href="" ng-click="addMetadata()" ng-disabled="disabled" class="btn btn-default">Add</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="" ng-click="search()" class="btn btn-default">Apply filter</a>
+    </div>
 
-    <div ng-repeat="question in questions | filter:{question: search}">
+
+    <div ng-repeat="question in questions">
         <question ng-disabled="true" data="question"></question>
         <a href="" ng-click="selectQuestion(question)" class="btn">Select</a>
     </div>

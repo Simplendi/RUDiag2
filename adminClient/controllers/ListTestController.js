@@ -1,10 +1,13 @@
 var app = angular.module('app');
 
-app.controller('ListTestController', ['$scope', '$modal', 'testService', function($scope, $modal, testService) {
+app.controller('ListTestController', ['$scope', '$rootScope', '$modal', 'testService', function($scope, $rootScope, $modal, testService) {
     // Set initial values
     $scope.loading = true;
     $scope.filter = {};
     $scope.tests = [];
+
+    $rootScope.title = "List Tests";
+
 
     // Function to load tests
     $scope.loadTests = function() {

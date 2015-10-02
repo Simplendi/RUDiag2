@@ -159,11 +159,11 @@
                     <select class="form-control" ng-model="data.review_method" id="review_method"
                             ng-disabled="!isPlanned()||!isOwner()">
                         <option value="automatic">Automatically</option>
-                        <option disabled value="manual">Manually</option>
+                        <option value="manual">Manually</option>
                     </select>
                 </div>
             </div>
-            <div ng-if="data.review_method=='manual'" class="form-group">
+            <div ng-if="data.review_method=='manual'&&false" class="form-group">
                 <label for="review_anonymous" class="col-sm-2 control-label">Review anonymously</label>
 
                 <div class="col-sm-10">

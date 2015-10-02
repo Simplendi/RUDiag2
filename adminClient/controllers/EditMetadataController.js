@@ -1,11 +1,13 @@
 var app = angular.module('app');
 
-app.controller('EditMetadataController', ['$scope', '$modal', '$location', '$routeParams', 'metadataService', function ($scope, $modal, $location, $routeParams, metadataService) {
+app.controller('EditMetadataController', ['$scope', '$rootScope', '$modal', '$location', '$routeParams', 'metadataService', function ($scope, $rootScope, $modal, $location, $routeParams, metadataService) {
     // Set initial values
     $scope.loading = false;
     $scope.saving = false;
     $scope.deleting = false;
     $scope.data = {};
+
+    $rootScope.title = "Edit Metadata";
 
     if (angular.isDefined($routeParams.id)) {
         $scope.loading = true;

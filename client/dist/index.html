@@ -2,16 +2,23 @@
 <html ng-app="app">
 <head lang="en">
     <link rel="stylesheet" href="/static/css/app.min.css" />
+    <!--[if gt IE 8]>
     <script src="/static/app.min.js"></script>
     <script type="text/javascript"
             src="/static/MathJax/MathJax.js?config=config">
     </script>
+    <title>{{title}} - RUDiag</title>
+    <![endif]-->
 </head>
 <body>
 <div class="container">
     <!--[if lte IE 8]>
     <h1>Unsupported</h1>
-    <p>Your browser is not supported. Please download a recent version of Internet Explorer, Firefox or Google Chrome.</p>
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Your browser is not supported. Please download a recent version of Internet Explorer, Firefox or Google Chrome.</p>
+        </div>
+    </div>
     <![endif]-->
     <ng-view></ng-view>
 </div>

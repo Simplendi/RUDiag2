@@ -1,10 +1,12 @@
 var app = angular.module('app');
 
-app.controller('ListUserController', ['$scope', 'userService', function($scope, userService) {
+app.controller('ListUserController', ['$scope', '$rootScope', 'userService', function($scope, $rootScope, userService) {
     // Set initial values
     $scope.loading = true;
     $scope.search = "";
     $scope.users = [];
+
+    $rootScope.title = "List Users";
 
     // Function to load users
     $scope.loadUsers = function() {

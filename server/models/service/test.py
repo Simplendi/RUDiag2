@@ -90,7 +90,7 @@ class Test:
         test.reviewers = data_dict.get("reviewers", test.reviewers)
         test.shuffle_content = data_dict.get("shuffle_content", test.shuffle_content)
         test.content = data_dict.get("content", test.content)
-        test.sender_email = data_dict.get("sender_mail", test.sender_email)
+        test.sender_email = data_dict.get("sender_email", test.sender_email)
 
         # Feedback fields
         test.question_feedback = data_dict.get("question_feedback", test.question_feedback)

@@ -8,6 +8,8 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
     $scope.data = {};
     $scope.data.content = [];
 
+    $rootScope.title = "Edit Test";
+
 
     $scope.save = function () {
         $scope.saving = true;

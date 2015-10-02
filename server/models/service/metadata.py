@@ -5,6 +5,11 @@ from models.service.metadatatree import MetadataTree
 
 class Metadata:
 
+    TYPE_TEXT = "text"
+    TYPE_URL = "url"
+    TYPE_LIST = "list"
+    TYPE_TREE = "tree"
+
     def __init__(self):
         # Basic fields
         self.id = None

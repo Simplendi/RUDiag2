@@ -7,7 +7,7 @@ app.controller('TestSessionListReviewController', ['$scope', '$modalInstance', '
     $scope.editable = false;
 
     $scope.init = function() {
-        if ($scope.test.review_method == "manual" && $scope.test_session.reviewed_at == null) {
+        if ($scope.test.review_method == "manual" && $scope.test_session.reviewed_at != null) {
             $scope.editable = true;
         }
     };
@@ -20,12 +20,35 @@ app.controller('TestSessionListReviewController', ['$scope', '$modalInstance', '
         $modalInstance.dismiss();
     };
 
-    $scope.reviewQuestionsAutomatically = function() {
+    $scope.getNumberOfAnswersRight = function() {
+        var count = 0;
+        for(var question_index = 0; question_index < $scope.test_session.question_feedback.length; question_index++) {
+            if($scope.test_session.question_feedback[question_index]["right"]) {
+                count++;
+            }
+        }
 
+        return count;
     };
 
-    $scope.reviewTotalAutomatically = function() {
+    $scope.copyQuestionDefault = function(question_index) {
+        $scope.test_session.question_feedback[question_index]["feedback"] =
+            $scope.test_session.question_feedback[question_index]["feedback"] || "";
+        if($scope.test_session.question_feedback[question_index]["right"]) {
+            $scope.test_session.question_feedback[question_index]["feedback"] += $scope.test.question_feedback[question_index]["right"];
+        } else {
+            $scope.test_session.question_feedback[question_index]["feedback"] += $scope.test.question_feedback[question_index]["wrong"];
+        }
+    };
 
+    $scope.copyTotalDefault = function() {
+        var answers_right = $scope.getNumberOfAnswersRight();
+        for(var total_feedback_index = 0; total_feedback_index < $scope.test.total_feedback.length; total_feedback_index++) {
+            var total_feedback = $scope.test.total_feedback[total_feedback_index];
+            if(total_feedback.min <= answers_right && total_feedback.max >= answers_right) {
+                $scope.test_session.total_feedback += total_feedback.feedback;
+            }
+        }
     };
 
     $scope.init();

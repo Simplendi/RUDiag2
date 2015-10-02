@@ -174,30 +174,6 @@ app.directive('treeTestEditor', function () {
 )
 ;
 
-app.controller('TestEditorSelectQuestionController', ['$scope', '$modalInstance', 'questionService', function ($scope, $modalInstance, questionService) {
-    // Set initial values
-    $scope.loading = true;
-    $scope.questions = [];
-
-    // Function to load questions
-    $scope.loadQuestions = function () {
-        questionService.listQuestion({})
-            .success(function (questions) {
-                $scope.questions = questions;
-            });
-    };
-
-    $scope.selectQuestion = function (questionData) {
-        $modalInstance.close(questionData);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-
-    // Load the questions now
-    $scope.loadQuestions();
-}]);
 
 app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
     return {

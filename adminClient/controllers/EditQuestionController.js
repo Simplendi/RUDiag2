@@ -9,6 +9,10 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$ro
     $scope.data = {};
     $scope.data.type = "choice";
 
+
+    $rootScope.title = "Edit Question";
+
+
     $scope.cancel = function() {
         $location.path('/question/');
         $location.search("");

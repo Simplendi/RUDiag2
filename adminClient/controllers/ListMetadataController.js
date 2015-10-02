@@ -1,10 +1,12 @@
 var app = angular.module('app');
 
-app.controller('ListMetadataController', ['$scope', '$modal', 'metadataService', function($scope, $modal, metadataService) {
+app.controller('ListMetadataController', ['$scope', '$rootScope', '$modal', 'metadataService', function($scope, $rootScope, $modal, metadataService) {
     // Set initial values
     $scope.loading = true;
     $scope.filter = {};
     $scope.metadatas = [];
+
+    $rootScope.title = "List Metadata";
 
     // Function to load tests
     $scope.loadMetadata = function() {
