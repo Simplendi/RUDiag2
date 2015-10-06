@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal', 'runTestService', 'moment', function ($scope, $routeParams, $interval, $modal, runTestService, moment) {
+app.controller('TestController', ['$scope', '$rootScope', '$routeParams', '$interval', '$modal', 'runTestService', 'moment', function ($scope, $rootScope, $routeParams, $interval, $modal, runTestService, moment) {
     $scope.saving = false;
     $scope.test = {};
     $scope.testSession = {};
@@ -29,6 +29,7 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
                     runTestService.getTestUsingSession($routeParams.id)
                         .success(function (test) {
                             $scope.test = test;
+                            $rootScope.title  = $scope.test.title;
                             if ($scope.testSession.feedback_at != null) {
                                 $scope.state = 'feedback';
                                 if ($scope.test.type == 'tree') {
@@ -43,19 +44,21 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
                                 if ($scope.test.type == 'tree') {
                                     $scope.initTree();
                                 }
+
+                                updateTimer = $interval($scope.onAutoupdate, 100000);
                             }
                         })
                         .error(function() {
                             $scope.state = 'error';
+                            $rootScope.title  = "Error";
                         });
 
                 })
                 .error(function() {
                    $scope.state = 'error';
+                   $rootScope.title  = "Error";
                 });
         }
-
-        updateTimer = $interval($scope.onAutoupdate, 100000);
     };
 
     $scope.onAutoupdate = function () {
@@ -98,8 +101,17 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
         submitModal.result.then(function () {
             $scope.stopAutoupdate();
             runTestService.closeTestSession($routeParams.id, $scope.testSession)
-                .success(function () {
-                    $scope.state = 'done';
+                .success(function (testSession) {
+                    $scope.testSession = testSession;
+                    if ($scope.testSession.feedback_at != null) {
+                        $scope.state = 'feedback';
+                        if ($scope.test.type == 'tree') {
+                            $scope.initTree();
+                        }
+
+                    } else {
+                        $scope.state = 'done';
+                    }
                 })
         });
 
@@ -171,7 +183,7 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
 
         var element = $scope.getElementByPath($scope.openPath + "." + ($scope.openAnswer.answer+1).toString() + ".1");
         return element != null;
-    }
+    };
 
     $scope.hasUpElement = function () {
         var element = $scope.getElementByPath($scope.getUpPath($scope.openPath));
@@ -209,6 +221,9 @@ app.controller('TestController', ['$scope', '$routeParams', '$interval', '$modal
             // Update test-session when a new path is opened
             $scope.update();
         }
+
+        // Scroll to the top of the window
+        window.scrollTo(0,0);
     };
 
     $scope.isElementOpen = function (element) {

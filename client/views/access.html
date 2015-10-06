@@ -31,9 +31,10 @@
             <p>Please provide the access code you received</p>
 
             <div class="row">
-                <div class="col-sm-offset-3 col-sm-6">
+                <div class="col-sm-offset-3 col-sm-6" ng-class="{'has-error':codeError}">
                     <input type="text" class="form-control" id="code" placeholder="code" ng-model="inviteData.code">
                     <button type="submit" class="btn btn-default" ng-click="openTest()">Open test</button>
+                    <span ng-if="codeError" class="help-block">Unknown access-code</span>
                 </div>
             </div>
         </div>

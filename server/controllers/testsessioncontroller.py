@@ -55,6 +55,19 @@ class TestSessionController(GenericController):
 
         return state
 
+    def runBeforeAdd(self, state, test_session):
+        with closing(self._database_session_maker()) as database_session:
+            if test_session.test_id:
+                db_test = database_session.query(DbTest).filter(DbTest.id==test_session.test_id).first()
+
+                if db_test:
+                    test = Test.from_db(db_test)
+
+                    if test.invite_method == Test.INVITE_METHOD_CODE:
+                        test_session.id = test_session.generate_id(10)
+
+        return test_session
+
     def import_from_file(self, state, test_id):
         (request, response, session) = state.unfold()
 
@@ -82,14 +95,17 @@ class TestSessionController(GenericController):
                 for row in csv_reader:
                     test_session = TestSession()
                     test_session.test_id = test.id
-                    if len(row) >=1:
+                    if len(row) >= 1:
                         test_session.email = row[0]
-                    if len(row) >=2:
+                    if len(row) >= 2:
                         test_session.name = row[1]
-                    if len(row) >=3:
+                    if len(row) >= 3:
                         test_session.student_id = row[2]
 
-                    if len(row) >=1:
+                    if test.invite_method == Test.INVITE_METHOD_CODE:
+                        test_session.id = test_session.generate_id(10)
+
+                    if len(row) >= 1:
                         database_session.add(test_session.to_db())
 
                 database_session.commit()
@@ -116,7 +132,71 @@ class TestSessionController(GenericController):
                 raise HttpUnauthorizedException
 
             if test.type == Test.TYPE_TREE:
-                pass
+
+                db_test_sessions = database_session.query(DbTestSession).filter(DbTestSession.test_id == test.id).all()
+
+                answer_paths = set()
+                answer_lengths = dict()
+                for test_session in [TestSession.from_db(db_test_session) for db_test_session in db_test_sessions]:
+                    if test_session.answers and test_session.answers.get("answers"):
+                        for question_path, answers in test_session.answers["answers"].items():
+                            answer_paths.add(question_path)
+                            if answer_lengths.get(question_path, 0) < len(answers):
+                                answer_lengths[question_path] = len(answers)
+
+                answer_paths = list(answer_paths)
+                answer_paths.sort()
+
+                # Create temporary file and csv-writer to write csv in it.
+                csv_file = tempfile.TemporaryFile(mode="w+", encoding = "utf-8")
+                csv_writer = csv.writer(csv_file, delimiter=';', quoting=csv.QUOTE_NONNUMERIC)
+
+                # Fill header
+                header_row = []
+                header_row.append("Student ID")
+                header_row.append("Student Name")
+                header_row.append("Student E-mail")
+                header_row.append("Code")
+
+                for answer_path in answer_paths:
+                    for answer_index in range(answer_lengths.get(answer_path, 0)):
+                        header_row.append("Question " + answer_path + " answer " + str(answer_index+1))
+
+                csv_writer.writerow(header_row)
+
+                for test_session in [TestSession.from_db(db_test_session) for db_test_session in db_test_sessions]:
+                    row = []
+                    row.append(test_session.student_id)
+                    row.append(test_session.name)
+                    row.append(test_session.email)
+                    row.append(test_session.id)
+
+                    for answer_path in answer_paths:
+
+                        if test_session.answers and test_session.answers.get("answers"):
+                            answers = test_session.answers["answers"].get(answer_path, [])
+                        else:
+                            answers = []
+                        for answer_index in range(answer_lengths.get(answer_path, 0)):
+                            if len(answers) > answer_index:
+                                row.append(str(answers[answer_index]))
+                            else:
+                                row.append('')
+
+                    csv_writer.writerow(row)
+
+                # Set Content Type
+                response.content_type = "text/csv"
+
+                # Set Content Disposition such that the file will be downloaded
+                response.headers["Content-Disposition"] = "attachment; filename=" + str(test.id) + ".csv"
+
+                csv_file.seek(0)
+                response.body = csv_file.read()
+
+                csv_file.close()
+
+
             else:
 
                 # Create temporary file and csv-writer to write csv in it.
@@ -128,6 +208,7 @@ class TestSessionController(GenericController):
                 header_row.append("Student ID")
                 header_row.append("Student Name")
                 header_row.append("Student E-mail")
+                header_row.append("Code")
                 header_row.append("Score")
 
                 for (question_index, question) in enumerate([content["data"] for content in test.content if content["type"] == 'question']):
@@ -143,6 +224,7 @@ class TestSessionController(GenericController):
                     row.append(test_session.student_id)
                     row.append(test_session.name)
                     row.append(test_session.email)
+                    row.append(test_session.id)
                     row.append(test_session.get_score())
 
                     for question_answer in test_session.question_feedback:

@@ -1,6 +1,6 @@
 <tabset>
     <tab heading="Content">
-        <h1 class="editable" contenteditable ng-model="data.title" ng-disabled="!isPlanned()||!isOwner()" ng-text="true"></h1>
+        <h1 class="editable test-heading" contenteditable ng-model="data.title" ng-disabled="!isPlanned()||!isOwner()" ng-text="true"></h1>
 
         <div ng-repeat="element in data.content track by $index">
             <button class="btn btn-default" ng-if="isPlanned() && isOwner()" ng-click="deleteElement($index)">Delete</button>
@@ -11,6 +11,7 @@
                     ng-click="makeQuestionLocal($index)">Edit
             </button>
             <br>
+            <h3 class="test-heading" ng-if="data.content[$index].type=='question'">Question {{contentToQuestionIndex($index)+1}}</h3>
             <question-editor ng-if="data.content[$index].type=='question'"
                              ng-disabled="data.content[$index].data.id!=undefined || !isPlanned() || !isOwner()" inline="true"
                              data="data.content[$index].data"></question-editor>

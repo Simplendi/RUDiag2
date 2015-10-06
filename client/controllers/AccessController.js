@@ -1,9 +1,12 @@
 var app = angular.module('app');
 
-app.controller('AccessController', ['$scope', '$routeParams',  '$location', 'runTestService', function($scope, $routeParams, $location, runTestService) {
+app.controller('AccessController', ['$scope', '$rootScope', '$routeParams',  '$location', 'runTestService', function($scope, $rootScope, $routeParams, $location, runTestService) {
     $scope.state = "loading";
     $scope.test = {};
     $scope.inviteData = {};
+
+    // Indicates that the code is wrong
+    $scope.codeError = false;
 
     $scope.init = function() {
         if (angular.isDefined($routeParams.id)) {
@@ -12,16 +15,20 @@ app.controller('AccessController', ['$scope', '$routeParams',  '$location', 'run
                 .success(function(data) {
                     $scope.test = data;
                     if($scope.test.closed_at!=null) {
-                        $scope.state = "unknown"
+                        $scope.state = "unknown";
+                        $rootScope.title = "Error";
                     } else {
-                        $scope.state = "form"
+                        $scope.state = "form";
+                        $rootScope.title = $scope.test.title;
                     }
                 })
                 .error(function() {
-                    $scope.state = "unknown"
+                    $scope.state = "unknown";
+                    $rootScope.title = "Error";
                 });
         } else {
-            $scope.state = "unknown"
+            $scope.state = "unknown";
+            $rootScope.title = "Error";
         }
     };
 
@@ -39,8 +46,17 @@ app.controller('AccessController', ['$scope', '$routeParams',  '$location', 'run
     };
 
     $scope.openTest = function() {
-        if($scope.test.invite_method == 'link' || $scope.test.invite_method == 'secure') {
+        if($scope.test.invite_method == 'link' || $scope.test.invite_method == 'email') {
             $location.path("/answer/" + $scope.inviteData.code).replace()
+        }
+        else if($scope.test.invite_method == 'code' || $scope.test.invite_method == 'secure') {
+            runTestService.getTestSession($scope.inviteData.code)
+                .success(function() {
+                $location.path("/answer/" + $scope.inviteData.code).replace();
+                })
+                .error(function() {
+                    $scope.codeError = true;
+                });
         }
     };
 

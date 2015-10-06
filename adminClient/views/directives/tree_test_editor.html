@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-xs-8">
-                <h2 class="editable" contenteditable ng-model="editElement.title" ng-text="true" ng-if="editElement" ng-disabled="!isPlanned()"></h2>
+                <h2 class="editable test-heading" contenteditable ng-model="editElement.title" ng-text="true" ng-if="editElement" ng-disabled="!isPlanned()"></h2>
                 <test-text-editor ng-if="editElement.type=='text' || editElement.type=='depth'" data="editElement.data" ng-disabled="!isPlanned()"></test-text-editor>
                 <question-editor data="editElement.data" ng-if="editElement.type=='question'" intest="true" ng-disabled="!isPlanned()"></question-editor>
                 <route-question-editor data="editElement.data" ng-if="editElement.type=='route'" ng-disabled="!isPlanned()"></route-question-editor>
@@ -83,38 +83,6 @@
                         <input ng-if="isClosed()" type="text" class="form-control" datetime-picker
                                ng-model="data.closed_at" ng-disabled="true"/>
                         <span ng-if="!isClosed()">not yet</span>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="review_timing" class="col-sm-2 control-label">Review at</label>
-
-                <div class="col-sm-10">
-                    <select class="form-control" ng-model="data.review_timing" id="review_timing">
-                        <option value="never">Never review</option>
-                        <option value="answer">When answered</option>
-                        <option value="feedback">When feedback is sent</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="review_method" class="col-sm-2 control-label">Review method</label>
-
-                <div class="col-sm-10">
-                    <select class="form-control" ng-model="data.review_method" id="review_method"
-                            ng-disabled="!isPlanned()">
-                        <option value="automatic">Automatically</option>
-                        <option disabled value="manual">Manually</option>
-                    </select>
-                </div>
-            </div>
-            <div ng-if="data.review_method=='manual'" class="form-group">
-                <label for="review_anonymous" class="col-sm-2 control-label">Review anonymously</label>
-
-                <div class="col-sm-10">
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="" id="review_anonymous" ng-model="data.review_anonymous"
-                                      ng-disabled="!isPlanned()"/>&NonBreakingSpace;</label>
                     </div>
                 </div>
             </div>

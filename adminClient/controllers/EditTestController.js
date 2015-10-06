@@ -109,7 +109,7 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
                 }
 
             });
-            $scope.data.open_at = moment().utc().add(1, 'month');
+            $scope.data.open_at = moment().utc().add(1, 'year');
         }
     };
 

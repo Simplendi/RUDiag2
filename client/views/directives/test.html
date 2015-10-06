@@ -1,5 +1,5 @@
 <div>
-<h1>{{test.title}}</h1>
+<h1 class="test-heading">{{test.title}}</h1>
 <div ng-repeat="content in test.content">
     <div ng-if="content.type=='text'" contentable class="contentable" ng-model="content.data"></div>
     <div ng-if="content.type=='question'">

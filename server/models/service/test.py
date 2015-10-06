@@ -276,3 +276,37 @@ class Test:
 
     def get_invite_url(self):
         return Config()["absolute_url"] + "index.html#/test/" + str(self.id) + "/" + urllib.parse.quote_plus(self.title)
+
+    def get_node(self, path):
+        if self.type != Test.TYPE_TREE:
+            return None
+
+        current_array = self.content
+        path_elements = path.split(".")
+        path_element_index = 0
+        while path_element_index < len(path_elements):
+            path_element = path_elements[path_element_index]
+            try:
+                path_index = int(path_element)-1
+            except:
+                return None
+
+            if len(current_array) > path_index:
+                if path_element_index == len(path_elements)-1:
+                    return current_array[path_index]
+                else:
+                    try:
+                        option_index = int(path_elements[path_element_index+1])-1
+                    except:
+                        return None
+
+                    if len(current_array[path_index]["children"]) > option_index:
+                        current_array = current_array[path_index]["children"][option_index]
+                        path_element_index+=2
+                    else:
+                        return None
+
+            else:
+                return None
+
+

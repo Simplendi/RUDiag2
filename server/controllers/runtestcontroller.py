@@ -134,9 +134,22 @@ class RunTestController(BaseController):
                 raise HttpNotFoundException()
 
             test_session = TestSession.from_db(db_test_session)
+
+            db_test = database_session.query(DbTest).filter(DbTest.id == test_session.test_id).first()
+
+            if not db_test:
+                raise HttpNotFoundException()
+
+            test = Test.from_db(db_test)
+
             test_session = TestSession.from_dict(request.body, test_session)
+
             test_session.updated_at = datetime.datetime.utcnow()
             test_session.closed_at = datetime.datetime.utcnow()
+
+            if test.type == Test.TYPE_TREE and test.feedback_timing == Test.FEEDBACK_TIMING_AFTER and test.feedback_after == 0:
+                test_session.reviewed_at = datetime.datetime.utcnow()
+                test_session.feedback_at = datetime.datetime.utcnow()
 
             database_session.add(test_session.to_db(db_test_session))
             database_session.commit()

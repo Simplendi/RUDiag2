@@ -2,7 +2,7 @@
     <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="add()">Add</a>
     <a href="" class="btn btn-default" ng-click="loadTestSessions()">Refresh</a>
     <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="import()">Import</a>
-    <a href="/test_session/{{test.id}}/export" target="_blank" ng-if="test.type=='basic'&&isOwner()" class="btn btn-default">Export</a>
+    <a href="/test_session/{{test.id}}/export" target="_blank" ng-if="isOwner()" class="btn btn-default">Export</a>
 <table class="table">
     <thead>
     <tr>

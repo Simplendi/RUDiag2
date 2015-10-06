@@ -3,7 +3,7 @@
         Loading
     </div>
     <div class="page-border col-xs-12" ng-if="state=='error'">
-        <h2>Error</h2>
+        <h2 class="test-heading">Error</h2>
         An error occurred, the test could not be loaded. This could mean that the test is closed and the feedback can not
         be accessed or the access-code was wrong.
     </div>
@@ -39,7 +39,7 @@
     <div class="page-border col-xs-8" ng-if="state=='answer'">
         <test test="test" ng-if="test.type=='basic'" test-session="testSession"></test>
         <div ng-if="test.type=='tree'">
-            <h2>{{openElement.title}}</h2>
+            <h2 class="test-heading">{{openElement.title}}</h2>
 
             <div contentable class="contentable" ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
             <div ng-if="openElement.type=='question'">
@@ -75,7 +75,7 @@
         </div>
     </div>
     <div class="page-border col-xs-12" ng-if="state=='done'">
-        <h1>{{test.title}}</h1>
+        <h1 class="test-heading">{{test.title}}</h1>
         Your answers are submitted successfully.
 
         <span ng-if="test.feedback_timing=='at'">You can see your results at {{test.feedback_at | timeFormat }} by visiting this page again.</span>
@@ -88,7 +88,7 @@
         <test-feedback test="test" test-session="testSession"></test-feedback>
     </div>
     <div class="page-border col-xs-8" ng-if="state=='feedback'&&test.type=='tree'">
-            <h2>{{openElement.title}}</h2>
+            <h2 class="test-heading">{{openElement.title}}</h2>
 
             <div contentable class="contentable" ng-if="openElement.type=='text'" ng-model="openElement.data"></div>
             <div ng-if="openElement.type=='question'">
