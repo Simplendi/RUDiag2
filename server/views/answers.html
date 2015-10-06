@@ -11,8 +11,8 @@
 Name: ${test_session.name | h}<br>
 Student-Id: ${test_session.student_id | h}<br>
 E-mail: ${test_session.email | h}<br>
-% for key in sorted(test_session.answers.get("answers", {}).keys()):
-    <h3>Question ${key | h}: ${test.get_node(key).get("title", "") | h}</h3>
+% for key in sorted(test_session.answers.get("answers", {}).keys(), key=key_path):
+    <h3>${key | h}: ${test.get_node(key).get("title", "") | h}</h3>
     % for index, answer in enumerate(test_session.answers["answers"][key]):
     <span>Answer ${index+1 | h}:</span>
     <p>${answer | h}</p>
