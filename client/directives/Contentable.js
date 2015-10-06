@@ -12,6 +12,8 @@ app.directive('contentable', ['$sce', '$compile', function ($sce, $compile) {
                     element.html(angular.element(view));
                     angular.element("a", element).attr("target", "_blank");
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, element[0]]);
+                } else {
+                    element.html("");
                 }
             };
         }
