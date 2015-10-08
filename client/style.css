@@ -6,6 +6,9 @@ body {
 .contentable {
     overflow: hidden;
 }
+.contentable h1, .contentable h2, .contentable h3, .contentable h4, .contentable h5, .contentable h6 {
+    color: #0043b6;
+}
 
 .page-border {
     border: solid #CACACA 1px;
@@ -51,6 +54,9 @@ body {
 .editable {
     border: dotted 2px gray;
     overflow: hidden;
+}
+.editable h1, .editable h2,.editable h3, .editable h4, .editable h5, .editable h6 {
+    color: #0043b6;
 }
 .previous-answer {
     border: solid 1px #d0d0d0;
@@ -103,4 +109,7 @@ body {
 }
 .test-heading {
     color: #0043b6;
+}
+.tree-test-next-buttons {
+    padding-top: 10px;
 }

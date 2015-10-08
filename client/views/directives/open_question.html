@@ -5,8 +5,8 @@
     <input class="form-control" type="text" ng-model="previousAnswer" disabled/>
     <div ng-if="data.answers.length > 0">
         <h6>Feedback</h6>
-        <span ng-if="data.answers.indexOf(previousAnswer) >= 0">{{data.feedback["right"]}}</span>
-        <span ng-if="data.answers.indexOf(previousAnswer) < 0">{{data.feedback["wrong"]}}</span>
+        <contentable ng-if="data.answers.indexOf(previousAnswer) >= 0" ng-model="data.feedback['right']"></contentable>
+        <contentable ng-if="data.answers.indexOf(previousAnswer) < 0" ng-model="data.feedback['wrong']"></contentable>
     </div>
 </div>
 

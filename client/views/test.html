@@ -52,7 +52,7 @@
                            answer="openAnswer.answer"  previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></open-question>
             <text-question ng-if="openElement.data.type=='text'" data="openElement.data"
                            answer="openAnswer.answer"  previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></text-question>
-            <a ng-disabled="((openAnswer.answer==undefined)||(openElement.data.type!='choice'&&openAnswer.answer.length==0))" ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-click="answerQuestion()" class="btn btn-default">Answer</a>
+            <a ng-disabled="((openAnswer.answer==undefined)||(openElement.data.type!='choice'&&openAnswer.answer.length==0))" ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-click="answerQuestion()" class="btn btn-success">Answer</a>
 
             </div>
 
@@ -65,12 +65,12 @@
             <div ng-if="openElement.type=='route'">
                 <choice-question data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()" ng-disabled="openElement.maxAnswers && getPreviousAnswers().length>=openElement.maxAnswers"></choice-question>
 
-                <a ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-disabled="!hasAnswerElement()" ng-click="openAnswerElement()" class="btn btn-default">Answer</a>
+                <a ng-if="!openElement.maxAnswers || (openElement.maxAnswers && getPreviousAnswers().length<openElement.maxAnswers)" href="" ng-disabled="!hasAnswerElement()" ng-click="openAnswerElement()" class="btn btn-success">Answer</a>
             </div>
 
-            <div ng-if="(!openElement.minAnswers && !openElement.hideNext) || (openElement.minAnswers && getPreviousAnswers().length>=openElement.minAnswers)">
-            <a href="" class="btn btn-default" ng-if="hasNextElement()" ng-click="openNextElement()">Next</a>
-            <a href="" class="btn btn-default" ng-if="!hasNextElement()&&hasUpElement()" ng-click="openUpElement()">Up</a>
+            <div ng-if="(!openElement.minAnswers && !openElement.hideNext) || (openElement.minAnswers && getPreviousAnswers().length>=openElement.minAnswers)" class="tree-test-next-buttons">
+            <a href="" class="btn btn-primary" ng-if="hasNextElement()" ng-click="preventUnanswered(openNextElement)">Next</a>
+            <a href="" class="btn btn-primary" ng-if="!hasNextElement()&&hasUpElement()" ng-click="preventUnanswered(openUpElement)">Up</a>
             </div>
         </div>
     </div>

@@ -190,6 +190,21 @@ app.controller('TestController', ['$scope', '$rootScope', '$routeParams', '$inte
         return element != null;
     };
 
+    $scope.preventUnanswered = function(next_fn) {
+        if(!(($scope.openAnswer.answer==undefined)||($scope.openElement.data.type!='choice'&&$scope.openAnswer.answer.length==0))) {
+            var nextModal = $modal.open({
+                templateUrl: "views/test_next.html",
+                controller: "DefaultModalController"
+            });
+
+            nextModal.result.then(function () {
+                next_fn();
+            });
+        } else {
+            next_fn();
+        }
+    };
+
     $scope.openNextElement = function () {
         var element = $scope.getElementByPath($scope.getNextPath($scope.openPath));
         $scope.openElementHandler(element, $scope.getNextPath($scope.openPath));

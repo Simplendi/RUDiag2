@@ -1,8 +1,8 @@
 <div>
-    <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="add()">Add</a>
-    <a href="" class="btn btn-default" ng-click="loadTestSessions()">Refresh</a>
-    <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="import()">Import</a>
-    <a href="/test_session/{{test.id}}/export" target="_blank" ng-if="isOwner()" class="btn btn-default">Export</a>
+    <a href="" class="btn btn-default" ng-if="isOwner()" ng-disabled="!test.id" ng-click="add()">Add</a>
+    <a href="" class="btn btn-default" ng-click="loadTestSessions()"  ng-disabled="!test.id" >Refresh</a>
+    <a href="" class="btn btn-default" ng-if="isOwner()" ng-click="import()"  ng-disabled="!test.id" >Import</a>
+    <a href="/test_session/{{test.id}}/export" target="_blank" ng-if="isOwner()" class="btn btn-default"  ng-disabled="!test.id" >Export</a>
 <table class="table">
     <thead>
     <tr>
@@ -30,11 +30,18 @@
         </td>
     </tr>
     </tbody>
-    <tbody ng-if="loading">
+    <tbody ng-if="loading&&test.id">
     <tr>
         <td colspan="5">Loading...</td>
     </tr>
     </tbody>
+
+    <tbody ng-if="loading&&!test.id">
+    <tr>
+        <td colspan="5">Test is not saved</td>
+    </tr>
+    </tbody>
+
 
 </table>
 </div>
