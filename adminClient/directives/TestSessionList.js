@@ -118,7 +118,7 @@ app.directive('testSessionList', function () {
 
             $scope.getTestSessionStatus = function (test_session) {
                 if (test_session.feedback_at != null) {
-                    return "feedback send"
+                    return "feedback sent"
                 } else if (test_session.reviewed_at != null) {
                     return "reviewed"
                 } else if (test_session.closed_at != null) {

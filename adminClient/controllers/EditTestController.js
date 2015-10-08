@@ -34,8 +34,15 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
     };
 
     $scope.cancel = function() {
-        $location.path('/test/');
-        $location.search("");
+        var exitModal = $modal.open({
+            templateUrl: "views/test_edit_exit.html",
+            controller: "DefaultModalController"
+        });
+
+        exitModal.result.then(function() {
+            $location.path('/test/');
+            $location.search("");
+        })
     };
 
     $scope.open = function() {
@@ -52,7 +59,7 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
     $scope.delete = function() {
         $scope.deleting = true;
         var deleteTestModal = $modal.open({
-            templateUrl: "views/test_edit_delete_test.html",
+            templateUrl: "views/test_edit_delete.html",
             controller: "DefaultModalController"
         });
 
@@ -110,6 +117,7 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
 
             });
             $scope.data.open_at = moment().utc().add(1, 'year');
+            $scope.data.close_at = moment().utc().add(1, 'year')
         }
     };
 

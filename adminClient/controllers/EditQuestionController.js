@@ -12,10 +12,16 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$ro
 
     $rootScope.title = "Edit Question";
 
-
     $scope.cancel = function() {
-        $location.path('/question/');
-        $location.search("");
+        var exitModal = $modal.open({
+            templateUrl: "views/question_edit_exit.html",
+            controller: "DefaultModalController"
+        });
+
+        exitModal.result.then(function() {
+            $location.path('/question/');
+            $location.search("");
+        })
     };
 
     $scope.save = function () {
