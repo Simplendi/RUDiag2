@@ -1,4 +1,5 @@
 import json
+import uuid
 from datetime import datetime
 
 from framework import Config
@@ -18,14 +19,14 @@ class SessionRepository():
 
         database_session = self.database_session_maker()
 
-        stored_session = database_session.query(StoredSession).filter(StoredSession.id == session_id).first()
+        stored_session = database_session.query(StoredSession).filter(StoredSession.id == str(session_id)).first()
 
         database_session.close()
 
         # Turn the result of the query into a session object
         if stored_session:
             session = Session()
-            session._id = stored_session.id
+            session._id = uuid.UUID(stored_session.id)
             session._data = json.loads(stored_session.data)
             session._expires = stored_session.expires
             session._stored = True
@@ -40,7 +41,7 @@ class SessionRepository():
         database_session = self.database_session_maker()
 
         stored_session = StoredSession()
-        stored_session.id = session._id
+        stored_session.id = str(session._id)
         stored_session.data = json.dumps(session._data)
         stored_session.expires = session._expires
 
@@ -53,11 +54,11 @@ class SessionRepository():
         """
         database_session = self.database_session_maker()
 
-        stored_session = database_session.query(StoredSession).filter(StoredSession.id == session._id).first()
+        stored_session = database_session.query(StoredSession).filter(StoredSession.id == str(session._id)).first()
 
         # Turn the result of the query into a session object
         if stored_session:
-            stored_session.id = session._id
+            stored_session.id = str(session._id)
             stored_session.data = json.dumps(session._data)
             stored_session.expires = session._expires
 

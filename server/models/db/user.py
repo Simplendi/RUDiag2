@@ -12,7 +12,7 @@ class DbUser(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(Text, unique=True)
+    username = Column(String(length=128), unique=True)
     fullname = Column(Text, nullable=False, default="")
     email = Column(Text, nullable=False, default="")
     is_admin = Column(Boolean, nullable=False, default=False)
