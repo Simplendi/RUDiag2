@@ -11,9 +11,11 @@ app.controller('ListTestController', ['$scope', '$rootScope', '$modal', 'testSer
 
     // Function to load tests
     $scope.loadTests = function() {
+        $scope.loading = true;
         testService.listTest($scope.filter)
             .success(function(tests) {
                 $scope.tests = tests;
+                $scope.loading = false;
             });
     };
 
