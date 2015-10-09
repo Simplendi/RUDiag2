@@ -29,8 +29,8 @@
  </span>
     <div ng-if="data.answers.length > 0">
         <h6>Feedback</h6>
-        <contentable ng-if="isAnswerRight(previousAnswer)" ng-model="data.feedback['right']"></contentable>
-        <contentable ng-if="!isAnswerRight(previousAnswer)" ng-model="data.feedback['wrong']"></contentable>
+        <div contentable ng-if="isAnswerRight(previousAnswer)" ng-model="data.feedback['right']"></div>
+        <div contentable ng-if="!isAnswerRight(previousAnswer)" ng-model="data.feedback['wrong']"></div>
     </div>
 </div>
 
