@@ -30,6 +30,14 @@
                        ng-model="testSession.student_id">
             </div>
         </div>
+        <div class="form-group" ng-if="test.extra_data_label">
+            <label for="extra_data" class="col-sm-2 control-label">{{test.extra_data_label}}</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="extra_data" ng-model="testSession.extra_data">
+                    <option ng-repeat="option in test.extra_data_options track by $index" ng-selected="testSession.extra_data==option">{{option}}</option>
+                </select>
+            </div>
+        </div>
     </form>
 </div>
 <div class="modal-footer">

@@ -164,6 +164,17 @@ app.directive('treeTestEditor', function () {
                     return $scope.getStatus() == "closed";
                 };
 
+                $scope.addExtraDataOption = function() {
+                    if(angular.isUndefined($scope.data.extra_data_options)) {
+                        $scope.data.extra_data_options = [];
+                    }
+                    $scope.data.extra_data_options.push("");
+                };
+
+                $scope.deleteExtraDataOption = function(option_index) {
+                    $scope.data.extra_data_options.splice(option_index, 1);
+                };
+
                 $scope.init();
 
 
@@ -206,11 +217,11 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
             };
 
             $scope.addTextElement = function () {
-                $scope.content.push({type: 'text', data: ''})
+                $scope.content.push({type: 'text', data: '', title: "Element title"})
             };
 
             $scope.addQuestionElement = function () {
-                $scope.content.push({type: 'question', data: {}, minAnswers:1, maxAnswers:1})
+                $scope.content.push({type: 'question', data: {}, minAnswers:1, maxAnswers:1, title: "Element title"})
             };
 
             $scope.addExistingQuestionElement = function() {
@@ -221,12 +232,12 @@ app.directive('treeTestTree', ['RecursionHelper', function (RecursionHelper) {
                 });
 
                 selectQuestionElementModal.result.then(function (question_data) {
-                    $scope.content.push({type: 'question', data: question_data, minAnswers:1, maxAnswers:1})
+                    $scope.content.push({type: 'question', data: question_data, minAnswers:1, maxAnswers:1, title: "Element title"})
                 })
             };
 
             $scope.addRouteQuestionElement = function() {
-                $scope.content.push({type: 'route', data: {}, children: []});
+                $scope.content.push({type: 'route', data: {}, children: [], title: "Element title"});
             };
 
             $scope.onEditElement = function(element) {

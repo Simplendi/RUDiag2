@@ -157,6 +157,8 @@ class TestSessionController(GenericController):
                 header_row.append("Student Name")
                 header_row.append("Student E-mail")
                 header_row.append("Code")
+                if test.extra_data_label:
+                    header_row.append("Data")
 
                 for answer_path in answer_paths:
                     for answer_index in range(answer_lengths.get(answer_path, 0)):
@@ -170,6 +172,8 @@ class TestSessionController(GenericController):
                     row.append(test_session.name)
                     row.append(test_session.email)
                     row.append(test_session.id)
+                    if test.extra_data_label:
+                        row.append(test_session.extra_data)
 
                     for answer_path in answer_paths:
 
@@ -209,6 +213,8 @@ class TestSessionController(GenericController):
                 header_row.append("Student Name")
                 header_row.append("Student E-mail")
                 header_row.append("Code")
+                if test.extra_data_label:
+                    header_row.append("Data")
                 header_row.append("Score")
 
                 for (question_index, question) in enumerate([content["data"] for content in test.content if content["type"] == 'question']):
@@ -225,6 +231,8 @@ class TestSessionController(GenericController):
                     row.append(test_session.name)
                     row.append(test_session.email)
                     row.append(test_session.id)
+                    if test.extra_data_label:
+                        row.append(test_session.extra_data)
                     row.append(test_session.get_score())
 
                     for question_answer in test_session.question_feedback:

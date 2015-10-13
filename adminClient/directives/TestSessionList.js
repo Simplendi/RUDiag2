@@ -37,6 +37,9 @@ app.directive('testSessionList', function () {
                     resolve: {
                         testSession: function () {
                             return test_session;
+                        },
+                        test: function() {
+                            return $scope.test;
                         }
                     }
                 });
@@ -99,6 +102,9 @@ app.directive('testSessionList', function () {
                     resolve: {
                         testSession: function () {
                             return {};
+                        },
+                        test: function() {
+                            return $scope.test;
                         }
                     }
                 });

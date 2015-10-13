@@ -60,7 +60,8 @@ class Test:
         self.review_method = Test.REVIEW_METHOD_AUTOMATIC
         self.review_anonymous = False
         self.sender_email = ""
-        self.ask_for_data = []
+        self.extra_data_label = ""
+        self.extra_data_options = []
 
         self.created = None
         self.last_saved = None
@@ -111,7 +112,8 @@ class Test:
         test.review_timing = data_dict.get("review_timing", test.review_timing)
         test.review_method = data_dict.get("review_method", test.review_method)
         test.review_anonymous = data_dict.get("review_anonymous", test.review_anonymous)
-        test.ask_for_data = data_dict.get("ask_for_data", test.ask_for_data)
+        test.extra_data_label = data_dict.get("extra_data_label", test.extra_data_label)
+        test.extra_data_options = data_dict.get("extra_data_options", test.extra_data_options)
 
         return test
 
@@ -163,7 +165,8 @@ class Test:
         data_dict["review_timing"] = self.review_timing
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.get_invite_url()
-        data_dict["ask_for_data"] = self.ask_for_data
+        data_dict["extra_data_label"] = self.extra_data_label
+        data_dict["extra_data_options"] = self.extra_data_options
 
         return data_dict
 
@@ -194,7 +197,8 @@ class Test:
         data_dict["review_timing"] = self.review_timing
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.get_invite_url()
-        data_dict["ask_for_data"] = self.ask_for_data
+        data_dict["extra_data_label"] = self.extra_data_label
+        data_dict["extra_data_options"] = self.extra_data_options
 
         return data_dict
 
@@ -213,7 +217,8 @@ class Test:
         data_dict["review_timing"] = self.review_timing
         data_dict["invite_method"] = self.invite_method
         data_dict["invite_url"] = self.get_invite_url()
-        data_dict["ask_for_data"] = self.ask_for_data
+        data_dict["extra_data_label"] = self.extra_data_label
+        data_dict["extra_data_options"] = self.extra_data_options
 
         return data_dict
 
@@ -266,7 +271,8 @@ class Test:
         data_dict["review_timing"] = self.review_timing
         data_dict["review_method"] = self.review_method
         data_dict["review_anonymous"] = self.review_anonymous
-        data_dict["ask_for_data"] = self.ask_for_data
+        data_dict["extra_data_label"] = self.extra_data_label
+        data_dict["extra_data_options"] = self.extra_data_options
 
         if not for_db:
             data_dict["created"] = self.created.isoformat()

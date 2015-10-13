@@ -116,6 +116,7 @@ app.controller('EditTestController', ['$scope', '$rootScope', '$modal', '$locati
                 }
 
             });
+            $scope.data.title = "Test title";
             $scope.data.open_at = moment().utc().add(1, 'year');
             $scope.data.close_at = moment().utc().add(1, 'year')
         }

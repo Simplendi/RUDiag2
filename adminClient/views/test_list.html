@@ -1,9 +1,9 @@
 <h1>Tests</h1>
+<a href="#/test/add" class="btn btn-default">Add linear test</a> <a href="#/test/add_tree" class="btn btn-default">Add tree test</a><br><br>
 <label>Search</label> <input type="text" ng-model="search"/>
 <div ng-if="loading">
     Loading tests...
 </div>
 <div ng-if="!loading" ng-repeat="test in tests | filter:{title: search}">
-    <span>{{test.title}}</span><a href="#/test/{{test.id}}/edit" class="btn">Edit</a><a href="#/test/{{test.id}}/edit?copy" class="btn">Copy</a>
+    <span>{{test.title}}</span><a href="#/test/{{test.id}}/edit" class="btn btn-default">Edit</a><a href="#/test/{{test.id}}/edit?copy" class="btn">Copy</a>
 </div>
-<a href="#/test/add" class="btn">Add</a><a href="#/test/add_tree" class="btn">Add complex</a>

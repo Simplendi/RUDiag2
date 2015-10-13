@@ -15,7 +15,7 @@
                 <label for="name" class="col-sm-2 control-label">Name</label>
 
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="Firstname Lastname"
+                    <input type="text" class="form-control" id="name" placeholder="Lastname, Prefix, Firstname"
                            ng-model="testSession.name">
                 </div>
                 <label for="student_id" class="col-sm-2 control-label">Student-ID</label>
@@ -29,6 +29,15 @@
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="email" placeholder="yourname@example.org"
                            ng-model="testSession.email">
+                </div>
+
+                <div ng-if="test.extra_data_label">
+                <label for="extra_data" class="col-sm-2 control-label">{{test.extra_data_label}}</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="extra_data" ng-model="testSession.extra_data">
+                        <option ng-repeat="option in test.extra_data_options track by $index" ng-selected="testSession.extra_data==option">{{option}}</option>
+                    </select>
+                </div>
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
                     <a href="" class="btn btn-default" ng-click="dataDone()">Done</a>

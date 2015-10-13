@@ -355,6 +355,17 @@ app.directive('testEditor', function () {
                     }
                 };
 
+                $scope.addExtraDataOption = function() {
+                    if(angular.isUndefined($scope.data.extra_data_options)) {
+                        $scope.data.extra_data_options = [];
+                    }
+                    $scope.data.extra_data_options.push("");
+                };
+
+                $scope.deleteExtraDataOption = function(option_index) {
+                    $scope.data.extra_data_options.splice(option_index, 1);
+                };
+
                 $scope.init();
 
 

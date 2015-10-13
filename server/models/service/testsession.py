@@ -28,7 +28,7 @@ class TestSession():
         self.answers = []
         self.question_feedback = []
         self.total_feedback = ""
-        self.data = {}
+        self.extra_data = ""
 
     def generate_id(self, length=32):
         return ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(length))
@@ -80,7 +80,7 @@ class TestSession():
         test_session.answers = data_dict.get("answers", test_session.answers)
         test_session.question_feedback = data_dict.get("question_feedback", test_session.question_feedback)
         test_session.total_feedback = data_dict.get("total_feedback", test_session.total_feedback)
-        test_session.data = data_dict.get("data", test_session.data)
+        test_session.extra_data = data_dict.get("extra_data", test_session.extra_data)
 
         return test_session
 
@@ -89,7 +89,7 @@ class TestSession():
         test_session.answers = data_dict.get("answers", test_session.answers)
         test_session.question_feedback = data_dict.get("question_feedback", test_session.question_feedback)
         test_session.total_feedback = data_dict.get("total_feedback", test_session.total_feedback)
-        test_session.data = data_dict.get("data", test_session.data)
+        test_session.extra_data = data_dict.get("extra_data", test_session.extra_data)
 
         return test_session
 
@@ -120,7 +120,7 @@ class TestSession():
         data_dict["answers"] = self.answers
         data_dict["question_feedback"] = self.question_feedback
         data_dict["total_feedback"] = self.total_feedback
-        data_dict["data"] = self.data
+        data_dict["extra_data"] = self.extra_data
 
         return data_dict
 
@@ -142,7 +142,7 @@ class TestSession():
         data_dict["answers"] = self.answers
         data_dict["question_feedback"] = self.question_feedback
         data_dict["total_feedback"] = self.total_feedback
-        data_dict["data"] = self.data
+        data_dict["extra_data"] = self.extra_data
 
         data_dict["invite_url"] = self.get_invite_url()
 

@@ -1,4 +1,5 @@
 <h1>Questions</h1>
+<a href="#/question/add" class="btn btn-default">Add question</a>
 <h4>Filter</h4>
 <div ng-if="loadingFilter">
     Loading filter...
@@ -42,7 +43,7 @@
                 {{name}}
             </td>
             <td>
-                <a href="" ng-disabled="disabled" ng-click="addMetadataValue(name)" class="btn btn-default">Add</a>
+                <a href="" ng-disabled="disabled" ng-click="addMetadataValue(name)" class="btn btn-default">Add value</a>
             </td>
         </tr>
         </tbody>
@@ -76,4 +77,3 @@
     <question ng-disabled="true" data="question"></question>
     <a href="#/question/{{question.id}}/edit" class="btn btn-default">Edit</a>
 </div>
-<a href="#/question/add" class="btn btn-default">Add</a>
