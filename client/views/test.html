@@ -113,6 +113,12 @@
 
             </div>
 
+            <div ng-if="openElement && openElement.type!='route'"
+                 ng-repeat="child in openElement.children track by $index">
+                <a href="" ng-click="openElementByPath(openPath + '.' + ($index+1).toString() + '.1')">
+                    <span contentable class="contentable" ng-model="openElement.child_labels[$index]"></span></a>
+            </div>
+
             <div ng-if="openElement.type=='route'">
                 <choice-question data="openElement.data" answer="openAnswer.answer" previous-answers="getPreviousAnswers()" ng-disabled="true"></choice-question>
             </div>
