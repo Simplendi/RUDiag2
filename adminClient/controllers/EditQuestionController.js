@@ -75,6 +75,7 @@ app.controller('EditQuestionController', ['$scope', '$rootScope', '$modal', '$ro
                     .success(function (data) {
                         delete data["id"];
                         $scope.data = data;
+                        $scope.data.owners = [$rootScope.user.id];
                         $scope.loading = false;
                     })
                     .error(function (data) {

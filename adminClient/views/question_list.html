@@ -75,5 +75,5 @@
 </div>
 <div class="question-list-question" ng-repeat="question in questions">
     <question ng-disabled="true" data="question"></question>
-    <a href="#/question/{{question.id}}/edit" class="btn btn-default">Edit</a>
+    <a href="#/question/{{question.id}}/edit" class="btn btn-default">Edit</a> <a href="#/question/{{question.id}}/edit?copy" class="btn btn-default">Copy</a>
 </div>

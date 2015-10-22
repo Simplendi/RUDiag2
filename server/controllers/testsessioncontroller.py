@@ -1,3 +1,4 @@
+import functools
 import traceback
 from helpers.feedbacksender import FeedbackSender
 import io
@@ -145,7 +146,7 @@ class TestSessionController(GenericController):
                                 answer_lengths[question_path] = len(answers)
 
                 answer_paths = list(answer_paths)
-                answer_paths.sort()
+                answer_paths.sort(key=functools.cmp_to_key(Test.cmp_path))
 
                 # Create temporary file and csv-writer to write csv in it.
                 csv_file = tempfile.TemporaryFile(mode="w+", encoding = "utf-8")

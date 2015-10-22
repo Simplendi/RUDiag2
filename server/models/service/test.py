@@ -316,3 +316,27 @@ class Test:
                 return None
 
 
+    @staticmethod
+    def cmp_path(x_path, y_path):
+        x_path_elements = x_path.split(".")
+        y_path_elements = y_path.split(".")
+
+        path_elements = zip(x_path_elements, y_path_elements)
+
+        for (x_element, y_element) in path_elements:
+            try:
+                x_element = int(x_element)
+                y_element = int(y_element)
+
+                if x_element < y_element:
+                    return -1
+                elif x_element == y_element:
+                    continue
+                elif x_element > y_element:
+                    return 1
+            except:
+                return -1
+
+        return 0
+
+
