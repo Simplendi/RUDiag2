@@ -337,6 +337,10 @@ class Test:
             except:
                 return -1
 
-        return 0
+        if len(x_path_elements) != len(y_path_elements):
+            # Replacement for the cmp function: (a > b) - (a < b).
+            return (len(x_path_elements) > len(y_path_elements)) - (len(x_path_elements) < len(y_path_elements))
+        else:
+            return 0
 
 
