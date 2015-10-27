@@ -46,7 +46,7 @@ app.directive('questionMetadataEditor', function () {
             $scope.addMetadataValue = function (metadata_name) {
                 if ($scope.getMetadataByName(metadata_name).type == "text" || $scope.getMetadataByName(metadata_name).type == "url") {
                     $scope.data.metadata[metadata_name].push("");
-                } else if ($scope.getMetadataByName(metadata_name).type == "tree") {
+                } else if ($scope.getMetadataByName(metadata_name).type == "tree" || $scope.getMetadataByName(metadata_name).type == "list") {
                     $scope.data.metadata[metadata_name].push($scope.getMetadataByName(metadata_name).options[0].value);
                 }
             };

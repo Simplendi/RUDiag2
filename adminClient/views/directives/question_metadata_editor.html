@@ -20,7 +20,7 @@
                            type="text"
                            class="form-control"
                            style="width:80%; display:inline-block"/>
-                    <ui-select ng-if="getMetadataByName(name).type=='tree'"
+                    <ui-select ng-if="getMetadataByName(name).type=='tree' || getMetadataByName(name).type=='list'"
                                ng-disabled="disabled"
                                ng-model="data.metadata[name][$index]"
                                theme="bootstrap"

@@ -78,7 +78,7 @@ class Metadata:
         data_dict["created"] = self.created.isoformat()
         data_dict["last_saved"] = self.last_saved.isoformat()
 
-        if self.type=="tree":
+        if self.type=="tree" or self.type=="list":
             data_dict["options"] = MetadataTree().parseXml(self.value).listPossible()
 
         return data_dict
