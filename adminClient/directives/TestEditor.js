@@ -418,7 +418,7 @@ app.controller('TestEditorSelectQuestionController', ['$scope', '$modalInstance'
     $scope.addMetadataValue = function (metadata_name) {
         if ($scope.getMetadataByName(metadata_name).type == "text" || $scope.getMetadataByName(metadata_name).type == "url") {
             $scope.filter[metadata_name].push("");
-        } else if ($scope.getMetadataByName(metadata_name).type == "tree") {
+        } else if ($scope.getMetadataByName(metadata_name).type == "tree" || $scope.getMetadataByName(metadata_name).type == "list" ) {
             $scope.filter[metadata_name].push($scope.getMetadataByName(metadata_name).options[0].value);
         }
     };
