@@ -2,16 +2,16 @@
 
 <span class="question-option" ng-repeat="choice in data.content.choices track by $index" ng-if="!(disabled&&previousAnswers&&previousAnswers.length>0)">
 
-<img src="/admin/static/img/16x16.png" ng-if="showResult&&answerIsRight()"/>
-<img src="/admin/static/img/tick.png" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)>=0"/>
-    <img src="/admin/static/img/16x16.png" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)<0"/>
+<img src="/admin/static/img/16x16.png"  class="answer_right_wrong_image" ng-if="showResult&&answerIsRight()"/>
+<img src="/admin/static/img/tick.png" class="answer_right_wrong_image"  ng-if="showResult&&answerIsRight()&&answer.indexOf($index)>=0"/>
+    <img src="/admin/static/img/16x16.png"  class="answer_right_wrong_image" ng-if="showResult&&answerIsRight()&&answer.indexOf($index)<0"/>
 
 
-<img src="/admin/static/img/tick.png" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) >= 0"/>
-<img src="/admin/static/img/16x16.png" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) < 0"/>
+<img src="/admin/static/img/tick.png"  class="answer_right_wrong_image" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) >= 0"/>
+<img src="/admin/static/img/16x16.png"  class="answer_right_wrong_image" ng-if="showResult&&!answerIsRight()&&data.answers[0].indexOf($index) < 0"/>
 
-<img src="/admin/static/img/cross.png" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) >= 0"/>
-<img src="/admin/static/img/16x16.png" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) < 0"/>
+<img src="/admin/static/img/cross.png"  class="answer_right_wrong_image" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) >= 0"/>
+<img src="/admin/static/img/16x16.png"  class="answer_right_wrong_image" ng-if="showResult&&!answerIsRight()&&answer.indexOf($index) < 0"/>
 
 <input ng-if="showResult" type="checkbox" disabled="disabled" ng-checked="answer.indexOf($index) >= 0" />
 

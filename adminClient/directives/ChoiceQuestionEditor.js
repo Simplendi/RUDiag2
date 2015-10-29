@@ -29,7 +29,11 @@ app.directive('choiceQuestionEditor', function() {
                 }
             };
             $scope.answerIsRight = function() {
-                return $scope.data.answers.indexOf($scope.answer) >= 0;
+                if(angular.isDefined($scope.data.answers)) {
+                    return $scope.data.answers.indexOf($scope.answer) >= 0;
+                } else {
+                    return false;
+                }
             }
         }]
     }

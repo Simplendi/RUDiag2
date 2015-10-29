@@ -103,7 +103,19 @@ body {
     border-bottom: 1px solid black;
     border-right: 1px solid black;
     border-left: 1px solid black;
+    margin-left: 20px;
 }
 .test-heading {
     color: #0043b6;
+}
+.test-item {
+    border: 1px solid #dddddd;
+    margin-bottom: 10px;
+}
+.test-item h3 {
+    margin-top: 0px;
+}
+
+.answer_right_wrong_image {
+    vertical-align: top;
 }

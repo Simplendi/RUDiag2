@@ -78,6 +78,7 @@ app.directive('testSessionList', function () {
                     templateUrl: "views/directives/test_session_list_review.html",
                     controller: "TestSessionListReviewController",
                     size: "lg",
+                    backdrop: 'static',
                     resolve: {
                         testSession: function () {
                             return test_session;
@@ -125,6 +126,8 @@ app.directive('testSessionList', function () {
             $scope.getTestSessionStatus = function (test_session) {
                 if (test_session.feedback_at != null) {
                     return "feedback sent"
+                } else if (test_session.manual_reviewed_at != null) {
+                    return "reviewed manually"
                 } else if (test_session.reviewed_at != null) {
                     return "reviewed"
                 } else if (test_session.closed_at != null) {

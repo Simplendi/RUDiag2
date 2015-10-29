@@ -13,6 +13,9 @@ app.controller('TestSessionListReviewController', ['$scope', '$modalInstance', '
     };
 
     $scope.ok = function () {
+        if ($scope.test.review_method == "manual" && $scope.test_session.reviewed_at != null) {
+            $scope.test_session.manual_reviewed_at = new Date();
+        }
         $modalInstance.close($scope.test_session);
     };
 

@@ -56,7 +56,7 @@ class Test:
         self.feedback_after = None
         self.invite_method = Test.INVITE_METHOD_LINK
         self.invite_url = ""
-        self.review_timing = Test.REVIEW_TIMING_FEEDBACK
+        self.review_timing = Test.REVIEW_TIMING_ANSWER
         self.review_method = Test.REVIEW_METHOD_AUTOMATIC
         self.review_anonymous = False
         self.sender_email = ""

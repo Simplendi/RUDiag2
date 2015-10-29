@@ -23,6 +23,7 @@ class TestSession():
         self.updated_at = None
         self.closed_at = None
         self.reviewed_at = None
+        self.manual_reviewed_at = None
         self.feedback_at = None
 
         self.answers = []
@@ -76,6 +77,7 @@ class TestSession():
         test_session.updated_at = parse_datetime(data_dict.get('updated_at'))
         test_session.closed_at = parse_datetime(data_dict.get('closed_at'))
         test_session.reviewed_at = parse_datetime(data_dict.get('reviewed_at'))
+        test_session.manual_reviewed_at = parse_datetime(data_dict.get("manual_reviewed_at"))
         test_session.feedback_at = parse_datetime(data_dict.get('feedback_at'))
         test_session.answers = data_dict.get("answers", test_session.answers)
         test_session.question_feedback = data_dict.get("question_feedback", test_session.question_feedback)
@@ -90,6 +92,7 @@ class TestSession():
         test_session.question_feedback = data_dict.get("question_feedback", test_session.question_feedback)
         test_session.total_feedback = data_dict.get("total_feedback", test_session.total_feedback)
         test_session.extra_data = data_dict.get("extra_data", test_session.extra_data)
+        test_session.manual_reviewed_at = parse_datetime(data_dict.get("manual_reviewed_at"))
 
         return test_session
 
@@ -121,6 +124,7 @@ class TestSession():
         data_dict["question_feedback"] = self.question_feedback
         data_dict["total_feedback"] = self.total_feedback
         data_dict["extra_data"] = self.extra_data
+        data_dict["manual_reviewed_at"] = self.manual_reviewed_at
 
         return data_dict
 
@@ -138,6 +142,7 @@ class TestSession():
         data_dict["updated_at"] = stringify_datetime(self.updated_at)
         data_dict["closed_at"] = stringify_datetime(self.closed_at)
         data_dict["reviewed_at"] = stringify_datetime(self.reviewed_at)
+        data_dict["manual_reviewed_at"] = stringify_datetime(self.manual_reviewed_at)
         data_dict["feedback_at"] = stringify_datetime(self.feedback_at)
         data_dict["answers"] = self.answers
         data_dict["question_feedback"] = self.question_feedback

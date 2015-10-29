@@ -5,7 +5,7 @@
         <h3>Question {{$index+1}}</h3>
         <question ng-disabled="true" data="content.data" answer="test_session['answers'][$index]" show-result="true"></question>
         <h4>Feedback</h4>
-        <label><input type="checkbox" ng-model="test_session['question_feedback'][$index]['right']"/> Answer is right</label>
+        <label ng-if="editable"><input type="checkbox" ng-model="test_session['question_feedback'][$index]['right']"/> Answer is right</label>
         <div class="editable" ng-disabled="!editable" contenteditable ng-model="test_session['question_feedback'][$index]['feedback']"></div>
         <a ng-if="editable" href ng-click="copyQuestionDefault($index)">Insert default</a>
     </div>

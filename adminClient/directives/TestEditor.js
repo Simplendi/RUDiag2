@@ -376,11 +376,11 @@ app.directive('testEditor', function () {
 )
 ;
 
-app.controller('TestEditorSelectQuestionController', ['$scope', '$modalInstance', 'questionService', 'metadataService', function ($scope, $modalInstance, questionService, metadataService) {
+app.controller('TestEditorSelectQuestionController', ['$scope', '$rootScope', '$modalInstance', 'questionService', 'metadataService', function ($scope, $rootScope, $modalInstance, questionService, metadataService) {
     // Set initial values
     $scope.loading = true;
     $scope.loadingFilter = true;
-    $scope.filter = {};
+    $scope.filter = $rootScope.questionFilter || {};
     $scope.questions = [];
     $scope.metadata = [];
 

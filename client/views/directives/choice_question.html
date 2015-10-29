@@ -2,12 +2,12 @@
 <span class="question-option" ng-repeat="choice in data.content.choices track by $index" ng-if="!(disabled&&previousAnswers&&previousAnswers.length>0)">
 
 
-<img src="/static/img/16x16.png" ng-if="showResult&&(!answerIsRight()&&data.answers[0]!=$index||answerIsRight())"/>
-<img src="/static/img/tick.png" ng-if="showResult&&!answerIsRight()&&data.answers[0]==$index"/>
+<img src="/static/img/16x16.png"  class="answer_right_wrong_image" ng-if="showResult&&(!answerIsRight()&&data.answers[0]!=$index||answerIsRight())"/>
+<img src="/static/img/tick.png"  class="answer_right_wrong_image" ng-if="showResult&&!answerIsRight()&&data.answers[0]==$index"/>
 
-<img src="/static/img/16x16.png" ng-if="showResult&&answer!=$index"/>
-<img src="/static/img/tick.png" ng-if="showResult&&answerIsRight()&&answer==$index"/>
-<img src="/static/img/cross.png" ng-if="showResult&&!answerIsRight()&&answer==$index"/>
+<img src="/static/img/16x16.png"  class="answer_right_wrong_image" ng-if="showResult&&answer!=$index"/>
+<img src="/static/img/tick.png"  class="answer_right_wrong_image" ng-if="showResult&&answerIsRight()&&answer==$index"/>
+<img src="/static/img/cross.png"  class="answer_right_wrong_image" ng-if="showResult&&!answerIsRight()&&answer==$index"/>
 
 <input ng-if="showResult" type="radio" disabled="disabled" ng-checked="answer==$index"/>
 

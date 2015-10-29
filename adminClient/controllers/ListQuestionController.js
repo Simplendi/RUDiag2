@@ -4,7 +4,7 @@ app.controller('ListQuestionController', ['$scope', '$rootScope', 'questionServi
     // Set initial values
     $scope.loading = true;
     $scope.loadingFilter = true;
-    $scope.filter = {};
+    $scope.filter = $rootScope.questionFilter || {};
     $scope.questions = [];
     $scope.metadata = [];
 
@@ -79,6 +79,7 @@ app.controller('ListQuestionController', ['$scope', '$rootScope', 'questionServi
 
     $scope.search =  function() {
         $scope.loading = true;
+        $rootScope.questionFilter = $scope.filter;
         questionService.listQuestion($scope.filter)
             .success(function(questions) {
                 $scope.questions = questions;

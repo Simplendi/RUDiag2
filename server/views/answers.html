@@ -15,7 +15,17 @@ E-mail: ${test_session.email | h}<br>
     <h3>${key | h}: ${test.get_node(key).get("title", "") | h}</h3>
     % for index, answer in enumerate(test_session.answers["answers"][key]):
     <span>Answer ${index+1 | h}:</span>
+    % if type(answer) is str:
     <p>${answer | h}</p>
+    % elif type(answer) is list:
+    <p>
+        % for answer_element in answer:
+        Option ${answer_element+1 | h},
+        % endfor
+    </p>
+    % elif type(answer) is int:
+    <p>Option ${answer+1 | h}</p>
+    % endif
     % endfor
 % endfor
 </body>

@@ -11,9 +11,9 @@
         <multiplechoice-question ng-if="content.data.type=='multiplechoice'" data="content.data"
                                  answer="testSession.answers[$index]" show-result="true"></multiplechoice-question>
         <open-question ng-if="content.data.type=='open'" data="content.data"
-                                 answer="testSession.answers[$index]" show-result="true"></open-question>
+                                 answer="testSession.answers[$index]" show-result="true" ng-disabled="true"></open-question>
         <text-question ng-if=" content.data.type=='text'" data="content.data"
-                                 answer="testSession.answers[$index]" show-result="true"></text-question>
+                                 answer="testSession.answers[$index]" show-result="true" ng-disabled="true"></text-question>
         <h4>Feedback</h4>
         <div contentable class="contentable" ng-model="testSession['question_feedback'][$index]['feedback']"></div>
     </div>

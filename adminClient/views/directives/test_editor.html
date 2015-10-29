@@ -2,7 +2,7 @@
     <tab heading="Content">
         <h1 class="editable test-heading" contenteditable ng-model="data.title" ng-disabled="!isPlanned()||!isOwner()" ng-text="true"></h1>
 
-        <div ng-repeat="element in data.content track by $index">
+        <div ng-repeat="element in data.content track by $index" class="test-item">
             <button class="btn btn-default" ng-if="isPlanned() && isOwner()" ng-click="deleteElement($index)">Delete</button>
             <button class="btn btn-default" ng-if="!$first && isPlanned() && isOwner()" ng-click="moveElementUp($index)">Up</button>
             <button class="btn btn-default" ng-if="!$last && isPlanned() && isOwner()" ng-click="moveElementDown($index)">Down
