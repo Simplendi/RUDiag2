@@ -1,8 +1,7 @@
 import config
-from helpers.feedbackjob import FeedbackJob
-
 config=config
 
+from helpers.feedbackjob import FeedbackJob
 from helpers.reviewjob import ReviewJob
 from helpers.timerjob import TimerJob
 from helpers.invitejob import InviteJob
