@@ -10,6 +10,8 @@ app.directive('testSessionList', function () {
         controller: ['$scope', '$rootScope', '$modal', 'moment', 'testSessionService', function ($scope, $rootScope, $modal, moment, testSessionService) {
             $scope.test_sessions = [];
             $scope.loading = true;
+            $scope.sort_column = "email";
+            $scope.sort_reverse = false;
 
             $scope.loadTestSessions = function () {
                 testSessionService.listTestSession($scope.test.id).
@@ -202,6 +204,15 @@ app.directive('testSessionList', function () {
                     return false;
                 }
             };
+
+            $scope.setAndToggleSort = function(column) {
+                if ($scope.sort_column==column) {
+                    $scope.sort_reverse = !$scope.sort_reverse;
+                } else {
+                    $scope.sort_column = column;
+                    $scope.sort_reverse = false;
+                }
+            }
 
             $scope.init();
         }]

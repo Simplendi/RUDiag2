@@ -6,15 +6,15 @@
 <table class="table">
     <thead>
     <tr>
-        <th class="col-md-3">Email</th>
-        <th class="col-md-3">Name</th>
-        <th class="col-md-2">Student-ID</th>
-        <th class="col-md-1">Status</th>
+        <th class="col-md-3">Email <a href="" ng-click="setAndToggleSort('email')">Sort</a></th>
+        <th class="col-md-3">Name <a href="" ng-click="setAndToggleSort('name')">Sort</a></th>
+        <th class="col-md-2">Student-ID <a href="" ng-click="setAndToggleSort('student_id')">Sort</a></th>
+        <th class="col-md-1">Status <a href="" ng-click="setAndToggleSort(getTestSessionStatus)">Sort</a></th>
         <th class="col-md-3">Action</th>
     </tr>
     </thead>
     <tbody ng-if="!loading">
-    <tr ng-repeat="test_session in test_sessions | filter:{$: search}">
+    <tr ng-repeat="test_session in test_sessions | filter:{$: search} | orderBy:sort_column:sort_reverse">
         <td>{{test_session.email}}</td>
         <td>{{test_session.name}}</td>
         <td>{{test_session.student_id}}</td>
