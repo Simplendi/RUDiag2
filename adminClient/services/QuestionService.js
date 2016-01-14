@@ -14,11 +14,11 @@ app.factory('questionService', ['$http', function($http) {
         deleteQuestion: function(question) {
             return $http.delete('/question/' + question.id);
         },
-        listQuestion: function(filter) {
+        listQuestion: function(filter, empty_filter) {
             return $http({
                 url: '/question/',
                 method: "GET",
-                params: {filter: filter}
+                params: {'filter': filter, 'empty_filter':empty_filter}
             });
         }
 

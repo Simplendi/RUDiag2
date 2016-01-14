@@ -64,6 +64,14 @@
                 <a href="" ng-click="addMetadata()" ng-disabled="disabled" class="btn btn-default">Add</a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <label for="empty_filter">has empty metadata</label>
+            </td>
+            <td>
+                <input type="checkbox" id="empty_filter" ng-model="empty_filter.value"/>
+            </td>
+        </tr>
         </tbody>
     </table>
     <a href="" ng-click="search()" class="btn btn-default">Apply filter</a>

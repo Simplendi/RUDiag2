@@ -44,7 +44,8 @@ class ImageController(BaseController):
         image_file.write(upload_image.read())
         image_file.close()
 
-        url = self._config["absolute_url"] + "image/" + filename
+        #url = self._config["absolute_url"] + "image/" + filename
+        url = "/image/" + filename
 
         response.setJsonBody(url)
 

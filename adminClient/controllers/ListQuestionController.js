@@ -5,6 +5,7 @@ app.controller('ListQuestionController', ['$scope', '$rootScope', 'questionServi
     $scope.loading = true;
     $scope.loadingFilter = true;
     $scope.filter = $rootScope.questionFilter || {};
+    $scope.empty_filter = {value:false};
     $scope.questions = [];
     $scope.metadata = [];
 
@@ -15,7 +16,7 @@ app.controller('ListQuestionController', ['$scope', '$rootScope', 'questionServi
 
     // Function to load questions
     $scope.loadQuestions = function() {
-        questionService.listQuestion($scope.filter)
+        questionService.listQuestion($scope.filter, $scope.empty_filter.value)
             .success(function(questions) {
                 $scope.questions = questions;
                 $scope.loading = false;
@@ -80,7 +81,7 @@ app.controller('ListQuestionController', ['$scope', '$rootScope', 'questionServi
     $scope.search =  function() {
         $scope.loading = true;
         $rootScope.questionFilter = $scope.filter;
-        questionService.listQuestion($scope.filter)
+        questionService.listQuestion($scope.filter, $scope.empty_filter.value)
             .success(function(questions) {
                 $scope.questions = questions;
                 $scope.loading = false;

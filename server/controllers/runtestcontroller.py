@@ -86,7 +86,7 @@ class RunTestController(BaseController):
             test_session = TestSession.from_db(db_test_session)
 
             test = self._getOpenTestOrThrowHttp(database_session, test_session.test_id)
-            
+
             if not test_session.opened_at:
                 test_session.opened_at = datetime.datetime.utcnow()
 

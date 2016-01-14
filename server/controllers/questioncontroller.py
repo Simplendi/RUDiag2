@@ -54,9 +54,10 @@ class QuestionController(GenericController):
             metadata = [Metadata.from_db(db_obj) for db_obj in database_session.query(DbMetadata).all()]
 
             filter = json.loads(request.query.get("filter"))
+            empty_filter = request.query.get("empty_filter", "false") == "true"
 
             question_datas = []
-            for question in self.apply_filter(filter, questions, metadata):
+            for question in self.apply_filter(filter, empty_filter, questions, metadata):
                 question_datas.append(question.to_dict())
 
             response.setJsonBody(json.dumps(question_datas))
@@ -70,12 +71,17 @@ class QuestionController(GenericController):
 
         return metadata_index
 
-    def apply_filter(self, filter, questions, metadatas):
+    def apply_filter(self, filter, empty_filter, questions, metadatas):
         metadata_index = self.index_metadata(metadatas)
 
         for question in questions:
 
             filtered = False
+
+            if empty_filter and len(question.metadata) != 0:
+                filtered = True
+                break
+
             for (filter_metadata_name, filter_metadata_values) in filter.items():
                 if not question.metadata.get(filter_metadata_name):
                     filtered = True
