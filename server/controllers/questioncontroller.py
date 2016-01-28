@@ -1,7 +1,9 @@
 from contextlib import closing
 import json
-from framework.httpexceptions import HttpUnauthorizedException
+import itertools
+from framework.httpexceptions import HttpUnauthorizedException, HttpNotFoundException, HttpBadRequestException
 from controllers.genericcontroller import GenericController
+from helpers.qtigenerator import QtiGenerator
 from models.db.question import DbQuestion
 from models.db.metadata import DbMetadata
 from models.service.question import Question
@@ -57,12 +59,39 @@ class QuestionController(GenericController):
             empty_filter = request.query.get("empty_filter", "false") == "true"
 
             question_datas = []
-            for question in self.apply_filter(filter, empty_filter, questions, metadata):
+            for question in itertools.islice(self.apply_filter(filter, empty_filter, questions, metadata), 100):
                 question_datas.append(question.to_dict())
 
             response.setJsonBody(json.dumps(question_datas))
 
         return state
+
+    def qti_export(self, state, id):
+        (request, response, session) = state.unfold()
+
+        if self.int_id:
+            try:
+                id = int(id)
+            except ValueError:
+                raise HttpBadRequestException()
+
+        with closing(self._database_session_maker()) as database_session:
+            db_obj = database_session.query(self.db_clazz).filter(self.db_clazz.id==id).first()
+
+            if not db_obj:
+                raise HttpNotFoundException()
+
+            obj = self.clazz.from_db(db_obj)
+            obj_dict = obj.to_dict()
+
+            # Set Content Disposition such that the file will be downloaded
+            response.headers["Content-Disposition"] = "attachment; filename=" + str(obj.id) + ".xml"
+            response.content_type = "application/xml"
+            response.body = QtiGenerator().generate(obj_dict)
+
+        return state
+
+
 
     def index_metadata(self, metadata):
         metadata_index = {}
@@ -111,3 +140,8 @@ class QuestionController(GenericController):
 
             if not filtered:
                 yield question
+
+
+    def bindRoutes(self, router, path):
+        router.addMapping(r"^/" + path + "/([^/]+)/export$", self.qti_export, ['GET'])
+        super().bindRoutes(router, path)

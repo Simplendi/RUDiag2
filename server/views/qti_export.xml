@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd"
+                identifier="${question['id']}" title="Question" adaptive="false" timeDependent="false">
+
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0.0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+
+    <itemBody>
+        ${question['content']['question_before']}
+        % if question['type'] == 'multiplechoice':
+        <choiceInteraction responseIdentifier="Q1" shuffle="false" maxChoices="${len(question['content']['choices'])}">
+            % for (choice_index, choice) in enumerate(question['content']['choices']):
+            <simpleChoice identifier="C${choice_index+1}" fixed="false">${choice}</simpleChoice>
+            % endfor
+        </choiceInteraction>
+        % elif  question['type'] == 'choice':
+        <choiceInteraction responseIdentifier="Q1" shuffle="false" maxChoices="1">
+            % for (choice_index, choice) in enumerate(question['content']['choices']):
+            <simpleChoice identifier="C${choice_index+1}" fixed="false">${choice}</simpleChoice>
+            % endfor
+        </choiceInteraction>
+        % endif
+        ${question['content'].get('question_after', '')}
+    </itemBody>
+
+
+    % if question['type'] == 'multiplechoice':
+    <responseDeclaration identifier="Q1" cardinality="multiple" baseType="identifier"/>
+    <responseProcessing>
+        <responseCondition>
+            % for (answer_index, answer) in enumerate(question['answers']):
+            % if answer_index == 0:
+                <responseIf>
+            % else:
+                <responseElseIf>
+            % endif
+                <match>
+                    <variable identifier="Q1"/>
+                    <multiple>
+                        % for choice_index in answer:
+                        <baseValue baseType="identifier">C${choice_index+1}</baseValue>
+                        % endfor
+                    </multiple>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+                % if answer_index == 0:
+                </responseIf>
+                % else:
+                </responseElseIf>
+                % endif
+            % endfor
+        </responseCondition>
+    </responseProcessing>
+    % elif question['type'] == 'choice':
+    <responseDeclaration identifier="Q1" cardinality="single" baseType="identifier">
+    <correctResponse>
+        % for choice_index in question['answers']:
+        <value>C${choice_index+1}</value>
+        % endfor
+    </correctResponse>
+    </responseDeclaration>
+    <responseProcessing
+    template="http://www.imsglobal.org/question/qti_v2p1/rptemplates/match_correct"/>
+    % endif
+</assessmentItem>
