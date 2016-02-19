@@ -6,10 +6,8 @@ from configparser import ConfigParser
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from mako.lookup import TemplateLookup
+from configpath import config_path
 config_parser = ConfigParser()
-
-
-config_path = "conf/app.ini"
 
 try:
     config_file = open(config_path, "r")
