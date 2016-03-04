@@ -53,4 +53,4 @@ class ImageController(BaseController):
 
 
     def bindRoutes(self, router):
-        router.addMapping(r"^/image/upload$", self.handleUpload, ['POST'])
+        router.addMapping(r"^/image_upload$", self.handleUpload, ['POST'])

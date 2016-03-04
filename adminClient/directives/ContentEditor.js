@@ -124,7 +124,7 @@ app.controller('ContentEditorImageModalController', ['$scope', '$modalInstance',
 
     $scope.upload = function (file) {
         Upload.upload({
-            url: '/image/upload',
+            url: '/image_upload',
             file: file
         }).success(function (data, status, headers, config) {
             $scope.link = data;
