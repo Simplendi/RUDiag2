@@ -65,13 +65,13 @@ class App(Application):
         self.router.addStaticMapping(r"^/image/", self.config["upload_folder"])
 
         self.router.addStaticMapping(r"^/admin/static/", "../adminClient/dist")
-        self.router.addStaticMapping(r"^/admin/", "../adminClient/dist")
+        self.router.addStaticMapping(r"^/admin/", self.config["base_path"] + "/adminClient/dist")
 
         run_test_controller = RunTestController()
         run_test_controller.bindRoutes(self.router)
 
         self.router.addStaticMapping(r"^/static/", "../client/dist")
-        self.router.addStaticMapping(r"^/", "../client/dist")
+        self.router.addStaticMapping(r"^/", self.config["base_path"] + "/client/dist")
 
 
 app = App()
