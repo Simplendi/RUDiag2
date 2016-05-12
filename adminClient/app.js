@@ -155,4 +155,13 @@ app.run(['$rootScope', '$location', 'loginService', function ($rootScope, $locat
     });
 }]);
 
+app.run(['$rootScope', function($rootScope) {
+    $rootScope.$on('$routeChangeSuccess', function (ev, next, curr) {
+        if (curr && MathJax.Hub.queue.queue.length > 0) {
+            MathJax.Hub.queue.queue = [];
+            console.log("Reset queue");
+        }
+    });
+}]);
+
 
