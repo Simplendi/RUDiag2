@@ -1107,6 +1107,6 @@ MathJax.Hub.Config({
   }
 });
 
-MathJax.Hub.processSectionDelay = 0;
+MathJax.Hub.processSectionDelay = 1;
 
 MathJax.Ajax.loadComplete("[MathJax]/config/config.js");
