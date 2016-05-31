@@ -124,7 +124,7 @@ class TestSession():
         data_dict["question_feedback"] = self.question_feedback
         data_dict["total_feedback"] = self.total_feedback
         data_dict["extra_data"] = self.extra_data
-        data_dict["manual_reviewed_at"] = self.manual_reviewed_at
+        data_dict["manual_reviewed_at"] = stringify_datetime(self.manual_reviewed_at)
 
         return data_dict
 
