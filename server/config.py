@@ -27,7 +27,7 @@ if "database" not in config_parser:
 
 config["base_path"] = config_parser.get("path", "base_path")
 
-config["database_engine"] = create_engine(config_parser.get("database", "url"), echo=config_parser.getboolean("database", "echo"))
+config["database_engine"] = create_engine(config_parser.get("database", "url"), echo=config_parser.getboolean("database", "echo"), pool_recycle=config_parser.getint("database", "pool_recycle", fallback=3600))
 config["database_session_maker"] = sessionmaker(bind=config["database_engine"])
 
 # Create template lookup to get templates

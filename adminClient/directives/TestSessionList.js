@@ -30,8 +30,16 @@ app.directive('testSessionList', function () {
                 }
             });
 
-            $scope.edit = function ($index) {
-                var test_session = $scope.test_sessions[$index];
+            $scope.getTestSessionById = function(sessionId) {
+                for(var i = 0; i < $scope.test_sessions.length; i++) {
+                    if($scope.test_sessions[i].id == sessionId) {
+                        return $scope.test_sessions[i];
+                    }
+                }
+            };
+
+            $scope.edit = function (testSessionId) {
+                var test_session = $scope.getTestSessionById(testSessionId);
                 var editModal = $modal.open({
                     templateUrl: "views/directives/test_session_list_edit_data.html",
                     controller: "TestSessionListEditDataController",
@@ -56,14 +64,15 @@ app.directive('testSessionList', function () {
                 });
             };
 
-            $scope.delete = function ($index) {
+            $scope.delete = function (testSessionId) {
+                var test_session = $scope.getTestSessionById(testSessionId);
                 var deleteModal = $modal.open({
                     templateUrl: "views/directives/test_session_list_delete.html",
                     controller: "DefaultModalController"
                 });
 
                 deleteModal.result.then(function () {
-                    testSessionService.deleteTestSession($scope.test_sessions[$index])
+                    testSessionService.deleteTestSession(test_session)
                         .success(function () {
                             $scope.loadTestSessions();
                         }).error(function () {
@@ -74,8 +83,8 @@ app.directive('testSessionList', function () {
                 })
             };
 
-            $scope.review = function ($index) {
-                var test_session = $scope.test_sessions[$index];
+            $scope.review = function (sessionId) {
+                var test_session = $scope.getTestSessionById(testSessionId);
                 var reviewModal = $modal.open({
                     templateUrl: "views/directives/test_session_list_review.html",
                     controller: "TestSessionListReviewController",
