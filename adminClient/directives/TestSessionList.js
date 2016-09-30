@@ -83,7 +83,7 @@ app.directive('testSessionList', function () {
                 })
             };
 
-            $scope.review = function (sessionId) {
+            $scope.review = function (testSessionId) {
                 var test_session = $scope.getTestSessionById(testSessionId);
                 var reviewModal = $modal.open({
                     templateUrl: "views/directives/test_session_list_review.html",
