@@ -57,7 +57,7 @@
                                    ng-click="deleteOwner($index)">Delete</a>
                             </div>
                             <div class="row">
-                                <ui-select class="col-sm-5" ng-model="newReviewer.id" theme="bootstrap" ng-disabled="disabled">
+                                <ui-select class="col-sm-5" ng-model="newOwner.id" theme="bootstrap" ng-disabled="disabled">
                                     <ui-select-match allow-clear="true" placeholder="Enter user to add">
                                         {{$select.selected.fullname}} ({{$select.selected.username}})
                                     </ui-select-match>
