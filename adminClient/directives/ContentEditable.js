@@ -51,7 +51,7 @@ app.directive('contenteditable', ['$sce', '$compile', function ($sce, $compile) 
                     if(element.html().indexOf('class="MathJax') < 0) {
                         if(scope.text) {
                             ngModel.$setViewValue(element_value.text());
-                            element.html(element_value.text());
+                            //element.html(element_value.text());
                         } else {
                             ngModel.$setViewValue(element_value.html());
                         }
